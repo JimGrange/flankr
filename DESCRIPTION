@@ -1,0 +1,14 @@
+Package: flankerModels
+Title: Implementation of computational models of the Eriksen flanker task
+Version: 0.1
+Authors@R: person("James A.", "Grange", email = "grange.jim@gmail.com",
+  role = c("aut", "cre"))
+Description: Implements the Dual Stage Two-Phase (DSTP) model of selective
+    attention and the Shrinking Spotlight (SSP) model. The package allows
+    fitting the models to behavioural data, as well as methods for generating
+    synthetic data from the models.
+Depends: R (>= 3.1.1), stats
+License: What license is it under?
+LazyData: true
+LinkingTo: Rcpp
+Imports: Rcpp
