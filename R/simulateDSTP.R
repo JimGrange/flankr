@@ -2,16 +2,17 @@
 #' Obtain simulated response times and accuracy from the DSTP model
 #'
 #' \code{simulateDSTP} generates synthetic data from the DSTP model in the
-#' form of response time (RT) in seconds and accuracy.
+#' form of response time (RT) in seconds and accuracy for both congruent and
+#' incongruent trials.
 #'
 #' This function can be employed by the user to generate synthetic data, but
 #' its main purpose is to be used by the fitting procedure to generate model
 #' predictions for a set of parameter values when trying to find the best-
 #' fitting values.
 #'
-#' @param parms The set of parameters to use to simulate the data. Must be in
-#' the order: \code{A}, \code{C}, \code{driftTarget}, \code{driftFlanker},
-#' \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
+#' @param parms The set of parameters to use to simulate the data. Must be
+#' contained in a vector in the order: \code{A}, \code{C}, \code{driftTarget},
+#' \code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
 #' @param n How many trials to simulate per congruency condition.
 #' @param var The variance of the diffusion process. By default this is set to
 #' 0.01.
@@ -24,8 +25,8 @@
 #' # declare the parameters
 #' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 #'
-#' # simulate  data
-#' getData <- simulateDSTP(parms, n = 1000)
+#' # simulate the data
+#' simulatedData <- simulateDSTP(parms, n = 1000)
 #'
 #' @return Returns a data frame with three columns: RT (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -50,7 +51,7 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000,
     colnames(trialData) <- c("RT", "Accuracy", "Congruency")
     trialData <- data.frame(trialData)
 
-  # first generate congruent data by calling C++ function
+  # first generate congruent data by calling the C++ function
   trialData[1:n, 1:2] <- getDSTP(parms, trialType = 1, n = n, dt, var)
     trialData[1:n, 3] <- "congruent"
 

@@ -7,9 +7,9 @@
 simulateDSTP(parms, n, var = 0.01, dt = 1/1000, seed = 10)
 }
 \arguments{
-\item{parms}{The set of parameters to use to simulate the data. Must be in
-the order: \code{A}, \code{C}, \code{driftTarget}, \code{driftFlanker},
-\code{diftStimSelection}, \code{driftRS2}, \code{ter}.}
+\item{parms}{The set of parameters to use to simulate the data. Must be
+contained in a vector in the order: \code{A}, \code{C}, \code{driftTarget},
+\code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.}
 
 \item{n}{How many trials to simulate per congruency condition.}
 
@@ -29,7 +29,8 @@ congruency condition.
 }
 \description{
 \code{simulateDSTP} generates synthetic data from the DSTP model in the
-form of response time (RT) in seconds and accuracy.
+form of response time (RT) in seconds and accuracy for both congruent and
+incongruent trials.
 }
 \details{
 This function can be employed by the user to generate synthetic data, but
@@ -39,9 +40,9 @@ fitting values.
 }
 \examples{
 # declare the parameters
-parms <- c(0.146, 0.082, 0.103, 0.065, 0.325, 1.267, 0.237)
+parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 
-# simulate  data
-getData <- simulateDSTP(parms, n = 1000)
+# simulate the data
+simulatedData <- simulateDSTP(parms, n = 1000)
 }
 

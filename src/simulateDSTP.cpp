@@ -91,7 +91,6 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 
     while((currEvidenceResp <= A) && (currEvidenceResp >= B)){
 
-
       randomIndex = rand() % muNoise_incong.size();
 
       j = j + 1.0; //update diffusion step number
@@ -119,9 +118,6 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
       if((stimSelected == true) && (trialType == 1)){
         currEvidenceResp = currEvidenceResp + rsNoise[randomIndex];
       }
-
-
-
 
         //update the stimulus selection drift rate
         currEvidenceStim = currEvidenceStim + ssNoise[randomIndex];
@@ -153,11 +149,7 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 
   } // trial loop ends here
 
-
-
-
   return trialData;
-
 
 }
 
