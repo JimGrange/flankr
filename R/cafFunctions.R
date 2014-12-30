@@ -183,8 +183,10 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
     } # end of loop over subjects
 
+    # find the mean values
     cafData <- apply(cafData, 1, mean)
 
+    # return the means
     return(cafData)
 
   } # end of multiple subjects loop
