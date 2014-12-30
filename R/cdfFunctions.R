@@ -44,7 +44,8 @@
 #' ### example of single subject and different quantile values
 #'
 #' # only select subject 1 from the example data. Also, select only the
-#' # "absent" condition and incongruent trials.
+#' # "absent" condition and incongruent trials. This is an example when working
+#' # with multiple conditions (besides target congruency).
 #' data <- subset(exampleData, exampleData$subject == 1 &
 #'     exampleData$condition == "absent" &
 #'     exampleData$congruency == "incongruent")
