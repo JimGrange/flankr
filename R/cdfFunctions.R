@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------
 #' Find cumulative distribution function (CDF) values for a single condition
 #'
-#' \code{cdfSingle} takes a data frame for a single experimental condition and
+#' \code{cdf} takes a data frame for a single experimental condition and
 #' returns a vector of requested CDF values.
 #'
 #' The function only deals with one experimental condition. There is another
@@ -25,6 +25,11 @@
 #'
 #' @param quantiles The quantile values to be found by the function. By
 #' default, the function finds the .1, .3, .5, .7, and .9 CDF values.
+#'
+#' @param correctTrials If set to TRUE, the function will find the CDFs of
+#' correct trials. Set to FALSE to find the CDFs of error trials. Note, though,
+#' that CDFs of error trials may be less accurate due to usually-low number of
+#' error trials.
 #'
 #' @param multipleSubjects Inform the function whether the data frame contains
 #' data from multiple subjects. If set to TRUE, the function returns the
@@ -58,18 +63,24 @@
 #'
 
 #' @export
-cdfSingle <- function(data, quantiles = c(.1, .3, .5, .7, .9),
-                multipleSubjects = TRUE){
+cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
+                correctTrials = TRUE, multipleSubjects = TRUE){
 
   # perform the simple operation of calculating CDFs if only one subject
   if(multipleSubjects == FALSE){
 
-    # only select correct responses
-    tempData <- subset(data, data$accuracy == 1)
+
+    # select whether the user wants correct trials or error trials
+    if(correctTrials == TRUE){
+      tempData <- subset(data, data$accuracy == 1)
+    } else {
+      tempData <- subset(data, data$accuracy == 0)
+    }
 
     # calculate the CDFs
     cdfs <- as.numeric(quantile(tempData$rt, quantiles))
 
+    # return them to the user
     return(cdfs)
   }
 
@@ -91,6 +102,16 @@ cdfSingle <- function(data, quantiles = c(.1, .3, .5, .7, .9),
     for(i in 1:nSubs){
 
       tempData <- subset(data, data$subject == subs[i])
+
+        # select whether the user wants correct trials or error trials
+        if(correctTrials == TRUE){
+          tempData <- subset(tempData, data$accuracy == 1)
+        } else {
+          tempData <- subset(tempData, data$accuracy == 0)
+        }
+
+
+      # log the result
       cdfData[, i] <- quantile(tempData$rt, quantiles)
 
     }
@@ -100,6 +121,7 @@ cdfSingle <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
   }
 
+  # return them to the user
   return(averageCDF)
 
 }
