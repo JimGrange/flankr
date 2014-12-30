@@ -111,7 +111,17 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
     } #end of loop over quantiles
 
-    return(cafData)
+      # coerce the data into a final matrix for ease of use for user
+      finalData <- matrix(0, nrow = 2, ncol = (length(cafData) / 2))
+      row.names(finalData) <- c("rt", "accuracy")
+
+      # populate the final data matrix
+      finalData[1, 1:(length(cafData) / 2)] <- cafData[1:(length(cafData) / 2)]
+      finalData[2, 1:(length(cafData) / 2)] <- cafData[((length(cafData) / 2)
+                                                        + 1): length(cafData)]
+
+    # return the means
+    return(finalData)
 
   } #end of single-subject sub-function
 
@@ -186,8 +196,17 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
     # find the mean values
     cafData <- apply(cafData, 1, mean)
 
+    # coerce the data into a final matrix for ease of use for user
+    finalData <- matrix(0, nrow = 2, ncol = (length(cafData) / 2))
+    row.names(finalData) <- c("rt", "accuracy")
+
+      # populate the final data matrix
+      finalData[1, 1:(length(cafData) / 2)] <- cafData[1:(length(cafData) / 2)]
+      finalData[2, 1:(length(cafData) / 2)] <- cafData[((length(cafData) / 2)
+                                                        + 1): length(cafData)]
+
     # return the means
-    return(cafData)
+    return(finalData)
 
   } # end of multiple subjects loop
 

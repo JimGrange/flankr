@@ -26,10 +26,10 @@
 #' @param quantiles The quantile values to be found by the function. By
 #' default, the function finds the .1, .3, .5, .7, and .9 CDF values.
 #'
-#' @param correctTrials If set to TRUE, the function will find the CDFs of
-#' correct trials. Set to FALSE to find the CDFs of error trials. Note, though,
-#' that CDFs of error trials may be less accurate due to usually-low number of
-#' error trials.
+#' @param correctTrials If set to 1, the function will find the CDFs of
+#' correct trials. Set to 2 to find the CDFs of error trials. Set to 3 to find
+#' CDFs of ALL trials. Note, though, that CDFs of error trials may be less
+#' accurate due to usually-low number of error trials.
 #'
 #' @param multipleSubjects Inform the function whether the data frame contains
 #' data from multiple subjects. If set to TRUE, the function returns the
@@ -64,17 +64,21 @@
 
 #' @export
 cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
-                correctTrials = TRUE, multipleSubjects = TRUE){
+                correctTrials = 1, multipleSubjects = TRUE){
 
   # perform the simple operation of calculating CDFs if only one subject
   if(multipleSubjects == FALSE){
 
 
-    # select whether the user wants correct trials or error trials
-    if(correctTrials == TRUE){
+    # select whether the user wants correct trials or error trials (or all!)
+    if(correctTrials == 1){
       tempData <- subset(data, data$accuracy == 1)
-    } else {
+    }
+    if(correctTrials == 2){
       tempData <- subset(data, data$accuracy == 0)
+    }
+    if(correctTrials == 3){
+      tempData <- data
     }
 
     # calculate the CDFs
@@ -103,11 +107,15 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
       tempData <- subset(data, data$subject == subs[i])
 
-        # select whether the user wants correct trials or error trials
-        if(correctTrials == TRUE){
-          tempData <- subset(tempData, data$accuracy == 1)
-        } else {
-          tempData <- subset(tempData, data$accuracy == 0)
+        # select whether the user wants correct trials or error trials (or all!)
+        if(correctTrials == 1){
+          tempData <- subset(data, data$accuracy == 1)
+        }
+        if(correctTrials == 2){
+          tempData <- subset(data, data$accuracy == 0)
+        }
+        if(correctTrials == 3){
+          tempData <- data
         }
 
 
@@ -126,4 +134,49 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
 }
 #------------------------------------------------------------------------------
+
+
+
+
+
+
+#------------------------------------------------------------------------------
+# given a set of quantiles for CDFs, return the proportion of data within each
+# bin. For example, the CDFs c(.1, .3, .5, .7, .9) have proportions of
+# c(.1, .2, .2, .2, .2, .1). This is required because the model will try to
+# predict response times which match the proportions in the human data.
+
+#' @export
+cdf.proportions <- function(cdfs){
+
+  # get empty vector of the right length
+  props <- numeric(length = (length(cdfs) + 1))
+
+  # loop over all cdf values
+  for(i in 1:length(cdfs)){
+
+    # do the first one manually
+    if(i == 1){
+      props[i] <- cdfs[i] - 0
+    }
+
+
+    # do the intermediate bins automatically
+    if(i > 1 & i <= length(cdfs)){
+      props[i] <- cdfs[i] - cdfs[i - 1]
+    }
+
+    # do the final one manually
+    if(i == length(cdfs)){
+      props[i + 1] <- 1 - cdfs[i]
+    }
+
+  } # end of bin loop
+
+  # return the proportions
+  return(props)
+
+} # end of function
+#------------------------------------------------------------------------------
+
 

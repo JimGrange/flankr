@@ -4,7 +4,7 @@
 \alias{cdf}
 \title{Find cumulative distribution function (CDF) values for a single condition}
 \usage{
-cdf(data, quantiles = c(0.1, 0.3, 0.5, 0.7, 0.9), correctTrials = TRUE,
+cdf(data, quantiles = c(0.1, 0.3, 0.5, 0.7, 0.9), correctTrials = 1,
   multipleSubjects = TRUE)
 }
 \arguments{
@@ -19,10 +19,10 @@ frame formatted correctly.}
 \item{quantiles}{The quantile values to be found by the function. By
 default, the function finds the .1, .3, .5, .7, and .9 CDF values.}
 
-\item{correctTrials}{If set to TRUE, the function will find the CDFs of
-correct trials. Set to FALSE to find the CDFs of error trials. Note, though,
-that CDFs of error trials may be less accurate due to usually-low number of
-error trials.}
+\item{correctTrials}{If set to 1, the function will find the CDFs of
+correct trials. Set to 2 to find the CDFs of error trials. Set to 3 to find
+CDFs of ALL trials. Note, though, that CDFs of error trials may be less
+accurate due to usually-low number of error trials.}
 
 \item{multipleSubjects}{Inform the function whether the data frame contains
 data from multiple subjects. If set to TRUE, the function returns the
