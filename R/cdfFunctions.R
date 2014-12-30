@@ -16,7 +16,7 @@
 #' returned to the user.
 #'
 #' @param data A data frame containing the data to be passed to the function.
-#' At the very least, the data frame must contain columns named "accuract"
+#' At the very least, the data frame must contain columns named "accuracy"
 #' logging the accuracy (1 for correct, 0 for error) and "rt" containing the
 #' response time data. If the user wishes to find the average CDFs across
 #' multiple subjects, then another column must be included ("subject") with
@@ -126,3 +126,4 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
 }
 #------------------------------------------------------------------------------
+
