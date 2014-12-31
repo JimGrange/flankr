@@ -112,6 +112,7 @@ fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
   # of access & generalisation to different CDF and CAF sizes.
   humanProportions <- getHumanProps(conditionData, cdfs, cafs)
 
+  # perform the fit
   fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
                n = nTrials, maxParms = maxParms)
 
