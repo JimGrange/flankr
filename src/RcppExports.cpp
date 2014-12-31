@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // getDSTP
 NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials, double dt, double var);
-RcppExport SEXP flankerModels_getDSTP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
+RcppExport SEXP flankr_getDSTP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
