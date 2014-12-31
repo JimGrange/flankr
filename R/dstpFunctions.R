@@ -100,6 +100,7 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
                     cafs = c(.25, .50, .75),
                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
+                    maxParms = c(1, 1, 1, 1, 1, 2, 1),
                     nParameters = 1, nTrials = 50000){
 
 
@@ -111,6 +112,8 @@ fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
   # of access & generalisation to different CDF and CAF sizes.
   humanProportions <- getHumanProps(conditionData, cdfs, cafs)
 
+  fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
+               n = nTrials, maxParms = maxParms)
 
 
 } # end of function
@@ -119,7 +122,10 @@ fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
 
 
 #------------------------------------------------------------------------------
-doModelDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+# Get the predicted proportions from the DSTP model
+
+#'@export
+predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
@@ -130,10 +136,22 @@ doModelDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$conCDF, modelCon)
   modelConCAF <- getCAFProps(propsForModel$conCAFsCutoff, modelCon)
+
+  # Run model to get incontruent RTs
+  set.seed(42)
+  modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  modelInconCDF <- getCDFProps(propsForModel$inconCDF, modelIncon)
+  modelInconCAF <- getCAFProps(propsForModel$inconCAFsCutoff, modelIncon)
+
+  modelProps <- list(modelConCDF = modelConCDF,
+                     modelConCAF = modelConCAF,
+                     modelInconCDF = modelInconCDF,
+                     modelInconCAF = modelInconCAF)
+
+
+  return(modelProps)
+
 }
-
-
-
 #------------------------------------------------------------------------------
 
 

@@ -144,7 +144,7 @@ getCAFProps <- function(cdfs, modelData){
 
   # loop over each CDF value, find the bin boundaries, source the data, and
   # find the proportion of correct responses in each bin.
-  for(i in nBins){
+  for(i in 1:nBins){
 
 
     # do the first bin manually
@@ -181,7 +181,7 @@ getCAFProps <- function(cdfs, modelData){
 
     # do the final bin manually
     if(i == nBins){
-      bin <- subset(modelData, modelDatap, 1) >= cdfs[i - 1]
+      bin <- subset(modelData, modelData[, 1] >= cdfs[i - 1])
       if(length(bin[, 2]) > 0) {
         props[i] <- (sum(bin[, 2])) / length(bin[, 2])
       } else {
