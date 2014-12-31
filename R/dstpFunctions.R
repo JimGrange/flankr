@@ -1,6 +1,6 @@
 ###
-# functions to run the DSTP model itself. This includes functions to simulate
-# data from the DSTP model, as well as to run the fitting procedure.
+# Functions to run the DSTP model itself. This includes functions to simulate
+# data from the DSTP model, as well as to run the fitting routine.
 
 #------------------------------------------------------------------------------
 #' Obtain simulated response times and accuracy from the DSTP model
@@ -30,7 +30,7 @@
 #' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 #'
 #' # simulate the data
-#' simulated.data <- simulate.DSTP(parms, n = 1000)
+#' modelData <- simulateDSTP(parms, n = 1000)
 #'
 #' @return Returns a data frame with three columns: RT (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -38,7 +38,7 @@
 #' @useDynLib flankerModels
 #' @importFrom Rcpp sourceCpp
 #' @export
-simulate.DSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
+simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 
   # Set random number seed, so same predictions occur every time. By default
   # this is set for the user.
@@ -96,10 +96,10 @@ simulate.DSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 #' of the fitting cycle for each congruency type.
 #'
 #' @export
-fit.DSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
-                     cafs = c(.25, .50, .75),
-                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
-                     nParameters = 1, nTrials = 50000){
+fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
+                    cafs = c(.25, .50, .75),
+                    parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
+                    nParameters = 1, nTrials = 50000){
 
 
   # get the desired condition's data
@@ -117,59 +117,4 @@ fit.DSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
 
 
 
-#------------------------------------------------------------------------------
-# a function to get human proportions from data, given desired CDF and CAF
-# qauntile values. These values will be used by the model during fitting.
 
-#' @export
-getHumanProps <- function(conditionData, cdfs, cafs){
-
-
-
-  # get CDF proportions (they are a function of the requested CDF values)
-  congruentProps <- cdf.proportions(cdfs)
-  incongruentProps <- cdf.proportions(cdfs)
-
-  # split trials on congruency
-  congruentData <- subset(conditionData,
-                          conditionData$congruency == "congruent")
-  incongruentData <- subset(conditionData,
-                            conditionData$congruency == "incongruent")
-
-  # get the CDFs
-  congruentCDFs <- cdf(congruentData, quantiles = cdfs)
-  incongruentCDFs <- cdf(incongruentData, quantiles = cdfs)
-
-  # get the CAF cut-off points
-  congruentCAFsCutoff <- cdf(congruentData, quantiles = cafs,
-                             correctTrials = 3)
-  incongruentCAFsCutoff  <- cdf(incongruentData, quantiles = cafs,
-                                correctTrials = 3)
-
-  # now get the CAFs themselves
-  congruentCAFs <- caf(congruentData, quantiles = cafs)
-  incongruentCAFs <- caf(incongruentData, quantiles = cafs)
-
-
-  #collate data and return-----------------------------------------------------
-
-  # collate all the information for human proportions
-  humanProps <- c(congruentProps, incongruentProps, congruentCAFs[2, ],
-                  incongruentCAFs[2, ])
-
-  # now get the human cut-off values for CAFs and CDFs
-  humanCutoffs <- c(congruentCDFs, incongruentCDFs, congruentCAFsCutoff,
-                    incongruentCAFsCutoff, congruentCAFs, incongruentCAFs)
-
-  # collate ALL human proportion information
-  humanProportions <- c(humanProps, humanCutoffs)
-
-
-  # return it
-  return(humanProportions)
-
-}
-
-
-
-#------------------------------------------------------------------------------
