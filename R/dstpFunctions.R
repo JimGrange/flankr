@@ -35,7 +35,7 @@
 #' @return Returns a data frame with three columns: RT (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
 #' congruency condition.
-#' @useDynLib flankerModels
+#' @useDynLib flankr
 #' @importFrom Rcpp sourceCpp
 #' @export
 simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
