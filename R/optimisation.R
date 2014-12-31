@@ -42,7 +42,8 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
   # If any proportion is zero, change it to a very small number. This is
   # is because the fit statistic cannot handle zeros due to a division
   # by zero causing errors.
-  humanProps[humanProps == 0] <- .Machine$double.xmin
+  humanProps[humanProps == 0] <- 0.00001
+  modelProps[modelProps == 0] <- 0.00001
 
   # Do the Chi-squared test
   fitStatistic <- sum(100 * ((humanProps - modelProps) ^ 2) / modelProps)
