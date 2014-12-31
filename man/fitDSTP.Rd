@@ -30,7 +30,7 @@ to use in the fitting procedure.}
 of the fitting cycle for each congruency type.}
 }
 \description{
-\code{fit.DSTP} fits the DSTP model to human data.
+\code{fitDSTP} fits the DSTP model to human data.
 }
 \details{
 This function can be employed by the user to find best-fitting parameters of

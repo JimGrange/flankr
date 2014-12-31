@@ -51,11 +51,12 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
   trialData <- data.frame(trialData)
 
   # first generate congruent data by calling the C++ function
-  trialData[1:n, 1:2] <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  trialData[1:n, 1:2] <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
   trialData[1:n, 3] <- "congruent"
 
   # now do incongruent data
-  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms, trialType = 2, nTrials = n,
+                                             dt, var)
   trialData[(n + 1):(n * 2), 3] <- "incongruent"
 
 
@@ -70,7 +71,7 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 #------------------------------------------------------------------------------
 #' fit the DSTP model to human data
 #'
-#' \code{fit.DSTP} fits the DSTP model to human data.
+#' \code{fitDSTP} fits the DSTP model to human data.
 #'
 #' This function can be employed by the user to find best-fitting parameters of
 #' the DSTP model to human data.
@@ -105,11 +106,34 @@ fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
   # get the desired condition's data
   conditionData <- subset(data, data$condition == conditionName)
 
+  # get all of the distribution & proportion information from human data.
+  # This returns a list with all information in separate "cotainers" for ease
+  # of access & generalisation to different CDF and CAF sizes.
   humanProportions <- getHumanProps(conditionData, cdfs, cafs)
 
 
 
 } # end of function
+#------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------
+doModelDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+
+  # parms = parameters for the model run
+  # n = number of trials per congruency condition
+  # propsForModel = CDF & CAF distributional information
+
+  # Run model to get congruent RTs
+  set.seed(42)
+  modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  modelConCDF <- getCDFProps(propsForModel$conCDF, modelCon)
+  modelConCAF <- getCAFProps(propsForModel$conCAFsCutoff, modelCon)
+}
+
+
+
 #------------------------------------------------------------------------------
 
 

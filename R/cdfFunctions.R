@@ -137,9 +137,6 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
 
 
-
-
-
 #------------------------------------------------------------------------------
 # given a set of quantiles for CDFs, return the proportion of data within each
 # bin. For example, the CDFs c(.1, .3, .5, .7, .9) have proportions of
@@ -147,7 +144,7 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 # predict response times which match the proportions in the human data.
 
 #' @export
-cdf.proportions <- function(cdfs){
+cdfProportions <- function(cdfs){
 
   # get empty vector of the right length
   props <- numeric(length = (length(cdfs) + 1))
@@ -178,5 +175,8 @@ cdf.proportions <- function(cdfs){
 
 } # end of function
 #------------------------------------------------------------------------------
+
+
+
 
 

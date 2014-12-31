@@ -2,9 +2,11 @@
 
 export(caf)
 export(cdf)
-export(cdf.proportions)
 export(cdfProportions)
 export(fitDSTP)
+export(getCAFProps)
+export(getCDFProps)
+export(getDSTP)
 export(getHumanProps)
 export(simulateDSTP)
 importFrom(Rcpp,sourceCpp)
