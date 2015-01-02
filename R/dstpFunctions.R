@@ -94,9 +94,9 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 #' of the fitting cycle for each congruency type.
 #'
 #' @export
-fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
-                    cafs = c(.25, .50, .75),
+fitDSTP <- function(data, conditionName,
                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
+                    cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                     maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000){
 
 
@@ -111,6 +111,21 @@ fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
   # perform the fit
   fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
                n = nTrials, maxParms = maxParms)
+
+  # what are the best-fitting parameters?
+  bestParameters <- round(fit$par, 3)
+
+  # what is the fit statistic value?
+  chiSquare <- fit$value
+
+  # get the approximate BIC value
+  aBIC <- aBIC(humanProportions, model = "DSTP", parms = bestParameters)
+
+  # put all results into a list, and return the list to the user
+  modelFit <- list(bestParameters = bestParameters, chiSquare = chiSquare,
+                   aBIC = aBIC)
+
+  return(modelFit)
 
 
 } # end of function

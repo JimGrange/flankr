@@ -5,8 +5,8 @@
 # Plot the fit of the DSTP model
 
 #'@export
-plotFitDSTP <- function(data, conditionName, modelFit,
-                        cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75)){
+plotFitDSTP <- function(modelFit, data, conditionName, nTrials = 100000,
+                          cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75)){
 
   # Change the plotting window
   par(mfrow = c(1, 2))
@@ -27,10 +27,10 @@ plotFitDSTP <- function(data, conditionName, modelFit,
   # get model proportions by running the model---------------------------------
 
   # First, what were the best-fitting parameters?
-  parms <- round(modelFit$par, 3)
+  parms <- modelFit$bestParameters
 
   # simulate the DSTP model with these parameters
-  modelData <- predictionsDSTP(parms, 100000,
+  modelData <- predictionsDSTP(parms, nTrials,
                                propsForModel = humanProportions)
 
   # Find model proportion predictions for
@@ -76,7 +76,7 @@ plotFitDSTP <- function(data, conditionName, modelFit,
   lines(humanProportions$conCAFsRT, modelConCAF, type = "l", lty = 1)
 
   # Add legend
-  legend(maxRT - 0.18, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1), lty=1:2, bty="n");
+  legend(maxRT - 0.25, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1), lty=1:2, bty="n");
 
   # Change the plotting window
   par(mfrow = c(1, 1))
