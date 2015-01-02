@@ -177,8 +177,28 @@ cdfProportions <- function(cdfs){
 #------------------------------------------------------------------------------
 
 
+#------------------------------------------------------------------------------
+# The opposite of cdfProportions. Given a set of proportions, work out the CDFs
+# For example, the proportions c(.1, .2, .2, .2, .2, .1) have CDFs of
+# c(.1, .3, .5, .7, .9).
+#'@export
+proportionCDFs <- function(proportions){
+
+  # initialise empty vector for cdfs
+  cdfs <- numeric(length(proportions) - 1)
+
+  for(i in 1:length(cdfs)){
+    cdfs[i] <- sum(proportions[1:i])
+  }
+  return(cdfs)
+}
+#------------------------------------------------------------------------------
+
+
 
 #------------------------------------------------------------------------------
+####THIS IS NOT CURRENTLY USED
+
 #'@export
 #get model proportions from human CDFs (the RTs, not proportions). Returns proportions
 

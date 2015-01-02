@@ -217,6 +217,7 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
 
 #------------------------------------------------------------------------------
+####THIS IS NOT CURRENTLY USED
 
 # Get model accuracy for each bin defined by human CAF input (each 25% of data
 # in human data, by default)

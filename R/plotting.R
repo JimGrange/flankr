@@ -27,20 +27,19 @@ plotFitDSTP <- function(data, conditionName, modelFit,
   # get model proportions by running the model---------------------------------
 
   # First, what were the best-fitting parameters?
-  parms <- modelFit$par
+  parms <- round(modelFit$par, 3)
 
   # simulate the DSTP model with these parameters
-  modelData <- simulateDSTP(parms, n = 200000)
+  modelData <- predictionsDSTP(parms, 100000,
+                               propsForModel = humanProportions)
 
-  # separate the data into congruent & incongruent, and find CDFs and CAFs for
-  # each
-  modelCon <- subset(modelData, modelData$Congruency == "congruent")
-  modelConCDF <- getModelCDFs(modelCon, humanProportions$conCDFs)
-  modelConCAF <- getModelCAFs(modelCon, humanProportions$conCAFsCutoff)
+  # Find model proportion predictions for
+  # congruent and incongruent trials (CDF & CAFs)
+  modelConCDF <- proportionCDFs(modelData$modelConCDF)
+  modelConCAF <- modelData$modelConCAF
 
-  modelIncon <- subset(modelData, modelData$Congruency == "incongruent")
-  modelInconCDF <- getModelCDFs(modelIncon, humanProportions$inconCDFs)
-  modelInconCAF <- getModelCAFs(modelIncon, humanProportions$inconCAFsCutoff)
+  modelInconCDF <- proportionCDFs(modelData$modelInconCDF)
+  modelInconCAF <- modelData$modelInconCAF
 
 
   # Plot the CDFs--------------------------------------------------------------
@@ -81,6 +80,9 @@ plotFitDSTP <- function(data, conditionName, modelFit,
 
   # Change the plotting window
   par(mfrow = c(1, 1))
+
+  ### FOR DEBUGGING
+  return(modelData)
 
 }
 #------------------------------------------------------------------------------
