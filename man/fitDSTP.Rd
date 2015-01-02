@@ -6,8 +6,7 @@
 \usage{
 fitDSTP(data, conditionName, cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9),
   cafs = c(0.25, 0.5, 0.75), parms = c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3,
-  0.24), maxParms = c(1, 1, 1, 1, 1, 2, 1), nParameters = 1,
-  nTrials = 50000)
+  0.24), maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000)
 }
 \arguments{
 \item{data}{A data frame containing human data. See \code{?exampleData} for
@@ -23,9 +22,6 @@ best-fitting parameters that match this distributional data.}
 \item{cafs}{A vector of quantiles for conditional accuracy functions to be
 estimated from the human data. The model will attempt to find the best-
 fitting parameters that match this distributional data.}
-
-\item{nParameters}{An integer stating how many sets of starting parmaeters
-to use in the fitting procedure.}
 
 \item{nTrials}{An integer stating how many trials to simulate per iteration
 of the fitting cycle for each congruency type.}

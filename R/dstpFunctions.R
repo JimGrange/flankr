@@ -90,9 +90,6 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 #' estimated from the human data. The model will attempt to find the best-
 #' fitting parameters that match this distributional data.
 #'
-#' @param nParameters An integer stating how many sets of starting parmaeters
-#' to use in the fitting procedure.
-#'
 #' @param nTrials An integer stating how many trials to simulate per iteration
 #' of the fitting cycle for each congruency type.
 #'
@@ -100,8 +97,7 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 10){
 fitDSTP <- function(data, conditionName, cdfs = c(.1, .3, .5, .7, .9),
                     cafs = c(.25, .50, .75),
                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
-                    maxParms = c(1, 1, 1, 1, 1, 2, 1),
-                    nParameters = 1, nTrials = 50000){
+                    maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000){
 
 
   # get the desired condition's data

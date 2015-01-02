@@ -178,5 +178,33 @@ cdfProportions <- function(cdfs){
 
 
 
+#------------------------------------------------------------------------------
+#'@export
+#get model proportions from human CDFs (the RTs, not proportions). Returns proportions
+
+getModelCDFs <- function(modelData, cdfs){
+
+
+  # only select the correct trials
+  modelData <- subset(modelData, modelData$Accuracy == 1)
+
+  # initiate empty vector to store model CDFs in
+  props <- numeric(length(cdfs))
+
+  # loop over each human CDF cutoff point, and find the proportion of model
+  # data in each bin
+  for(i in 1:length(cdfs)){
+    x <- subset(modelData, modelData$RT <= cdfs[i])
+    props[i] <- length(x$RT) / nrow(modelData)
+  }
+
+  return(props)
+
+}
+
+#------------------------------------------------------------------------------
+
+
+
 
 

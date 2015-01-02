@@ -213,3 +213,48 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
 } # end of function
 #------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------
+
+# Get model accuracy for each bin defined by human CAF input (each 25% of data
+# in human data, by default)
+#'@export
+getModelCAFs <- function(modelData, cafs){
+
+  # Empty vector to store results in
+  props <- numeric(length(cafs) + 1)
+
+
+
+  # loop across each CAF
+  for(i in 1:length(cafs)){
+
+    # Do first bin manually
+    if(i == 1){
+      x <- subset(modelData, modelData$RT <= cafs[i])
+      props[i] <- sum(x$Accuracy) / length(x$RT)
+    }
+
+
+    # Do intermediate bins automatically
+    if(i > 1 & i <= length(cafs)){
+      x <- subset(modelData, modelData$RT >= cafs[i - 1] &
+                    modelData$RT <= cafs[i])
+      props[i] <- sum(x$Accuracy) / length(x$RT)
+
+    }
+
+    # Do last bin manually
+    if(i == length(cafs)){
+      x <- subset(modelData, modelData$RT >= cafs[i])
+      props[i + 1] <- sum(x$Accuracy) / length(x$RT)
+    }
+
+  }
+
+  return(props)
+
+}
+#------------------------------------------------------------------------------
