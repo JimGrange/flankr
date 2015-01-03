@@ -1,11 +1,11 @@
 ###
-# Functions to run the DSTP model itself. This includes functions to simulate
-# data from the DSTP model, as well as to run the fitting routine.
+# Functions to run the SSP model itself. This includes functions to simulate
+# data from the SSP model, as well as to run the fitting routine.
 
 #------------------------------------------------------------------------------
-#' Obtain simulated response times and accuracy from the DSTP model
+#' Obtain simulated response times and accuracy from the SSP model
 #'
-#' \code{simulateDSTP} generates synthetic data from the DSTP model in the
+#' \code{simulateSSP} generates synthetic data from the DSTP model in the
 #' form of response time (RT) in seconds and accuracy for both congruent and
 #' incongruent trials.
 #'
@@ -15,8 +15,8 @@
 #' fitting values.
 #'
 #' @param parms The set of parameters to use to simulate the data. Must be
-#' contained in a vector in the order: \code{A}, \code{C}, \code{driftTarget},
-#' \code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
+#' contained in a vector in the order: \code{A}, \code{ter},
+#' \code{p}, \code{rd}, \code{sda}.
 #' @param nTrials How many trials to simulate per congruency condition.
 #' @param var The variance of the diffusion process. By default this is set to
 #' 0.01.
@@ -27,10 +27,10 @@
 #'
 #' @examples
 #' # declare the parameters
-#' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
+#' parms <- c(0.10, 0.250, 0.350, 0.035, 1.500)
 #'
 #' # simulate the data
-#' modelData <- simulateDSTP(parms, nTrials = 1000)
+#' modelData <- simulateSSP(parms, nTrials = 1000)
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -38,7 +38,7 @@
 #' @useDynLib flankr
 #' @importFrom Rcpp sourceCpp
 #' @export
-simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
+simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 
   # transfer nTrials to shorter name
   n <- nTrials
@@ -54,12 +54,12 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
   trialData <- data.frame(trialData)
 
   # first generate congruent data by calling the C++ function
-  trialData[1:n, 1:2] <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
+  trialData[1:n, 1:2] <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
   trialData[1:n, 3] <- "congruent"
 
   # now do incongruent data
-  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms, trialType = 2, nTrials = n,
-                                             dt, var)
+  trialData[(n + 1):(n * 2), 1:2] <- getSSP(parms, trialType = 2, nTrials = n,
+                                            dt, var)
   trialData[(n + 1):(n * 2), 3] <- "incongruent"
 
 
@@ -72,13 +72,13 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 
 
 #------------------------------------------------------------------------------
-#' Fit the DSTP model to human data
+#' Fit the SSP model to human data
 #'
-#' \code{fitDSTP} fits the DSTP model to a single experimental condition of
+#' \code{fitSSP} fits the SSP model to a single experimental condition of
 #' human data (besides congruency, which it accounts for simutaneously).
 #'
 #' This function can be employed by the user to find the best-fitting
-#' parameters of the DSTP model to fit the human data of a single experimental
+#' parameters of the SSP model to fit the human data of a single experimental
 #' condition. The fitting procedure accounts for congruent and incongruent
 #' trials simultaneously. The fit is obtained by a gradient-descent method
 #' (using the Nelder-Mead method contained in R's \code{optim} function) and is
@@ -129,23 +129,23 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
 #'
-#' fit <- fitDSTP(data = exampleData, conditionName = "present")
+#' fit <- fitSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
 #' # fit cycle
 #' cdfs <- c(.2, .4, .6, .8)
 #' cafs <- c(.2, .4, .6, .8)
 #'
-#' fit <- fitDSTP(exampleData, conditionName = "present", cdfs = cdfs,
-#'                cafs = cafs, nTrials = 100000)
+#' fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
+#'               cafs = cafs, nTrials = 100000)
 #'
 #'
 #'@export
-fitDSTP <- function(data, conditionName = NULL,
-                    parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
-                    cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
-                    maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
-                    multipleSubjects = TRUE){
+fitSSP<- function(data, conditionName = NULL,
+                  parms = c(0.10, 0.250, 0.350, 0.035, 1.500),
+                  cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
+                  maxParms = c(1, 1, 1, 1, 3), nTrials = 50000,
+                  multipleSubjects = TRUE){
 
 
   # get the desired condition's data
@@ -168,7 +168,7 @@ fitDSTP <- function(data, conditionName = NULL,
   print(modelStart)
 
   # perform the fit
-  fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
+  fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
                n = nTrials, maxParms = maxParms)
 
   # what are the best-fitting parameters?
@@ -178,7 +178,7 @@ fitDSTP <- function(data, conditionName = NULL,
   chiSquare <- fit$value
 
   # get the approximate BIC value
-  bBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParameters)
+  bBIC <- bBIC(humanProportions, model = "SSP", parms = bestParameters)
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, chiSquare = chiSquare,
@@ -196,10 +196,10 @@ fitDSTP <- function(data, conditionName = NULL,
 
 
 #------------------------------------------------------------------------------
-# Get the predicted proportions from the DSTP model
+# Get the predicted proportions from the SSP model
 
 #'@export
-predictionDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
@@ -207,13 +207,13 @@ predictionDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$conCDF, modelCon)
   modelConCAF <- getCAFProps(propsForModel$conCAFsCutoff, modelCon)
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$inconCDF, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$inconCAFsCutoff, modelIncon)
 

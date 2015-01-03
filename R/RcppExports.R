@@ -6,3 +6,7 @@ getDSTP <- function(parms, trialType, nTrials, dt, var) {
     .Call('flankr_getDSTP', PACKAGE = 'flankr', parms, trialType, nTrials, dt, var)
 }
 
+getSSP <- function(parms, trialType, nTrials, dt, var) {
+    .Call('flankr_getSSP', PACKAGE = 'flankr', parms, trialType, nTrials, dt, var)
+}
+
