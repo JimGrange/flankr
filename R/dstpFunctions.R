@@ -141,7 +141,7 @@ simulateDSTP <- function(parms,  n, var = 0.01, dt = 1/1000, seed = 42){
 fitDSTP <- function(data, conditionName = NULL,
                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
                     cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
-                    maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
+                    maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 500000,
                     multipleSubjects = TRUE){
 
 

@@ -6,7 +6,7 @@
 \usage{
 fitDSTP(data, conditionName = NULL, parms = c(0.145, 0.08, 0.1, 0.07, 0.325,
   1.3, 0.24), cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9), cafs = c(0.25, 0.5, 0.75),
-  maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
+  maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 5e+05,
   multipleSubjects = TRUE)
 }
 \arguments{
