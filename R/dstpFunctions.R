@@ -161,6 +161,9 @@ fitDSTP <- function(data, conditionName = NULL,
     humanProportions <- getHumanPropsSingle(conditionData, cdfs, cafs)
   }
 
+  modelStart <- "Model Fit Running. Please Wait..."
+  print(modelStart)
+
   # perform the fit
   fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
                n = nTrials, maxParms = maxParms)
@@ -177,6 +180,9 @@ fitDSTP <- function(data, conditionName = NULL,
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, chiSquare = chiSquare,
                    bBIC = bBIC)
+
+  modelFinished <- "Model Fit Finished."
+  print(modelFinished)
 
   return(modelFit)
 

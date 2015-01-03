@@ -47,11 +47,6 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
   # Do the Chi-squared test
   fitStatistic <- sum(100 * ((humanProps - modelProps) ^ 2) / modelProps)
 
-  ##########################
-  ## For Debugging
-  print(fitStatistic)
-  ##########################
-
   # If the parameters are below zero or are above maxParms, then return poor
   # fit
   if ((min(parms) < 0) | (min(maxParms - parms) < 0)){
@@ -66,7 +61,7 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
 
 #------------------------------------------------------------------------------
-# Approximate BIC for binned data
+# BIC for binned data
 #'@export
 bBIC <- function(humanProportions, model, parms, n = 100000){
 
@@ -116,7 +111,7 @@ bBIC <- function(humanProportions, model, parms, n = 100000){
     m <- 5
   }
 
-  bic <- (-2 * sumProps) + m * log(100)
+  bic <- -2 * sumProps + m * log(100)
 
   return(bic)
 
