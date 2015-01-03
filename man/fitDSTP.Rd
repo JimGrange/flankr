@@ -2,18 +2,22 @@
 % Please edit documentation in R/dstpFunctions.R
 \name{fitDSTP}
 \alias{fitDSTP}
-\title{fit the DSTP model to human data}
+\title{Fit the DSTP model to human data}
 \usage{
-fitDSTP(data, conditionName, parms = c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3,
-  0.24), cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9), cafs = c(0.25, 0.5, 0.75),
-  maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000)
+fitDSTP(data, conditionName = NULL, parms = c(0.145, 0.08, 0.1, 0.07, 0.325,
+  1.3, 0.24), cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9), cafs = c(0.25, 0.5, 0.75),
+  maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
+  multipleSubjects = TRUE)
 }
 \arguments{
 \item{data}{A data frame containing human data. See \code{?exampleData} for
 data formatted correctly.}
 
-\item{conditionName}{A string (e.g., "present") which states which condition the
-model is to fit currently.}
+\item{conditionName}{If there is an additional experimental manipulation
+(i.e., other than target congruency) the model can only be fit to one at a
+time. Tell the function which condition is currently being fit by passing
+a string to the function (e.g., "present"). The function by default assumes
+no additional condition (e.g., conditionName is set to NULL).}
 
 \item{cdfs}{A vector of quantile values for cumulative distribution functions
 to be estimated from the human data. The model will attempt to find the
@@ -23,14 +27,55 @@ best-fitting parameters that match this distributional data.}
 estimated from the human data. The model will attempt to find the best-
 fitting parameters that match this distributional data.}
 
+\item{maxParms}{A vector containing upper limits on possible parameter
+values.}
+
 \item{nTrials}{An integer stating how many trials to simulate per iteration
 of the fitting cycle for each congruency type.}
+
+\item{multipleSubjects}{A boolean stating whether the fit is to multiple
+subjects (multipleSubjects = TRUE) or to a single subject
+(multipleSubjects = FALSE).}
+}
+\value{
+\code{bestParameters} A vector of the best-fitting parameters found
+by the current fit run.
+
+\code{chiSquared} The value of chi square obtained by the current
+fit run.
+
+\code{bBIC} The value of the  Bayesian Information Criterion (BIC)
+obtained by the current fit run. This is calculated using the BIC equation
+for binned data, hence bBIC (binned BIC).
 }
 \description{
-\code{fitDSTP} fits the DSTP model to human data.
+\code{fitDSTP} fits the DSTP model to a single experimental condition of
+human data (besides congruency, which it accounts for simutaneously).
 }
 \details{
-This function can be employed by the user to find best-fitting parameters of
-the DSTP model to human data.
+This function can be employed by the user to find the best-fitting
+parameters of the DSTP model to fit the human data of a single experimental
+condition. The fitting procedure accounts for congruent and incongruent
+trials simultaneously. The fit is obtained by a gradient-descent method
+(using the Nelder-Mead method contained in R's \code{optim} function) and is
+fit to the proportion of data contained in human CDF and CAF distributional
+data.
+}
+\examples{
+# Load the example data the comes with the \\code{flankr} package
+data(exampleData)
+
+# Fit the model to the condition "present" in the example data set using
+# the default settings in the model.
+
+fit <- fitDSTP(data = exampleData, conditionName = "present")
+
+# Fit the model using different CDF and CAF values, and 100,000 trials per
+# fit cycle
+cdfs <- c(.2, .4, .6, .8)
+cafs <- c(.2, .4, .6, .8)
+
+fit <- fitDSTP(exampleData, conditionName = "present", cdfs = cdfs,
+               cafs = cafs, nTrials = 100000)
 }
 

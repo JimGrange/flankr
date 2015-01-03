@@ -4,7 +4,7 @@
 \alias{simulateDSTP}
 \title{Obtain simulated response times and accuracy from the DSTP model}
 \usage{
-simulateDSTP(parms, n, var = 0.01, dt = 1/1000, seed = 10)
+simulateDSTP(parms, n, var = 0.01, dt = 1/1000, seed = 42)
 }
 \arguments{
 \item{parms}{The set of parameters to use to simulate the data. Must be
@@ -23,7 +23,7 @@ this is set to 0.001.}
 generation state.}
 }
 \value{
-Returns a data frame with three columns: RT (response time) in
+Returns a data frame with three columns: rt (response time) in
 seconds, accuracy of the model's response (1 for correct, 0 for error), and
 congruency condition.
 }

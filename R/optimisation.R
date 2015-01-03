@@ -68,7 +68,7 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 #------------------------------------------------------------------------------
 # Approximate BIC for binned data
 #'@export
-aBIC <- function(humanProportions, model, parms, n = 100000){
+bBIC <- function(humanProportions, model, parms, n = 100000){
 
   # If the model selected is the DSTP model
   if(model == "DSTP"){
