@@ -167,6 +167,13 @@ bBIC <- function(humanProportions, model, parms, n = 100000){
                   modelPrediction$modelInconCAF)
 
 
+  # If any proportion is zero, change it to a very small number. This is
+  # is because the fit statistic cannot handle zeros due to a division
+  # by zero causing errors.
+  humanProps[humanProps == 0] <- 0.00001
+  modelProps[modelProps == 0] <- 0.00001
+
+
   # sum the proportions of model versus human
   sumProps <- 100 * humanProps * log(modelProps)
   sumProps <- sum(sumProps)
