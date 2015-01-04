@@ -27,10 +27,10 @@
 #'
 #' @examples
 #' # declare the parameters
-#' parms <- c(0.10, 0.250, 0.350, 0.035, 1.500)
+#' parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 #'
 #' # simulate the data
-#' modelData <- simulateSSP(parms, nTrials = 1000)
+#' modelData <- simulateSSP(parms, nTrials = 10000)
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -142,7 +142,7 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #'
 #'@export
 fitSSP<- function(data, conditionName = NULL,
-                  parms = c(0.10, 0.250, 0.350, 0.035, 1.500),
+                  parms = c(0.050, 0.300, 0.400, 0.050, 1.500),
                   cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                   maxParms = c(1, 1, 1, 1, 3), nTrials = 50000,
                   multipleSubjects = TRUE){
