@@ -182,14 +182,14 @@ getCDFProps <- function(cdfs, modelData){
 
     # do the middle ones automatically
     if(i > 1 & i <= nBins){
-      bin <- subset(data, data[, 1] >= cdfs[i - 1] & data[, 1] <= cdfs[i])
+      bin <- subset(data, data[, 1] > cdfs[i - 1] & data[, 1] <= cdfs[i])
       props[i] <- length(bin[, 1]) / lengthRTs
     }
 
 
     # do the last one manually
     if(i == nBins){
-      bin <- subset(data, data[, 1] >= cdfs[i - 1])
+      bin <- subset(data, data[, 1] > cdfs[i - 1])
       props[i] <- length(bin[, 1]) / lengthRTs
     }
 

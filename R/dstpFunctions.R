@@ -199,7 +199,7 @@ fitDSTP <- function(data, conditionName = NULL,
 # Get the predicted proportions from the DSTP model
 
 #'@export
-predictionDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition

@@ -40,9 +40,9 @@ fitting values.
 }
 \examples{
 # declare the parameters
-parms <- c(0.10, 0.250, 0.350, 0.035, 1.500)
+parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 
 # simulate the data
-modelData <- simulateSSP(parms, nTrials = 1000)
+modelData <- simulateSSP(parms, nTrials = 10000)
 }
 

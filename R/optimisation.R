@@ -14,14 +14,14 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
   ## Change proportions in CAFs to log proportion of ERRORs. Currently they
   ## are logging proportion of CORRECT trials.
-  humanProportions$conCAFProportions <- 1 -
-    humanProportions$conCAFsProportions
-
-  humanProportions$inconCAFProportions <- 1 -
-    humanProportions$inconCAFsProportions
-
-  modelPrediction$modelConCAF <- 1 - modelPrediction$modelConCAF
-  modelPrediction$modelInconCAF <- 1 - modelPrediction$modelInconCAF
+#   humanProportions$conCAFProportions <- 1 -
+#     humanProportions$conCAFsProportions
+#
+#   humanProportions$inconCAFProportions <- 1 -
+#     humanProportions$inconCAFsProportions
+#
+#   modelPrediction$modelConCAF <- 1 - modelPrediction$modelConCAF
+#   modelPrediction$modelInconCAF <- 1 - modelPrediction$modelInconCAF
 
 
 
@@ -46,6 +46,15 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
   # Do the Chi-squared test
   fitStatistic <- sum(100 * ((humanProps - modelProps) ^ 2) / modelProps)
+
+  # G2 doesn't work.
+  # fitStatistic <- 2 * sum(100 * humanProps * log(humanProps / modelProps))
+
+  #####FOR DEBUGGING#######
+  print(parms)
+  print(fitStatistic)
+  #####FOR DEBUGGING#######
+
 
   # If the parameters are below zero or are above maxParms, then return poor
   # fit

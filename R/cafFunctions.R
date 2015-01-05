@@ -241,7 +241,7 @@ getModelCAFs <- function(modelData, cafs){
 
     # Do intermediate bins automatically
     if(i > 1 & i <= length(cafs)){
-      x <- subset(modelData, modelData$RT >= cafs[i - 1] &
+      x <- subset(modelData, modelData$RT > cafs[i - 1] &
                     modelData$RT <= cafs[i])
       props[i] <- sum(x$Accuracy) / length(x$RT)
 
@@ -249,7 +249,7 @@ getModelCAFs <- function(modelData, cafs){
 
     # Do last bin manually
     if(i == length(cafs)){
-      x <- subset(modelData, modelData$RT >= cafs[i])
+      x <- subset(modelData, modelData$RT > cafs[i])
       props[i + 1] <- sum(x$Accuracy) / length(x$RT)
     }
 
