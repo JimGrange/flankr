@@ -1,0 +1,99 @@
+#------------------------------------------------------------------------------
+# Fit function for the DSTP model
+#'@export
+fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
+
+
+  # Get the model's predictions
+  modelPrediction <- predictionsDSTP(parms, n,
+                                     propsForModel = humanProportions)
+
+
+  ## Change proportions in CAFs to log proportion of ERRORs. Currently they
+  ## are logging proportion of CORRECT trials.
+  humanProportions$conCAFsProportions <- 1 -
+    humanProportions$conCAFsProportions
+
+  humanProportions$inconCAFsProportions <- 1 -
+    humanProportions$inconCAFsProportions
+
+  modelPrediction$modelConCAF <- 1 - modelPrediction$modelConCAF
+  modelPrediction$modelInconCAF <- 1 - modelPrediction$modelInconCAF
+
+
+
+  # If any proportion is zero, change it to a very small number. This is
+  # is because the fit statistic cannot handle zeros due to a division
+  # by zero causing errors.
+  humanProportions <- rapply(humanProportions,
+                             f = function(x) ifelse(x==0, 0.00001, x), how = "replace")
+  modelPrediction <- rapply(modelPrediction,
+                            f = function(x) ifelse(x==0, 0.00001, x), how = "replace")
+
+
+  ##############TRYING TO GET G2 TO WORK!!###########################
+  # find the PROPORTIONS of error in each CAF
+  sumConCAFHuman <- sum(humanProportions$conCAFsProportions)
+  sumInconCAFHuman <- sum(humanProportions$inconCAFsProportions)
+  sumConCAFModel <- sum(modelPrediction$modelConCAF)
+  sumInconCAFModel <- sum(modelPrediction$modelInconCAF)
+
+
+
+
+
+
+  # get the proportions, and store
+  humanProportions$conCAFsProportions <- humanProportions$conCAFsProportions /
+    sumConCAFHuman
+  humanProportions$inconCAFsProportions <- humanProportions$inconCAFsProportions /
+    sumInconCAFHuman
+  modelPrediction$modelConCAF <- modelPrediction$modelConCAF /
+    sumConCAFModel
+  modelPrediction$modelInconCAF <- modelPrediction$modelInconCAF /
+    sumInconCAFModel
+  ###################################################################
+
+
+  # Put all human data into one vector, for ease of comparison with model's
+  # prediction.
+  humanProps <- c(humanProportions$conProportions,
+                  humanProportions$inconProportions,
+                  humanProportions$conCAFsProportions,
+                  humanProportions$inconCAFsProportions)
+
+  # Do the same for the model data.
+  modelProps <- c(modelPrediction$modelConCDF,
+                  modelPrediction$modelInconCDF,
+                  modelPrediction$modelConCAF,
+                  modelPrediction$modelInconCAF)
+
+
+
+#   # Do the Chi-squared test
+#   fitStatistic <- sum(100 * ((humanProps - modelProps) ^ 2) / modelProps)
+
+  # G2 doesn't work.
+  fitStatistic <- 2 * sum(100 * humanProps * log(humanProps / modelProps))
+
+  #####FOR DEBUGGING#######
+  print(parms)
+  print(fitStatistic)
+  #####FOR DEBUGGING#######
+
+
+
+
+
+
+  # If the parameters are below zero or are above maxParms, then return poor
+  # fit
+  if ((min(parms) < 0) | (min(maxParms - parms) < 0)){
+    return(.Machine$double.xmax)
+  } else {
+    return(fitStatistic)
+  }
+
+
+}
+#------------------------------------------------------------------------------
