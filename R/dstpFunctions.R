@@ -118,7 +118,7 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' @return \code{g2} The value of Wilks likelihood ratio (G2) obtained by the
 #' current fit run.
 #'
-#' @return \code{bic} The value of the  Bayesian Information Criterion (BIC)
+#' @return \code{bBIC} The value of the  Bayesian Information Criterion (BIC)
 #' obtained by the current fit run. This is calculated using the BIC equation
 #' for binned data, hence bBIC (binned BIC).
 #'
@@ -183,11 +183,11 @@ fitDSTP <- function(data, conditionName = NULL,
   g2 <- fit$value
 
   # get the approximate BIC value
-  bic <- BIC(humanProportions, model = "DSTP", parms = bestParameters)
+  bBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParameters)
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
-                   bic = bic)
+                   bBic = bBic)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
@@ -238,9 +238,8 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
 #------------------------------------------------------------------------------
 # Get the predicted Quantiles from the DSTP model.
-# This returns qunatiles, not proportion per bin
+# This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-
 #'@export
 plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
@@ -266,6 +265,5 @@ plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01)
                      modelIncongruentCAF = modelInconCAF)
 
   return(modelProps)
-
 }
 #------------------------------------------------------------------------------

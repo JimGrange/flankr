@@ -69,8 +69,6 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #------------------------------------------------------------------------------
 
 
-
-
 #------------------------------------------------------------------------------
 #' Fit the SSP model to human data
 #'
@@ -178,11 +176,11 @@ fitSSP<- function(data, conditionName = NULL,
   g2 <- fit$value
 
   # get the approximate BIC value
-  bic <- BIC(humanProportions, model = "SSP", parms = bestParameters)
+  bBIC <- bBIC(humanProportions, model = "SSP", parms = bestParameters)
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
-                   bic = bic)
+                   bBic = bBic)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
