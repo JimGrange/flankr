@@ -187,7 +187,7 @@ fitDSTP <- function(data, conditionName = NULL,
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
-                   bBic = bBic)
+                   bBIC = bBIC)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)

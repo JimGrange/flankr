@@ -43,6 +43,6 @@ fitting values.
 parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 
 # simulate the data
-modelData <- simulateDSTP(parms, nTrials = 1000)
+modelData <- simulateDSTP(parms, nTrials = 10000)
 }
 

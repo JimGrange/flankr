@@ -180,7 +180,7 @@ fitSSP<- function(data, conditionName = NULL,
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
-                   bBic = bBic)
+                   bBIC = bBIC)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
@@ -215,13 +215,45 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
-  modelProps <- list(modelConCDF = modelConCDF,
-                     modelConCAF = modelConCAF,
-                     modelInconCDF = modelInconCDF,
-                     modelInconCAF = modelInconCAF)
+  modelProps <- list(modelCongruentCDF = modelConCDF,
+                     modelCongruentCAF = modelConCAF,
+                     modelIncongruentCDF = modelInconCDF,
+                     modelIncongruentCAF = modelInconCAF)
 
 
   return(modelProps)
 
+}
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Get the predicted Quantiles from the DSTP model.
+# This returns quantiles, not proportion per bin
+# e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
+#'@export
+plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+
+  # parms = parameters for the model run
+  # n = number of trials per congruency condition
+  # propsForModel = CDF & CAF distributional information
+
+  # Run model to get congruent RTs
+  set.seed(42)
+  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
+  modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
+  modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
+
+  # Run model to get incontruent RTs
+  set.seed(42)
+  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
+  modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
+  modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
+
+  modelProps <- list(modelCongruentCDF = modelConCDF,
+                     modelCongruentCAF = modelConCAF,
+                     modelIncongruentCDF = modelInconCDF,
+                     modelIncongruentCAF = modelInconCAF)
+
+  return(modelProps)
 }
 #------------------------------------------------------------------------------

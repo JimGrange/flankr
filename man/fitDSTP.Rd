@@ -44,7 +44,7 @@ by the current fit run.
 \code{g2} The value of Wilks likelihood ratio (G2) obtained by the
 current fit run.
 
-\code{bic} The value of the  Bayesian Information Criterion (BIC)
+\code{bBIC} The value of the  Bayesian Information Criterion (BIC)
 obtained by the current fit run. This is calculated using the BIC equation
 for binned data, hence bBIC (binned BIC).
 }
