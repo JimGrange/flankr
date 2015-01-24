@@ -88,7 +88,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   if(is.null(conditionName)){
     conditionData <- data
   } else{
-  conditionData <- subset(data, data$condition == conditionName)
+    conditionData <- subset(data, data$condition == conditionName)
   }
 
 
@@ -111,16 +111,16 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   parms <- modelFit$bestParameters
 
   # simulate the DSTP model with these parameters
-  modelData <- predictionsDSTP(parms, nTrials,
-                               propsForModel = humanProportions)
+  modelData <- plotPredictionsDSTP(parms, nTrials,
+                                   propsForModel = humanProportions)
 
   # Find model proportion predictions for
   # congruent and incongruent trials (CDF & CAFs)
-  modelConCDF <- proportionCDFs(modelData$modelConCDF)
-  modelConCAF <- modelData$modelConCAF
+  modelConCDF <- modelData$modelCongruentCDF
+  modelConCAF <- modelData$modelCongruentCAF
 
-  modelInconCDF <- proportionCDFs(modelData$modelInconCDF)
-  modelInconCAF <- modelData$modelInconCAF
+  modelInconCDF <- modelData$modelIncongruentCDF
+  modelInconCAF <- modelData$modelIncongruentCAF
 
 
   # Generate the return data to go back to the user ---------------------------
@@ -143,38 +143,39 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   # Plot the CDFs--------------------------------------------------------------
 
   # first, find the response time boundaries to ensure plots are in bounds
-  minRT <- min(humanProportions$conCDFs, humanProportions$inconCDFs)
-  maxRT <- max(humanProportions$conCDFs, humanProportions$inconCDFs)
+  minRT <- min(humanProportions$congruentCDFs, humanProportions$incongruentCDFs)
+  maxRT <- max(humanProportions$congruentCDFs, humanProportions$incongruentCDFs)
 
   # Incongruent human first
-  plot(x = humanProportions$inconCDFs, y = cdfs, xlab = "Response Time",
+  plot(x = humanProportions$incongruentCDFs, y = cdfs, xlab = "Response Time",
        ylab = "Cumulative Probability", pch = 1, ylim = c(0, 1),
        xlim = c(minRT, maxRT))
-  lines(humanProportions$inconCDFs, modelInconCDF, type = "l",
+  lines(humanProportions$incongruentCDFs, modelInconCDF, type = "l",
         lty = 2)
 
   # Now congruent
-  points(x = humanProportions$conCDFs, y = cdfs, pch = 19)
-  lines(humanProportions$conCDFs, modelConCDF, type = "l", lty = 1)
+  points(x = humanProportions$congruentCDFs, y = cdfs, pch = 19)
+  lines(humanProportions$congruentCDFs, modelConCDF, type = "l", lty = 1)
 
 
   # Plot the CAFs--------------------------------------------------------------
-  minRT <- min(humanProportions$conCAFsRT, humanProportions$inconCAFsRT)
-  maxRT <- max(humanProportions$conCAFsRT, humanProportions$inconCAFsRT)
+  minRT <- min(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
+  maxRT <- max(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
 
   # Incongruent data
-  plot(x = humanProportions$inconCAFsRT, y = humanProportions$inconCAFsError,
+  plot(x = humanProportions$incongruentCAFsRT, y = humanProportions$incongruentCAFsError,
        xlab = "Response Time", ylab = "Accuracy", pch = 1, ylim = c(0.5, 1),
        xlim = c(minRT, maxRT))
-  lines(humanProportions$inconCAFsRT, modelInconCAF, type = "l", lty = 2)
+  lines(humanProportions$incongruentCAFsRT, modelInconCAF, type = "l", lty = 2)
 
   # Congruent data
-  points(x = humanProportions$conCAFsRT, y = humanProportions$conCAFsError,
+  points(x = humanProportions$congruentCAFsRT, y = humanProportions$congruentCAFsError,
          pch = 19)
-  lines(humanProportions$conCAFsRT, modelConCAF, type = "l", lty = 1)
+  lines(humanProportions$congruentCAFsRT, modelConCAF, type = "l", lty = 1)
 
   # Add legend
-  legend(maxRT - 0.25, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1), lty=1:2, bty="n");
+  legend(maxRT - 0.25, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
+         lty=1:2, bty="n");
 
   # Change the plotting window
   par(mfrow = c(1, 1))
@@ -361,7 +362,8 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   lines(humanProportions$conCAFsRT, modelConCAF, type = "l", lty = 1)
 
   # Add legend
-  legend(maxRT - 0.25, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1), lty=1:2, bty="n");
+  legend(maxRT - 0.25, 0.65, c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
+         lty=1:2, bty="n");
 
   # Change the plotting window
   par(mfrow = c(1, 1))

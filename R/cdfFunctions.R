@@ -1,5 +1,5 @@
 ###
-# functions for finding response time cumulative distribution functions (CDFs)
+# functions relating to cumulative distribution functions (CDFs)
 
 
 #------------------------------------------------------------------------------
@@ -138,13 +138,13 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 
 
 #------------------------------------------------------------------------------
-# given a set of quantiles for CDFs, return the proportion of data within each
+# Given a set of quantiles for CDFs, return the proportion of data within each
 # bin. For example, the CDFs c(.1, .3, .5, .7, .9) have proportions of
 # c(.1, .2, .2, .2, .2, .1). This is required because the model will try to
 # predict response times which match the proportions in the human data.
 
 #' @export
-cdfProportions <- function(cdfs){
+cdfBinsize <- function(cdfs){
 
   # get empty vector of the right length
   props <- numeric(length = (length(cdfs) + 1))
@@ -178,11 +178,11 @@ cdfProportions <- function(cdfs){
 
 
 #------------------------------------------------------------------------------
-# The opposite of cdfProportions. Given a set of proportions, work out the CDFs
+# The opposite of cdfBinsize. Given a set of proportions, work out the CDFs
 # For example, the proportions c(.1, .2, .2, .2, .2, .1) have CDFs of
 # c(.1, .3, .5, .7, .9).
 #'@export
-proportionCDFs <- function(proportions){
+binsizeCDFs <- function(proportions){
 
   # initialise empty vector for cdfs
   cdfs <- numeric(length(proportions) - 1)
@@ -197,16 +197,84 @@ proportionCDFs <- function(proportions){
 
 
 #------------------------------------------------------------------------------
-####THIS IS NOT CURRENTLY USED
+# Calculate the proportion of correct responses in each cdf bin for a given
+# condition. Takes two parameters: data (the data), and correctProportions; the
+# latter is a vector of proportions for each bin if accuracy were 100%.
+#
+# This function finds the accuracy for each subject (if applicable) and
+# multiplies the correctProportions vector by this value. This gives the
+# proportion in each bin for each subject. Then, the function returns the
+# average proportion in each bin.
 
 #'@export
-#get model proportions from human CDFs (the RTs, not proportions). Returns proportions
+cdfProportions <- function(data, correctProportions, multipleSubjects = TRUE){
+
+  # if there is only one subject, then find the overall proportions and return
+  # them (i.e., there is no loop or averaging)
+  if(multipleSubjects == FALSE){
+
+    # find the accuracy
+    accuracy <- sum(data$accuracy) / nrow(data)
+
+    #scale the proportions by the accuracy
+    proportions <- correctProportions * accuracy
+
+    # return to user
+    return(proportions)
+  }
+
+  if(multipleSubjects == TRUE){
+
+    # what are the unique subject numbers?
+    subs <- unique(data$subject)
+
+    # how many subjects are there?
+    nSubs <- length(subs)
+
+    # initiate a matrix to store all subject's proportions in
+    allProportions <- matrix(0, nrow = nSubs,
+                             ncol = length(correctProportions))
+
+    # Loop over each subject
+    for(i in 1:nSubs){
+
+      # get the current subject's data
+      subjectData <- subset(data, data$subject == subs[i])
+
+      # calculate their accuracy
+      accuracy <- sum(subjectData$accuracy) / nrow(subjectData)
+
+      # scale the proportions by the accuracy, and store the result
+      allProportions[i, ] <- correctProportions * accuracy
+
+    }
+
+  }
+
+  # calculate the average proportions
+  allProportions <- apply(allProportions, 2, mean)
+
+  # return to the user
+  return(allProportions)
+
+} # end of function
+#------------------------------------------------------------------------------
+
+
+
+
+
+#------------------------------------------------------------------------------
+
+#'@export
+# Get model proportions from human CDFs (the RTs, not proportions).
+# Returns proportions
 
 getModelCDFs <- function(modelData, cdfs){
 
 
   # only select the correct trials
-  modelData <- subset(modelData, modelData$Accuracy == 1)
+  modelData <- subset(modelData, modelData[, 2] == 1)
 
   # initiate empty vector to store model CDFs in
   props <- numeric(length(cdfs))
@@ -214,8 +282,8 @@ getModelCDFs <- function(modelData, cdfs){
   # loop over each human CDF cutoff point, and find the proportion of model
   # data in each bin
   for(i in 1:length(cdfs)){
-    x <- subset(modelData, modelData$RT <= cdfs[i])
-    props[i] <- length(x$RT) / nrow(modelData)
+    x <- subset(modelData, modelData[, 1] <= cdfs[i])
+    props[i] <- length(x[, 1]) / nrow(modelData)
   }
 
   return(props)

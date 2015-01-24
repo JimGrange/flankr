@@ -216,6 +216,152 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
 
 
+
+#------------------------------------------------------------------------------
+# Calculate the proportion of error responses in each CAF bin for a single
+# condition.
+#
+# Note that this function returns the proportion of error responses in relation
+# to ALL data (not just overall error rate).
+#' @export
+cafProportions <- function(data, quantiles = c(.25, .50, .75),
+                           multipleSubjects = TRUE){
+
+  # single participant---------------------------------------------------------
+  # perform simple CAF calculation if only one participant is being passed
+  # to the function
+  if(multipleSubjects == FALSE){
+
+    # initialise empty vector to store data
+    cafData <- numeric(length = length(quantiles) + 1)
+
+    # get the RT values for quantile cut-offs
+    cdfs <- quantile(data$rt, quantiles)
+
+    # calculate proportion error for each bin
+    for(i in 1:length(cafData)){
+
+      ## do the first one manually
+      if(i == 1){
+        # get the data
+        temp <- subset(data, data$rt <= cdfs[i])
+
+        # log the proportion error
+        cafData[i] <- sum(temp$accuracy == 0) / nrow(data)
+      }
+
+      ## do the rest of the slots automatically
+      if(i > 1 & i < length(cafData)){
+
+        # get the data
+        temp <- subset(data, data$rt > cdfs[i - 1] & data$rt <= cdfs[i])
+
+        # log the proportion error
+        cafData[i] <- sum(temp$accuracy == 0) / nrow(data)
+
+      }
+
+      ## do the last one manually, too
+      if(i == length(quantiles) + 1){
+        # get the data
+        temp <- subset(data, data$rt > cdfs[i - 1])
+
+        # log the proportion error
+        cafData[i] <- sum(temp$accuracy == 0) / nrow(data)
+      }
+
+    } #end of loop over quantiles
+
+    # return the means
+    return(cafData)
+
+  } #end of single-subject sub-function
+
+
+  #multiple subjects-----------------------------------------------------------
+  if(multipleSubjects == TRUE){
+
+    # what are the unique subject numbers?
+    subs <- unique(data$subject)
+
+    # how many subjects are there?
+    nSubs <- length(subs)
+
+    #empty matrix to store CAF data in
+    cafData <- matrix(0, ncol  = (length(quantiles) + 1), nrow = nSubs)
+
+
+    # loop over all subjects, get their CAFs, and store in cafData matrix
+    for(i in 1:nSubs){
+
+      # get the current subject's data
+      subData <- subset(data, data$subject == subs[i])
+
+      # get the current subject's CDF criteria
+      subCDFs <- quantile(subData$rt, quantiles)
+
+
+      # calculate mean RT and proportion error for each bin----------------------
+      for(j in 1:(length(quantiles) + 1)){
+
+        ## do the first one manually
+        if(j == 1){
+
+          # get the current bin's data
+          temp <- subset(subData, subData$rt <= subCDFs[j])
+
+          # log the proportion error
+          cafData[i, j] <- sum(temp$accuracy == 0) / nrow(subData)
+        }
+
+        ## do the rest of the slots automatically
+        if(j > 1 & j < length(quantiles) + 1){
+
+          # get the data
+          temp <- subset(subData, subData$rt > subCDFs[j - 1] &
+                           subData$rt <= subCDFs[j])
+
+          # log the proportion error
+          cafData[i, j] <- sum(temp$accuracy == 0) / nrow(subData)
+
+        }
+
+        ## do the final bin manually
+        if(j == length(quantiles) + 1){
+
+          # get the data
+          temp <- subset(subData, subData$rt > subCDFs[j - 1])
+
+          # log the proportion error
+          cafData[i, j] <- sum(temp$accuracy == 0 )/ nrow(subData)
+        }
+
+      } # end of loop over quantiles
+
+
+    } # end of loop over subjects
+
+    # find the mean values
+    cafData <- apply(cafData, 2, mean)
+
+
+    # return the means
+    return(cafData)
+
+  } # end of multiple subjects loop
+
+
+} # end of function
+#------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 #------------------------------------------------------------------------------
 ####THIS IS NOT CURRENTLY USED
 
@@ -234,23 +380,23 @@ getModelCAFs <- function(modelData, cafs){
 
     # Do first bin manually
     if(i == 1){
-      x <- subset(modelData, modelData$RT <= cafs[i])
-      props[i] <- sum(x$Accuracy) / length(x$RT)
+      x <- subset(modelData, modelData[, 1] <= cafs[i])
+      props[i] <- sum(x[, 2]) / length(x[, 1])
     }
 
 
     # Do intermediate bins automatically
     if(i > 1 & i <= length(cafs)){
-      x <- subset(modelData, modelData$RT > cafs[i - 1] &
-                    modelData$RT <= cafs[i])
-      props[i] <- sum(x$Accuracy) / length(x$RT)
+      x <- subset(modelData, modelData[, 1] > cafs[i - 1] &
+                    modelData[, 1] <= cafs[i])
+      props[i] <- sum(x[, 2]) / length(x[, 1])
 
     }
 
     # Do last bin manually
     if(i == length(cafs)){
-      x <- subset(modelData, modelData$RT > cafs[i])
-      props[i + 1] <- sum(x$Accuracy) / length(x$RT)
+      x <- subset(modelData, modelData[, 1] > cafs[i])
+      props[i + 1] <- sum(x[, 2]) / length(x[, 1])
     }
 
   }

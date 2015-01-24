@@ -30,7 +30,7 @@
 #' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 #'
 #' # simulate the data
-#' modelData <- simulateDSTP(parms, nTrials = 1000)
+#' modelData <- simulateDSTP(parms, nTrials = 10000)
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -115,10 +115,10 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
-#' @return \code{chiSquared} The value of chi square obtained by the current
-#' fit run.
+#' @return \code{g2} The value of Wilks likelihood ratio (G2) obtained by the
+#' current fit run.
 #'
-#' @return \code{bBIC} The value of the  Bayesian Information Criterion (BIC)
+#' @return \code{bic} The value of the  Bayesian Information Criterion (BIC)
 #' obtained by the current fit run. This is calculated using the BIC equation
 #' for binned data, hence bBIC (binned BIC).
 #'
@@ -130,6 +130,11 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' # the default settings in the model.
 #'
 #' fit <- fitDSTP(data = exampleData, conditionName = "present")
+#'
+#' # Fit the model using new starting parameters.
+#'
+#' newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
+#' fit <- fitDSTP(exampleData, conditionName = "present", parms = newParms)
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
 #' # fit cycle
@@ -175,14 +180,14 @@ fitDSTP <- function(data, conditionName = NULL,
   bestParameters <- round(fit$par, 3)
 
   # what is the fit statistic value?
-  chiSquare <- fit$value
+  g2 <- fit$value
 
   # get the approximate BIC value
-  bBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParameters)
+  bic <- BIC(humanProportions, model = "DSTP", parms = bestParameters)
 
   # put all results into a list, and return the list to the user
-  modelFit <- list(bestParameters = bestParameters, chiSquare = chiSquare,
-                   bBIC = bBIC)
+  modelFit <- list(bestParameters = bestParameters, g2 = g2,
+                   bic = bic)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
@@ -196,7 +201,9 @@ fitDSTP <- function(data, conditionName = NULL,
 
 
 #------------------------------------------------------------------------------
-# Get the predicted proportions from the DSTP model
+# Get the predicted proportions from the DSTP model.
+# This returns proportion per bin, not qunatiles
+# e.g., c(.1, .2, .2, .2, .2, 1) not c(.1, .3, .5, .7, .9)
 
 #'@export
 predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
@@ -208,20 +215,19 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   # Run model to get congruent RTs
   set.seed(42)
   modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
-  modelConCDF <- getCDFProps(propsForModel$conCDF, modelCon)
-  modelConCAF <- getCAFProps(propsForModel$conCAFsCutoff, modelCon)
+  modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
+  modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incontruent RTs
   set.seed(42)
   modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
-  modelInconCDF <- getCDFProps(propsForModel$inconCDF, modelIncon)
-  modelInconCAF <- getCAFProps(propsForModel$inconCAFsCutoff, modelIncon)
+  modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
+  modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
-  modelProps <- list(modelConCDF = modelConCDF,
-                     modelConCAF = modelConCAF,
-                     modelInconCDF = modelInconCDF,
-                     modelInconCAF = modelInconCAF)
-
+  modelProps <- list(modelCongruentCDF = modelConCDF,
+                     modelCongruentCAF = modelConCAF,
+                     modelIncongruentCDF = modelInconCDF,
+                     modelIncongruentCAF = modelInconCAF)
 
   return(modelProps)
 
@@ -230,7 +236,36 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
 
 
+#------------------------------------------------------------------------------
+# Get the predicted Quantiles from the DSTP model.
+# This returns qunatiles, not proportion per bin
+# e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
 
+#'@export
+plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
+  # parms = parameters for the model run
+  # n = number of trials per congruency condition
+  # propsForModel = CDF & CAF distributional information
 
+  # Run model to get congruent RTs
+  set.seed(42)
+  modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
+  modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
 
+  # Run model to get incontruent RTs
+  set.seed(42)
+  modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
+  modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
+
+  modelProps <- list(modelCongruentCDF = modelConCDF,
+                     modelCongruentCAF = modelConCAF,
+                     modelIncongruentCDF = modelInconCDF,
+                     modelIncongruentCAF = modelInconCAF)
+
+  return(modelProps)
+
+}
+#------------------------------------------------------------------------------

@@ -41,10 +41,10 @@ subjects (multipleSubjects = TRUE) or to a single subject
 \code{bestParameters} A vector of the best-fitting parameters found
 by the current fit run.
 
-\code{chiSquared} The value of chi square obtained by the current
-fit run.
+\code{g2} The value of Wilks likelihood ratio (G2) obtained by the
+current fit run.
 
-\code{bBIC} The value of the  Bayesian Information Criterion (BIC)
+\code{bic} The value of the  Bayesian Information Criterion (BIC)
 obtained by the current fit run. This is calculated using the BIC equation
 for binned data, hence bBIC (binned BIC).
 }
@@ -69,6 +69,11 @@ data(exampleData)
 # the default settings in the model.
 
 fit <- fitDSTP(data = exampleData, conditionName = "present")
+
+# Fit the model using new starting parameters.
+
+newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
+fit <- fitDSTP(exampleData, conditionName = "present", parms = newParms)
 
 # Fit the model using different CDF and CAF values, and 100,000 trials per
 # fit cycle

@@ -175,14 +175,14 @@ fitSSP<- function(data, conditionName = NULL,
   bestParameters <- round(fit$par, 3)
 
   # what is the fit statistic value?
-  chiSquare <- fit$value
+  g2 <- fit$value
 
   # get the approximate BIC value
-  bBIC <- bBIC(humanProportions, model = "SSP", parms = bestParameters)
+  bic <- BIC(humanProportions, model = "SSP", parms = bestParameters)
 
   # put all results into a list, and return the list to the user
-  modelFit <- list(bestParameters = bestParameters, chiSquare = chiSquare,
-                   bBIC = bBIC)
+  modelFit <- list(bestParameters = bestParameters, g2 = g2,
+                   bic = bic)
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
@@ -208,14 +208,14 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   # Run model to get congruent RTs
   set.seed(42)
   modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
-  modelConCDF <- getCDFProps(propsForModel$conCDF, modelCon)
-  modelConCAF <- getCAFProps(propsForModel$conCAFsCutoff, modelCon)
+  modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
+  modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incontruent RTs
   set.seed(42)
   modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
-  modelInconCDF <- getCDFProps(propsForModel$inconCDF, modelIncon)
-  modelInconCAF <- getCAFProps(propsForModel$inconCAFsCutoff, modelIncon)
+  modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
+  modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
   modelProps <- list(modelConCDF = modelConCDF,
                      modelConCAF = modelConCAF,
@@ -227,10 +227,3 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
 }
 #------------------------------------------------------------------------------
-
-
-
-
-
-
-

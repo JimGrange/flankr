@@ -12,19 +12,31 @@
 getHumanProps <- function(conditionData, cdfs, cafs){
 
 
-  # get CDF proportions (they are a function of the requested CDF values)
-  congruentProps <- cdfProportions(cdfs)
-  incongruentProps <- cdfProportions(cdfs)
-
   # split trials on congruency
   congruentData <- subset(conditionData,
                           conditionData$congruency == "congruent")
   incongruentData <- subset(conditionData,
                             conditionData$congruency == "incongruent")
 
-  # get the CDFs
+
+  # CDFs-----------------------------------------------------------------------
+  # get correct RT CDF proportions. They are a function of the desired CDF
+  # quantile points, and the overall accuracy for the congruency condition
+  congruentProps <- cdfBinsize(cdfs)
+  incongruentProps <- cdfBinsize(cdfs)
+
+  # scale by the proportion correct
+  congruentCDFProps <- cdfProportions(congruentData, congruentProps)
+  incongruentCDFProps <- cdfProportions(incongruentData, incongruentProps)
+
+  # get the CDF cut-off values of response time
   congruentCDFs <- cdf(congruentData, quantiles = cdfs)
   incongruentCDFs <- cdf(incongruentData, quantiles = cdfs)
+
+  # CAFs-----------------------------------------------------------------------
+  # get the CAF proportions
+  congruentCAFProps <- cafProportions(congruentData, quantiles = cafs)
+  incongruentCAFProps <- cafProportions(incongruentData, quantiles = cafs)
 
   # get the CAF cut-off points
   congruentCAFsCutoff <- cdf(congruentData, quantiles = cafs,
@@ -38,30 +50,20 @@ getHumanProps <- function(conditionData, cdfs, cafs){
 
 
   #collate data and return-----------------------------------------------------
-
-  # collate all the information for human proportions
-  humanProps <- c(congruentProps, incongruentProps, congruentCAFs[2, ],
-                  incongruentCAFs[2, ])
-
-  # now get the human cut-off values for CAFs and CDFs
-  humanCutoffs <- c(congruentCDFs, incongruentCDFs, congruentCAFsCutoff,
-                    incongruentCAFsCutoff, congruentCAFs[1, ],
-                    congruentCAFs[2, ], incongruentCAFs[1, ],
-                    incongruentCAFs[2, ])
-
-
-  humanProportions <- list(conProportions = congruentProps,
-                           inconProportions = incongruentProps,
-                           conCAFsProportions = congruentCAFs[2, ],
-                           inconCAFsProportions = incongruentCAFs[2, ],
-                           conCDFs = congruentCDFs,
-                           inconCDFs = incongruentCDFs,
-                           conCAFsCutoff = congruentCAFsCutoff,
-                           inconCAFsCutoff =  incongruentCAFsCutoff,
-                           conCAFsRT = congruentCAFs[1, ],
-                           conCAFsError = congruentCAFs[2, ],
-                           inconCAFsRT = incongruentCAFs[1, ],
-                           inconCAFsError = incongruentCAFs[2, ])
+  humanProportions <- list(cdfQuantiles = cdfs,
+                           cafQuantiles = cafs,
+                           congruentCDFProportions = congruentCDFProps,
+                           incongruentCDFProportions = incongruentCDFProps,
+                           congruentCAFProportions = congruentCAFProps,
+                           incongruentCAFProportions = incongruentCAFProps,
+                           congruentCDFs = congruentCDFs,
+                           incongruentCDFs = incongruentCDFs,
+                           congruentCAFsCutoff = congruentCAFsCutoff,
+                           incongruentCAFsCutoff =  incongruentCAFsCutoff,
+                           congruentCAFsRT = congruentCAFs[1, ],
+                           congruentCAFsError = congruentCAFs[2, ],
+                           incongruentCAFsRT = incongruentCAFs[1, ],
+                           incongruentCAFsError = incongruentCAFs[2, ])
 
   # return it
   return(humanProportions)
@@ -72,6 +74,10 @@ getHumanProps <- function(conditionData, cdfs, cafs){
 
 
 #------------------------------------------------------------------------------
+########NEED TO MODIFY TO USE CORRECT PROPORTION FUNCTIONS
+
+
+
 # A function to get SINGLE human distributional bin proportions from data,
 # given desired CDF and CAF qauntile values. These values will be used by the
 # model during fitting.
@@ -80,25 +86,40 @@ getHumanProps <- function(conditionData, cdfs, cafs){
 getHumanPropsSingle <- function(conditionData, cdfs, cafs){
 
 
-  # get CDF proportions (they are a function of the requested CDF values)
-  congruentProps <- cdfProportions(cdfs)
-  incongruentProps <- cdfProportions(cdfs)
-
   # split trials on congruency
   congruentData <- subset(conditionData,
                           conditionData$congruency == "congruent")
   incongruentData <- subset(conditionData,
                             conditionData$congruency == "incongruent")
 
-  # get the CDFs
+  # CDFs-----------------------------------------------------------------------
+  # get correct RT CDF proportions. They are a function of the desired CDF
+  # quantile points, and the overall accuracy for the congruency condition
+  congruentProps <- cdfBinsize(cdfs)
+  incongruentProps <- cdfBinsize(cdfs)
+
+  # scale by the proportion correct
+  congruentCDFProps <- cdfProportions(congruentData, congruentProps,
+                                      multipleSubjects = FALSE)
+  incongruentCDFProps <- cdfProportions(incongruentData, incongruentProps,
+                                        multipleSubjects = FALSE)
+
+  # get the CDF cut-off values of response time
   congruentCDFs <- cdf(congruentData, quantiles = cdfs,
                        multipleSubjects = FALSE)
   incongruentCDFs <- cdf(incongruentData, quantiles = cdfs,
                          multipleSubjects = FALSE)
 
+  # CAFs-----------------------------------------------------------------------
+  # get the CAF proportions
+  congruentCAFProps <- cafProportions(congruentData, quantiles = cafs,
+                                      multipleSubjects = FALSE)
+  incongruentCAFProps <- cafProportions(incongruentData, quantiles = cafs,
+                                        multipleSubjects = FALSE)
+
   # get the CAF cut-off points
   congruentCAFsCutoff <- cdf(congruentData, quantiles = cafs,
-                             correctTrials = 3, multipleSubjects = FALSE)
+                             correctTrials = 3,multipleSubjects = FALSE)
   incongruentCAFsCutoff  <- cdf(incongruentData, quantiles = cafs,
                                 correctTrials = 3, multipleSubjects = FALSE)
 
@@ -110,30 +131,20 @@ getHumanPropsSingle <- function(conditionData, cdfs, cafs){
 
 
   #collate data and return-----------------------------------------------------
-
-  # collate all the information for human proportions
-  humanProps <- c(congruentProps, incongruentProps, congruentCAFs[2, ],
-                  incongruentCAFs[2, ])
-
-  # now get the human cut-off values for CAFs and CDFs
-  humanCutoffs <- c(congruentCDFs, incongruentCDFs, congruentCAFsCutoff,
-                    incongruentCAFsCutoff, congruentCAFs[1, ],
-                    congruentCAFs[2, ], incongruentCAFs[1, ],
-                    incongruentCAFs[2, ])
-
-
-  humanProportions <- list(conProportions = congruentProps,
-                           inconProportions = incongruentProps,
-                           conCAFsProportions = congruentCAFs[2, ],
-                           inconCAFsProportions = incongruentCAFs[2, ],
-                           conCDFs = congruentCDFs,
-                           inconCDFs = incongruentCDFs,
-                           conCAFsCutoff = congruentCAFsCutoff,
-                           inconCAFsCutoff =  incongruentCAFsCutoff,
-                           conCAFsRT = congruentCAFs[1, ],
-                           conCAFsError = congruentCAFs[2, ],
-                           inconCAFsRT = incongruentCAFs[1, ],
-                           inconCAFsError = incongruentCAFs[2, ])
+  humanProportions <- list(cdfQuantiles = cdfs,
+                           cafQuantiles = cafs,
+                           congruentCDFProportions = congruentCDFProps,
+                           incongruentCDFProportions = incongruentCDFProps,
+                           congruentCAFProportions = congruentCAFProps,
+                           incongruentCAFProportions = incongruentCAFProps,
+                           congruentCDFs = congruentCDFs,
+                           incongruentCDFs = incongruentCDFs,
+                           congruentCAFsCutoff = congruentCAFsCutoff,
+                           incongruentCAFsCutoff =  incongruentCAFsCutoff,
+                           congruentCAFsRT = congruentCAFs[1, ],
+                           congruentCAFsError = congruentCAFs[2, ],
+                           incongruentCAFsRT = incongruentCAFs[1, ],
+                           incongruentCAFsError = incongruentCAFs[2, ])
 
   # return it
   return(humanProportions)
@@ -161,8 +172,7 @@ getCDFProps <- function(cdfs, modelData){
   # only analyse correct RT from the model
   data <- subset(modelData, modelData[, 2] == 1)
 
-  # get the total number of RTs (to later calculate proportions)
-  lengthRTs <- length(data[, 1])
+
 
   # how many bins are there to work through?
   nBins <- length(props)
@@ -176,21 +186,21 @@ getCDFProps <- function(cdfs, modelData){
       # get the data in the current bin
       bin <- subset(data, data[, 1] <= cdfs[i])
       # find the proportion of data in this bin
-      props[i] <- length(bin[, 1]) / lengthRTs
+      props[i] <- length(bin[, 1]) / nrow(modelData)
     }
 
 
     # do the middle ones automatically
     if(i > 1 & i <= nBins){
       bin <- subset(data, data[, 1] > cdfs[i - 1] & data[, 1] <= cdfs[i])
-      props[i] <- length(bin[, 1]) / lengthRTs
+      props[i] <- length(bin[, 1]) / nrow(modelData)
     }
 
 
     # do the last one manually
     if(i == nBins){
       bin <- subset(data, data[, 1] > cdfs[i - 1])
-      props[i] <- length(bin[, 1]) / lengthRTs
+      props[i] <- length(bin[, 1]) / nrow(modelData)
     }
 
   }
@@ -233,7 +243,7 @@ getCAFProps <- function(cdfs, modelData){
       if(length(bin[, 2]) > 0) {
 
         # find the proportion of correct RTs
-        props[i] <- (sum(bin[, 2])) / length(bin[, 2])
+        props[i] <- (sum(bin[, 2] == 0)) / nrow(modelData)
 
       } else {
         props[i] <- 0
@@ -244,10 +254,10 @@ getCAFProps <- function(cdfs, modelData){
     # do middle ones automatically
     if(i > 1 & i <= nBins){
 
-      bin <- subset(modelData, modelData[, 1] >= cdfs[i - 1] &
+      bin <- subset(modelData, modelData[, 1] > cdfs[i - 1] &
                       modelData[, 1] <= cdfs[i])
       if(length(bin[, 2]) > 0) {
-        props[i] <- (sum(bin[, 2])) / length(bin[, 2])
+        props[i] <- (sum(bin[, 2] == 0)) / nrow(modelData)
       } else {
         props[i] <- 0
       }
@@ -257,19 +267,19 @@ getCAFProps <- function(cdfs, modelData){
 
     # do the final bin manually
     if(i == nBins){
-      bin <- subset(modelData, modelData[, 1] >= cdfs[i - 1])
+      bin <- subset(modelData, modelData[, 1] > cdfs[i - 1])
       if(length(bin[, 2]) > 0) {
-        props[i] <- (sum(bin[, 2])) / length(bin[, 2])
+        props[i] <- (sum(bin[, 2] == 0)) / nrow(modelData)
       } else {
         props[i] <- 9
       }
     }
 
 
-    }
+  }
 
   # return the proportions
   return(props)
 
-  }
+}
 #------------------------------------------------------------------------------
