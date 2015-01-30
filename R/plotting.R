@@ -128,16 +128,16 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   x <- humanProportions
   returnData <- list(cdfs = cdfs,
                      cafs = cafs,
-                     humanConCDFs = x$conCDFs,
-                     humanInconCDFs = x$inconCDFs,
-                     humanConCAFsRT = x$conCAFsRT,
-                     humanInconCAFsRT = x$inconCAFsRT,
-                     humanConCAFsError = x$conCAFsError,
-                     humanInconCAFsError = x$inconCAFsError,
-                     modelConCDFs = modelConCDF,
-                     modelInconCDFs = modelInconCDF,
-                     modelConCAFs = modelConCAF,
-                     modelInconCAFs = modelInconCAF)
+                     humanCongruentCDFs = x$congruentCDFs,
+                     humanIncongruentCDFs = x$incongruentCDFs,
+                     humanCongruentCAFsRT = x$congruentCAFsRT,
+                     humanIncongruentCAFsRT = x$incongruentCAFsRT,
+                     humanCongruentCAFsError = x$congruentCAFsError,
+                     humanIncongruentCAFsError = x$incongruentCAFsError,
+                     modelCongruentCDFs = modelConCDF,
+                     modelIncongruentCDFs = modelInconCDF,
+                     modelCongruentCAFs = modelConCAF,
+                     modelIncongruentCAFs = modelInconCAF)
 
 
   # Plot the CDFs--------------------------------------------------------------
@@ -174,7 +174,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   lines(humanProportions$congruentCAFsRT, modelConCAF, type = "l", lty = 1)
 
   # Add legend
-  legend("bottomright", c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
+  legend("bottom", c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
          lty=1:2, bty="n");
 
   # Change the plotting window
@@ -309,16 +309,17 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   x <- humanProportions
   returnData <- list(cdfs = cdfs,
                      cafs = cafs,
-                     humanConCDFs = x$conCDFs,
-                     humanInconCDFs = x$inconCDFs,
-                     humanConCAFsRT = x$conCAFsRT,
-                     humanInconCAFsRT = x$inconCAFsRT,
-                     humanConCAFsError = x$conCAFsError,
-                     humanInconCAFsError = x$inconCAFsError,
-                     modelConCDFs = modelConCDF,
-                     modelInconCDFs = modelInconCDF,
-                     modelConCAFs = modelConCAF,
-                     modelInconCAFs = modelInconCAF)
+                     humanCongruentCDFs = x$congruentCDFs,
+                     humanIncongruentCDFs = x$incongruentCDFs,
+                     humanCongruentCAFsRT = x$congruentCAFsRT,
+                     humanIncongruentCAFsRT = x$incongruentCAFsRT,
+                     humanCongruentCAFsError = x$congruentCAFsError,
+                     humanIncongruentCAFsError = x$incongruentCAFsError,
+                     modelCongruentCDFs = modelConCDF,
+                     modelIncongruentCDFs = modelInconCDF,
+                     modelCongruentCAFs = modelConCAF,
+                     modelIncongruentCAFs = modelInconCAF)
+
 
 
   # Plot the CDFs--------------------------------------------------------------
@@ -355,7 +356,7 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   lines(humanProportions$congruentCAFsRT, modelConCAF, type = "l", lty = 1)
 
   # Add legend
-  legend("bottomright", c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
+  legend("bottom", c("Congruent","Incongruent"), cex=1, pch=c(19, 1),
          lty=1:2, bty="n");
 
   # Change the plotting window
