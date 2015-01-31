@@ -331,9 +331,9 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
     fit <- optim(currParms, fn = fitFunctionDSTP, humanProportions = humanProportions,
                 n = nTrials, maxParms = maxParms)
 
-    if(fit$g2 < bestFit){
-      bestFit <- fit$g2
-      bestParms <- fit$bestParameters
+    if(fit$value < bestFit){
+      bestFit <- fit$value
+      bestParms <- round(fit$par, 3)
     }
 
   }
@@ -344,7 +344,7 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
 
-  return(modelFit)
+  return(bestParms)
 
 
 } # end of function
