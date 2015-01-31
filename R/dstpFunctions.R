@@ -94,6 +94,10 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' a string to the function (e.g., "present"). The function by default assumes
 #' no additional condition (e.g., conditionName is set to NULL).
 #'
+#' @param parms A vector of starting parameters to use in the minimisation
+#' routine. Must be in the order: \code{A}, \code{C}, \code{driftTarget},
+#' \code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
+#'
 #' @param cdfs A vector of quantile values for cumulative distribution functions
 #' to be estimated from the human data. The model will attempt to find the
 #' best-fitting parameters that match this distributional data.

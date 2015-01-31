@@ -19,6 +19,10 @@ time. Tell the function which condition is currently being fit by passing
 a string to the function (e.g., "present"). The function by default assumes
 no additional condition (e.g., conditionName is set to NULL).}
 
+\item{parms}{A vector of starting parameters to use in the minimisation
+routine. Must be in the order: \code{A}, \code{C}, \code{driftTarget},
+\code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.}
+
 \item{cdfs}{A vector of quantile values for cumulative distribution functions
 to be estimated from the human data. The model will attempt to find the
 best-fitting parameters that match this distributional data.}

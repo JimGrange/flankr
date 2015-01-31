@@ -33,19 +33,13 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
   humanProps[humanProps == 0] <- 0.0001
   modelProps[modelProps == 0] <- 0.0001
 
-  # Calculate Wilks Likelihood ratio
+  # Calculate likelihood ratio chi-square statistic
   fitStatistic <- 2 * sum(250 * humanProps * log(humanProps / modelProps))
 
 
   if(fitStatistic == Inf){
     return(.Machine$double.xmax)
   }
-
-  #####FOR DEBUGGING#######
-  print(parms)
-  print(fitStatistic)
-  #####FOR DEBUGGING#######
-
 
   # If the parameters are below zero or are above maxParms, then return poor
   # fit
@@ -93,19 +87,13 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
   humanProps[humanProps == 0] <- 0.0001
   modelProps[modelProps == 0] <- 0.0001
 
-  # Calculate Wilks Likelihood ratio
+  # Calculate likelihood ratio chi-square statistic
   fitStatistic <- 2 * sum(250 * humanProps * log(humanProps / modelProps))
 
 
   if(fitStatistic == Inf){
     return(.Machine$double.xmax)
   }
-
-  #####FOR DEBUGGING#######
-  print(parms)
-  print(fitStatistic)
-  #####FOR DEBUGGING#######
-
 
   # If the parameters are below zero or are above maxParms, then return poor
   # fit
