@@ -232,6 +232,7 @@ fitDSTP <- function(data, conditionName = NULL,
 #' @param parms A vector of starting parameters to use in the minimisation
 #' routine. Must be in the order: \code{A}, \code{C}, \code{driftTarget},
 #' \code{driftFlanker}, \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
+#' These parameters will be the starting point for the random parameters.
 #'
 #' @param var An integer stating the percentage of each parameter value that
 #' should be used for finding random parameter starting points.

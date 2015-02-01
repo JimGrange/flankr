@@ -92,6 +92,10 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
 #' a string to the function (e.g., "present"). The function by default assumes
 #' no additional condition (e.g., conditionName is set to NULL).
 #'
+#' @param parms A vector of starting parameters to use in the minimisation
+#' routine. Must be in the order: \code{A}, \code{ter}, \code{p}, \code{rd},
+#' \code{sda}.
+#'
 #' @param cdfs A vector of quantile values for cumulative distribution functions
 #' to be estimated from the human data. The model will attempt to find the
 #' best-fitting parameters that match this distributional data.
@@ -190,6 +194,155 @@ fitSSP<- function(data, conditionName = NULL,
 
 } # end of function
 #------------------------------------------------------------------------------
+
+
+
+#------------------------------------------------------------------------------
+#' Fit the SSP model to human data with multiple starting parameters
+#'
+#' \code{fitSSP} fits the SSP model to a single experimental condition of
+#' human data (besides congruency, which it accounts for simutaneously).
+#'
+#' This function can be employed by the user to find the best-fitting
+#' parameters of the SSP model to fit the human data of a single experimental
+#' condition. The fitting procedure accounts for congruent and incongruent
+#' trials simultaneously. The fit is obtained by a gradient-descent method
+#' (using the Nelder-Mead method contained in R's \code{optim} function) and is
+#' fit to the proportion of data contained in human CDF and CAF distributional
+#' data.
+#'
+#' @param data A data frame containing human data. See \code{?exampleData} for
+#' data formatted correctly.
+#'
+#' @param conditionName If there is an additional experimental manipulation
+#' (i.e., other than target congruency) the model can only be fit to one at a
+#' time. Tell the function which condition is currently being fit by passing
+#' a string to the function (e.g., "present"). The function by default assumes
+#' no additional condition (e.g., conditionName is set to NULL).
+#'
+#' @param parms A vector of starting parameters to use in the minimisation
+#' routine. Must be in the order: \code{A}, \code{ter}, \code{p}, \code{rd},
+#' \code{sda}. These parameters will be the starting point for the random
+#' parameters.
+#'
+#' @param var An integer stating the percentage of each parameter value that
+#' should be used for finding random parameter starting points.
+#'
+#' @param nParms An integer stating how many random starting points to explore
+#'
+#' @param cdfs A vector of quantile values for cumulative distribution functions
+#' to be estimated from the human data. The model will attempt to find the
+#' best-fitting parameters that match this distributional data.
+#'
+#' @param cafs A vector of quantiles for conditional accuracy functions to be
+#' estimated from the human data. The model will attempt to find the best-
+#' fitting parameters that match this distributional data.
+#'
+#' @param maxParms A vector containing upper limits on possible parameter
+#' values.
+#'
+#' @param nTrials An integer stating how many trials to simulate per iteration
+#' of the fitting cycle for each congruency type.
+#'
+#' @param multipleSubjects A boolean stating whether the fit is to multiple
+#' subjects (multipleSubjects = TRUE) or to a single subject
+#' (multipleSubjects = FALSE).
+#'
+#' @return \code{bestParameters} A vector of the best-fitting parameters found
+#' by the current fit run.
+#'
+#' @return \code{chiSquared} The value of chi square obtained by the current
+#' fit run.
+#'
+#' @return \code{bBIC} The value of the  Bayesian Information Criterion (BIC)
+#' obtained by the current fit run. This is calculated using the BIC equation
+#' for binned data, hence bBIC (binned BIC).
+#'
+#' @examples
+#' # Load the example data the comes with the \code{flankr} package
+#' data(exampleData)
+#'
+#' # Fit the model to the condition "present" in the example data set using
+#' # the default settings in the model.
+#'
+#' fit <- fitSSP(data = exampleData, conditionName = "present")
+#'
+#' # Fit the model using different CDF and CAF values, and 100,000 trials per
+#' # fit cycle
+#' cdfs <- c(.2, .4, .6, .8)
+#' cafs <- c(.2, .4, .6, .8)
+#'
+#' fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
+#'               cafs = cafs, nTrials = 100000)
+#'
+#'
+#'@export
+fitMultipleSSP <- function(data, conditionName = NULL,
+                           parms = c(0.050, 0.300, 0.400, 0.050, 1.500),
+                           var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
+                           cafs = c(.25, .50, .75),
+                           maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 5000,
+                           multipleSubjects = TRUE){
+
+
+  # get the desired condition's data
+  if(is.null(conditionName)){
+    conditionData <- data
+  } else{
+    conditionData <- subset(data, data$condition == conditionName)
+  }
+
+  # get all of the distribution & proportion information from human data.
+  # This returns a list with all information in separate "cotainers" for ease
+  # of access & generalisation to different CDF and CAF sizes.
+  if(multipleSubjects == TRUE){
+    humanProportions <- getHumanProps(conditionData, cdfs, cafs)
+  } else {
+    humanProportions <- getHumanPropsSingle(conditionData, cdfs, cafs)
+  }
+
+
+  # get random starting parameters
+  varParms <- (parms/ 100) * var
+  parameters <- getRandomParms(parms, varParms, maxParms, nParms)
+
+  #-------------
+  # Start the optimisation
+
+  modelStart <- "Model Fit Running. Please Wait..."
+  print(modelStart)
+
+
+  # initialise best-fitting parameters & best fit so far
+  bestFit <- .Machine$integer.max
+  bestParms <- numeric(length(parms))
+
+  # start loop over all parameters now
+  for(i in 1:nParms){
+
+    # get the current run's parameters
+    currParms <- parameters[i, ]
+
+    fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
+                 n = nTrials, maxParms = maxParms)
+
+    if(fit$value < bestFit){
+      bestFit <- fit$value
+      bestParms <- round(fit$par, 3)
+    }
+
+  }
+
+  modelFinished <- "Model Fit Finished."
+  print(modelFinished)
+
+  return(bestParms)
+
+
+} # end of function
+#------------------------------------------------------------------------------
+
+
 
 
 
