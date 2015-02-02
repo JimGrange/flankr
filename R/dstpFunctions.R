@@ -285,10 +285,10 @@ fitDSTP <- function(data, conditionName = NULL,
 #'
 #'@export
 fitMultipleDSTP <- function(data, conditionName = NULL,
-                    parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
-                    var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
-                    cafs = c(.25, .50, .75), maxParms = c(1, 1, 1, 1, 1, 2, 1),
-                    nTrials = 5000, multipleSubjects = TRUE){
+                            parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
+                            var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
+                            cafs = c(.25, .50, .75), maxParms = c(1, 1, 1, 1, 1, 2, 1),
+                            nTrials = 5000, multipleSubjects = TRUE){
 
 
   # get the desired condition's data
@@ -322,6 +322,7 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
   # initialise best-fitting parameters & best fit so far
   bestFit <- .Machine$integer.max
   bestParms <- numeric(length(parms))
+  bestBIC <- .Machine$integer.max
 
   # start loop over all parameters now
   for(i in 1:nParms){
@@ -330,22 +331,29 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-                n = nTrials, maxParms = maxParms)
+                 n = nTrials, maxParms = maxParms)
 
     if(fit$value < bestFit){
       bestFit <- fit$value
       bestParms <- round(fit$par, 3)
+      bestBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParms)
+
     }
 
   }
 
 
 
+  modelFit <- list(bestParameters = bestParameters, g2 = bestFit,
+                   bBIC = bestBIC)
+
 
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
 
-  return(bestParms)
+
+
+  return(modelFit)
 
 
 } # end of function

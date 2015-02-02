@@ -316,6 +316,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
   # initialise best-fitting parameters & best fit so far
   bestFit <- .Machine$integer.max
   bestParms <- numeric(length(parms))
+  bestBIC <- .Machine$integer.max
 
   # start loop over all parameters now
   for(i in 1:nParms){
@@ -329,14 +330,19 @@ fitMultipleSSP <- function(data, conditionName = NULL,
     if(fit$value < bestFit){
       bestFit <- fit$value
       bestParms <- round(fit$par, 3)
+      bestBIC <- bBIC(humanProportions, model = "SSP", parms = bestParms)
     }
 
   }
 
+  modelFit <- list(bestParameters = bestParameters, g2 = bestFit,
+                   bBIC = bestBIC)
+
+
   modelFinished <- "Model Fit Finished."
   print(modelFinished)
 
-  return(bestParms)
+  return(modelFit)
 
 
 } # end of function
