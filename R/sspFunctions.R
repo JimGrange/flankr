@@ -38,14 +38,15 @@
 #' @useDynLib flankr
 #' @importFrom Rcpp sourceCpp
 #' @export
-simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = 42){
+simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 
   # transfer nTrials to shorter name
   n <- nTrials
 
-  # Set random number seed, so same predictions occur every time. By default
-  # this is set for the user.
-  set.seed(seed, kind = NULL, normal.kind = NULL)
+  # Set random number seed, so same predictions occur every time.
+  if(!is.null(seed)){
+    set.seed(seed, kind = NULL, normal.kind = NULL)
+  }
 
   # initialise empty matrix for simulation data with two columns
   # (RT & accuracy) and with rows = number of trials
