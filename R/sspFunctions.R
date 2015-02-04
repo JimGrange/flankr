@@ -336,7 +336,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 
   }
 
-  modelFit <- list(bestParameters = bestParameters, g2 = bestFit,
+  modelFit <- list(bestParameters = bestParms, g2 = bestFit,
                    bBIC = bestBIC)
 
 
