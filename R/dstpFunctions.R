@@ -346,7 +346,7 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
 
 
 
-  modelFit <- list(bestParameters = bestParams, g2 = bestFit,
+  modelFit <- list(bestParameters = bestParms, g2 = bestFit,
                    bBIC = bestBIC)
 
 
