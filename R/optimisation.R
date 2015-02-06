@@ -89,9 +89,6 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
   # Calculate likelihood ratio chi-square statistic
   fitStatistic <- 2 * sum(250 * humanProps * log(humanProps / modelProps))
 
-
-  print(fitStatistic)
-
   if(fitStatistic == Inf){
     return(.Machine$double.xmax)
   }
