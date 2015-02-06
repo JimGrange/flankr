@@ -90,6 +90,8 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
   fitStatistic <- 2 * sum(250 * humanProps * log(humanProps / modelProps))
 
 
+  print(fitStatistic)
+
   if(fitStatistic == Inf){
     return(.Machine$double.xmax)
   }
@@ -109,7 +111,10 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
 #------------------------------------------------------------------------------
 # BIC for binned data
 #'@export
-bBIC <- function(humanProportions, model, parms, n = 100000){
+bBIC <- function(humanProportions, model, parms, nTrials){
+
+
+  n = nTrials
 
   # If the model selected is the DSTP model
   if(model == "DSTP"){
@@ -158,7 +163,7 @@ bBIC <- function(humanProportions, model, parms, n = 100000){
     m <- 5
   }
 
-  bic <- -2 * sumProps + m * log(1000)
+  bic <- -2 * sumProps + m * log(250)
 
   return(bic)
 

@@ -189,7 +189,8 @@ fitDSTP <- function(data, conditionName = NULL,
   g2 <- fit$value
 
   # get the approximate BIC value
-  bBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParameters)
+  bBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParameters,
+               nTrials = nTrials)
 
   # put all results into a list, and return the list to the user
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
@@ -290,7 +291,7 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
                             parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
                             var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
                             cafs = c(.25, .50, .75), maxParms = c(1, 1, 1, 1, 1, 2, 1),
-                            nTrials = 5000, multipleSubjects = TRUE){
+                            nTrials = 50000, multipleSubjects = TRUE){
 
 
   # get the desired condition's data
@@ -338,7 +339,8 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
     if(fit$value < bestFit){
       bestFit <- fit$value
       bestParms <- round(fit$par, 3)
-      bestBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParms)
+      bestBIC <- bBIC(humanProportions, model = "DSTP", parms = bestParms,
+                      nTrials = nTrials)
 
     }
 
