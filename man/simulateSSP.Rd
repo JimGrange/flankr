@@ -4,7 +4,7 @@
 \alias{simulateSSP}
 \title{Obtain simulated response times and accuracy from the SSP model}
 \usage{
-simulateSSP(parms, nTrials, var = 0.01, dt = 1/1000, seed = 42)
+simulateSSP(parms, nTrials, var = 0.01, dt = 1/1000, seed = NULL)
 }
 \arguments{
 \item{parms}{The set of parameters to use to simulate the data. Must be

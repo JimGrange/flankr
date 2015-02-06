@@ -1,10 +1,17 @@
 Package: flankr
-Title: What the Package Does (one line, title case)
+Title: Implements computational models of attentional selectivity
 Version: 0.0.0.9000
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (one paragraph)
+Authors@R: "Jim Grange <grange.jim@gmail.com> [aut, cre]"
+Description: flankr provides functions to simulate and fit the dual stage two
+    phase model (DSTP) and the shrinking spotlight model (SSP) of attentional
+    selectivity. The fitting routine utilises the optim function in base R and
+    finds model parameters that reduces the wilks likelihood ratio chi square
+    between model predictions and human data (example data is provided in the
+    package). BIC values based on response time bins are also provided to allow the
+    user to engage in model comparison exploration.
 Depends: R (>= 3.1.1)
-License: What license is it under?
+License: GPL-3
 LazyData: true
 LinkingTo: Rcpp
 Imports: Rcpp
+URL: www.jimgrange.com
