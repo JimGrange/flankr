@@ -584,7 +584,7 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 #' parms <- c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3, 0.24)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitMultipleDSTP_fixed(exampleData, conditionName = "present",
-#'                              parms = parms, var = var, fixed = fixed)
+#'                              parms = parms, fixed = fixed)
 #'
 #'@export
 fitMultipleDSTP_fixed <- function(data, conditionName = NULL,

@@ -8,8 +8,7 @@ fixed parameters}
 fitMultipleSSP_fixed(data, conditionName = NULL, parms = c(0.05, 0.3, 0.4,
   0.05, 1.5), var = 10, nParms = 20, cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9),
   cafs = c(0.25, 0.5, 0.75), maxParms = c(1, 1, 1, 1, 2), nTrials = 50000,
-  multipleSubjects = TRUE, fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE,
-  FALSE))
+  multipleSubjects = TRUE, fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE))
 }
 \arguments{
 \item{data}{A data frame containing human data. See \code{?exampleData} for
@@ -93,6 +92,6 @@ fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 fit <- fitMultipleSSP_fixed(exampleData, conditionName = "present",
-                            parms = parms, var = var, fixed = fixed)
+                            parms = parms, fixed = fixed)
 }
 

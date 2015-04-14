@@ -7,7 +7,7 @@
 fitSSP_fixed(data, conditionName = NULL, parms = c(0.05, 0.3, 0.4, 0.05,
   1.5), cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9), cafs = c(0.25, 0.5, 0.75),
   maxParms = c(1, 1, 1, 1, 2), nTrials = 50000, multipleSubjects = TRUE,
-  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE))
+  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE))
 }
 \arguments{
 \item{data}{A data frame containing human data. See \code{?exampleData} for

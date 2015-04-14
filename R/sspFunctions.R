@@ -571,7 +571,7 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitMultipleSSP_fixed(exampleData, conditionName = "present",
-#'                             parms = parms, var = var, fixed = fixed)
+#'                             parms = parms, fixed = fixed)
 #'
 #'@export
 fitMultipleSSP_fixed <- function(data, conditionName = NULL,
