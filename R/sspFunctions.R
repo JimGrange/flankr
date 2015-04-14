@@ -437,7 +437,7 @@ fitSSP_fixed <- function(data, conditionName = NULL,
                          cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                          maxParms = c(1, 1, 1, 1, 2), nTrials = 50000,
                          multipleSubjects = TRUE,
-                         fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)){
+                         fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE)){
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -581,8 +581,7 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
                                  cafs = c(.25, .50, .75),
                                  maxParms = c(1, 1, 1, 1, 2),
                                  nTrials = 50000, multipleSubjects = TRUE,
-                                 fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE,
-                                           FALSE)){
+                                 fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE)){
 
 
   # get the desired condition's data
