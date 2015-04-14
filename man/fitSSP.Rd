@@ -44,8 +44,8 @@ subjects (multipleSubjects = TRUE) or to a single subject
 \code{bestParameters} A vector of the best-fitting parameters found
 by the current fit run.
 
-\code{chiSquared} The value of chi square obtained by the current
-fit run.
+\code{g2} The value of Wilks likelihood ratio (G2) obtained by the
+current fit run.
 
 \code{bBIC} The value of the  Bayesian Information Criterion (BIC)
 obtained by the current fit run. This is calculated using the BIC equation

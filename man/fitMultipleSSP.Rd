@@ -51,16 +51,16 @@ subjects (multipleSubjects = TRUE) or to a single subject
 \code{bestParameters} A vector of the best-fitting parameters found
 by the current fit run.
 
-\code{chiSquared} The value of chi square obtained by the current
-fit run.
+\code{g2} The value of Wilks likelihood ratio (G2) obtained by the
+current fit run.
 
 \code{bBIC} The value of the  Bayesian Information Criterion (BIC)
 obtained by the current fit run. This is calculated using the BIC equation
 for binned data, hence bBIC (binned BIC).
 }
 \description{
-\code{fitSSP} fits the SSP model to a single experimental condition of
-human data (besides congruency, which it accounts for simutaneously).
+\code{fitSSPMultiple} fits the SSP model to a single experimental condition
+of human data (besides congruency, which it accounts for simutaneously).
 }
 \details{
 This function can be employed by the user to find the best-fitting
@@ -78,14 +78,14 @@ data(exampleData)
 # Fit the model to the condition "present" in the example data set using
 # the default settings in the model.
 
-fit <- fitSSP(data = exampleData, conditionName = "present")
+fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 
 # Fit the model using different CDF and CAF values, and 100,000 trials per
 # fit cycle
 cdfs <- c(.2, .4, .6, .8)
 cafs <- c(.2, .4, .6, .8)
 
-fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
-              cafs = cafs, nTrials = 100000)
+fit <- fitMultipleSSP(exampleData, conditionName = "present", cdfs = cdfs,
+                      cafs = cafs, nTrials = 100000)
 }
 
