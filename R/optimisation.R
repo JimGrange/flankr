@@ -105,6 +105,9 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
 
 #------------------------------------------------------------------------------
 # optimisation for fixed parameter values for the DSTP model
+# Code modified from the "optifix" function originally written by Barry
+# Rowlingson:
+# (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
 #'@export
 optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
 
@@ -140,6 +143,9 @@ optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
 
 #------------------------------------------------------------------------------
 # optimisation for fixed parameter values for the SSP model
+# Code modified from the "optifix" function originally written by Barry
+# Rowlingson:
+# (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
 #'@export
 optimFix_SSP <- function(parms, fixed, humanProportions, n, maxParms){
 

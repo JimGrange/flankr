@@ -673,14 +673,6 @@ fitMultipleDSTP_fixed <- function(data, conditionName = NULL,
 
 
 
-
-
-
-
-
-
-
-
 #------------------------------------------------------------------------------
 # Get the predicted proportions from the DSTP model.
 # This returns proportion per bin, not qunatiles
