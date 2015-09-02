@@ -690,12 +690,14 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
+  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
   modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
+  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,
@@ -725,12 +727,14 @@ plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01)
   modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
+  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
   modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
+  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,

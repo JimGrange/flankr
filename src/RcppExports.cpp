@@ -9,37 +9,29 @@ using namespace Rcpp;
 NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials, double dt, double var);
 RcppExport SEXP flankr_getDSTP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP );
-        Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP );
-        Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP );
-        Rcpp::traits::input_parameter< double >::type dt(dtSEXP );
-        Rcpp::traits::input_parameter< double >::type var(varSEXP );
-        NumericMatrix __result = getDSTP(parms, trialType, nTrials, dt, var);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP);
+    Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP);
+    Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP);
+    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< double >::type var(varSEXP);
+    __result = Rcpp::wrap(getDSTP(parms, trialType, nTrials, dt, var));
+    return __result;
 END_RCPP
 }
 // getSSP
 NumericMatrix getSSP(NumericVector parms, int trialType, int nTrials, double dt, double var);
 RcppExport SEXP flankr_getSSP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP );
-        Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP );
-        Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP );
-        Rcpp::traits::input_parameter< double >::type dt(dtSEXP );
-        Rcpp::traits::input_parameter< double >::type var(varSEXP );
-        NumericMatrix __result = getSSP(parms, trialType, nTrials, dt, var);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP);
+    Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP);
+    Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP);
+    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< double >::type var(varSEXP);
+    __result = Rcpp::wrap(getSSP(parms, trialType, nTrials, dt, var));
+    return __result;
 END_RCPP
 }
