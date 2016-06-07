@@ -151,6 +151,9 @@ fitSSP<- function(data, conditionName = NULL,
                   multipleSubjects = TRUE){
 
 
+  # declare the scaling on the parameters
+  parscale <- c(1, 10, 10, 1, 100)
+  
   # get the desired condition's data
   if(is.null(conditionName)){
     conditionData <- data
@@ -172,7 +175,8 @@ fitSSP<- function(data, conditionName = NULL,
 
   # perform the fit
   fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms)
+               n = nTrials, maxParms = maxParms, 
+               control = (parscale = parscale))
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$par, 3)
@@ -286,6 +290,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
                            maxParms = c(1, 1, 1, 1, 2), nTrials = 50000,
                            multipleSubjects = TRUE){
 
+  # declare the scaling on the parameters
+  parscale <- c(1, 10, 10, 1, 100)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -327,7 +333,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms)
+                 n = nTrials, maxParms = maxParms, 
+                 control = (parscale = parscale))
 
     if(fit$value < bestFit){
       bestFit <- fit$value

@@ -12,7 +12,7 @@
 #' This function can be employed by the user to generate synthetic data, but
 #' its main purpose is to be used by the fitting procedure to generate model
 #' predictions for a set of parameter values when trying to find the best-
-#' fitting values.
+#' fitting values.d
 #'
 #' @param parms The set of parameters to use to simulate the data. Must be
 #' contained in a vector in the order: \code{A}, \code{C}, \code{driftTarget},
@@ -23,7 +23,7 @@
 #' @param dt The diffusion scaling parameter (i.e., time steps). By default,
 #' this is set to 0.001.
 #' @param seed The value for the \code{set.seed} function to set random
-#' generation state.
+#' generation state. 
 #'
 #' @examples
 #' # declare the parameters
@@ -158,6 +158,9 @@ fitDSTP <- function(data, conditionName = NULL,
                     maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
                     multipleSubjects = TRUE){
 
+  
+  # declare the scaling on the parameters
+  parscale <- c(1, 1, 1, 1, 1, 10, 1)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -180,7 +183,8 @@ fitDSTP <- function(data, conditionName = NULL,
 
   # perform the fit
   fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms)
+               n = nTrials, maxParms = maxParms, 
+               control = (parscale = parscale))
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$par, 3)
@@ -293,6 +297,9 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
                             cafs = c(.25, .50, .75), maxParms = c(1, 1, 1, 1, 1, 2, 1),
                             nTrials = 50000, multipleSubjects = TRUE){
 
+  
+  # declare the scaling on the parameters
+  parscale <- c(1, 1, 1, 1, 1, 10, 1)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -334,7 +341,8 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms)
+                 n = nTrials, maxParms = maxParms, 
+                 control = (parscale = parscale))
 
     if(fit$value < bestFit){
       bestFit <- fit$value
