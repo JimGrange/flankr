@@ -118,7 +118,6 @@ double dt, double var) {
         //drift = drift * dt;
 
         //get random noise
-        RNGScope scope;
         noise = ::Rf_rnorm(drift, sdRand);
 
 
