@@ -152,8 +152,8 @@ fitSSP<- function(data, conditionName = NULL,
 
 
   # declare the scaling on the parameters
-  parscale <- c(1, 10, 10, 1, 100)
-  
+  parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
+
   # get the desired condition's data
   if(is.null(conditionName)){
     conditionData <- data
@@ -175,7 +175,7 @@ fitSSP<- function(data, conditionName = NULL,
 
   # perform the fit
   fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms, 
+               n = nTrials, maxParms = maxParms,
                control = (parscale = parscale))
 
   # what are the best-fitting parameters?
@@ -291,7 +291,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
                            multipleSubjects = TRUE){
 
   # declare the scaling on the parameters
-  parscale <- c(1, 10, 10, 1, 100)
+  parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -333,7 +333,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms, 
+                 n = nTrials, maxParms = maxParms,
                  control = (parscale = parscale))
 
     if(fit$value < bestFit){
@@ -682,14 +682,12 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
-  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
   modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
-  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,

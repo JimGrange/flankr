@@ -2,7 +2,7 @@
 % Please edit documentation in R/dstpFunctions.R
 \name{fitMultipleDSTP_fixed}
 \alias{fitMultipleDSTP_fixed}
-\title{Fit the DSTP model to human data with mutiple starting parmaeters with some
+\title{Fit the DSTP model to human data with multiple starting parameters with some
 fixed parameters}
 \usage{
 fitMultipleDSTP_fixed(

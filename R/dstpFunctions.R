@@ -23,7 +23,7 @@
 #' @param dt The diffusion scaling parameter (i.e., time steps). By default,
 #' this is set to 0.001.
 #' @param seed The value for the \code{set.seed} function to set random
-#' generation state. 
+#' generation state.
 #'
 #' @examples
 #' # declare the parameters
@@ -158,9 +158,9 @@ fitDSTP <- function(data, conditionName = NULL,
                     maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
                     multipleSubjects = TRUE){
 
-  
+
   # declare the scaling on the parameters
-  parscale <- c(1, 1, 1, 1, 1, 10, 1)
+  parscale <- c(0.1, 0.1, 0.1, 0.1, 0.1, 1.0, 0.1)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -170,7 +170,7 @@ fitDSTP <- function(data, conditionName = NULL,
   }
 
   # get all of the distribution & proportion information from human data.
-  # This returns a list with all information in separate "cotainers" for ease
+  # This returns a list with all information in separate "containers" for ease
   # of access & generalisation to different CDF and CAF sizes.
   if(multipleSubjects == TRUE){
     humanProportions <- getHumanProps(conditionData, cdfs, cafs)
@@ -182,8 +182,10 @@ fitDSTP <- function(data, conditionName = NULL,
   print(modelStart)
 
   # perform the fit
-  fit <- optim(parms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms, 
+  fit <- optim(parms, fn = fitFunctionDSTP,
+               humanProportions = humanProportions,
+               n = nTrials,
+               maxParms = maxParms,
                control = (parscale = parscale))
 
   # what are the best-fitting parameters?
@@ -291,15 +293,20 @@ fitDSTP <- function(data, conditionName = NULL,
 #'
 #'
 #'@export
-fitMultipleDSTP <- function(data, conditionName = NULL,
+fitMultipleDSTP <- function(data,
+                            conditionName = NULL,
                             parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
-                            var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
-                            cafs = c(.25, .50, .75), maxParms = c(1, 1, 1, 1, 1, 2, 1),
-                            nTrials = 50000, multipleSubjects = TRUE){
+                            var = 10,
+                            nParms = 20,
+                            cdfs = c(.1, .3, .5, .7, .9),
+                            cafs = c(.25, .50, .75),
+                            maxParms = c(1, 1, 1, 1, 1, 2, 1),
+                            nTrials = 50000,
+                            multipleSubjects = TRUE){
 
-  
+
   # declare the scaling on the parameters
-  parscale <- c(1, 1, 1, 1, 1, 10, 1)
+  parscale <- c(0.1, 0.1, 0.1, 0.1, 0.1, 1.0, 0.1)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -341,7 +348,7 @@ fitMultipleDSTP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms, 
+                 n = nTrials, maxParms = maxParms,
                  control = (parscale = parscale))
 
     if(fit$value < bestFit){
@@ -510,7 +517,7 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 
 
 #------------------------------------------------------------------------------
-#' Fit the DSTP model to human data with mutiple starting parmaeters with some
+#' Fit the DSTP model to human data with multiple starting parameters with some
 #' fixed parameters
 #'
 #' \code{fitMultipleDSTP_fixed} fits the DSTP model to a single experimental
@@ -698,14 +705,12 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
-  set.seed(as.numeric(Sys.time()))
 
-  # Run model to get incontruent RTs
+  # Run model to get incongruent RTs
   set.seed(42)
   modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
-  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,
