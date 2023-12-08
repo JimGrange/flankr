@@ -15,7 +15,6 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 //  double var = 0.01;
   double sdRand = sqrt(dt * var);
 
-
   //get the free parameters from the numeric vector parms
   double A = parms[0];  // correct response selection boundary
   double B = -parms[0]; // error response selection boundary
@@ -56,7 +55,7 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
   double j = 0.0; //to log number of diffusion steps
 
 
-  //##
+
   //start trial loop here
 
   for (int i=0; i<=nTrials - 1; i++){
@@ -82,8 +81,6 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
     //diffusion simulation starts here
     while((currEvidenceResp <= A) && (currEvidenceResp >= B)){
 
-      j++; //update diffusion step number
-
       randomIndex = rand() % muNoise.size();
 
       //set the correct drift rate
@@ -105,20 +102,22 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
         currEvidenceResp = currEvidenceResp + rsNoise[randomIndex];
       }
 
-        //update the stimulus selection drift rate
-        currEvidenceStim = currEvidenceStim + ssNoise[randomIndex];
+      //update the stimulus selection drift rate
+      currEvidenceStim = currEvidenceStim + ssNoise[randomIndex];
 
-        //has stimulus selection finished??
-        if(currEvidenceStim >= C){
-          whichStim = 1;
-          stimSelected = true;
-        }
+      //has stimulus selection finished??
+      if(currEvidenceStim >= C){
+        whichStim = 1;
+        stimSelected = true;
+       }
 
-        if(currEvidenceStim <= D){
-          whichStim = 2;
-          stimSelected = true;
-        }
+       if(currEvidenceStim <= D){
+         whichStim = 2;
+         stimSelected = true;
+       }
 
+       //update diffusion step number
+       j++;
 
     } // while loop ends here
 
@@ -134,10 +133,5 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
     }
 
   } // trial loop ends here
-
   return trialData;
-
 }
-
-
-

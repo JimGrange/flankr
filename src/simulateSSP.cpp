@@ -38,14 +38,10 @@ double dt, double var) {
 
 
   //declare trial-specific parameters
-  double sd_t = 0.0; //current sd of spotlight
-  double a_target = 0.0;
-  double a_flanker= 0.0;
   double p_target = 0.0;
   double p_flanker = 0.0;
   double mu_target = 0.0;
   double mu_flanker = 0.0;
-
 
   //get perceptual input for targets and flanker
   p_target = p;
@@ -56,13 +52,39 @@ double dt, double var) {
     p_flanker = -p_flanker;
   }
 
+
+  // pre-compute sd(t) vector, and from it the attentional areas
+  // over target and flankers
+  int m = 20000; // m needs to be larger than maximum expexted RT for the model
+  NumericVector sd_t_vec(m);
+  NumericVector a_target_vec(m);
+  NumericVector a_flanker_vec(m);
+  NumericVector mu_target_vec(m);
+  NumericVector mu_flanker_vec(m);
+
+  for(int t = 0; t < m; ++t) {
+    sd_t_vec[t] = sda - (rd * t);
+    if(sd_t_vec[t] <= 0.001) {
+      sd_t_vec[t] = 0.001;
+    }
+
+    // attentional spotlights
+    a_target_vec[t] = ::Rf_pnorm5(0.5, 0.0, sd_t_vec[t], 1, 0) - ::Rf_pnorm5(-0.5, 0.0, sd_t_vec[t], 1, 0);
+    a_flanker_vec[t] = ::Rf_pnorm5(10.0, 0.0, sd_t_vec[t], 1, 0) - ::Rf_pnorm5(0.5, 0.0, sd_t_vec[t], 1, 0);
+
+    // drift rate contributions from the target and the flankers
+    mu_target_vec[t] = (p_target * a_target_vec[t]) * dt;
+    mu_flanker_vec[t] = ((2 * p_flanker) * a_flanker_vec[t]) * dt;
+
+  }
+
+
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
 
   //////////////////////////////////////////////////////////////////////////////
   //start trial loop here
-
   for (int i=0; i<=nTrials - 1; i++){
 
     //keep track of the current evidence (response selection)
@@ -71,44 +93,24 @@ double dt, double var) {
     //reset counter to log how many steps taken in diffusion process
     t = 0.0;
 
-      //////////////////////////////////////
       //diffusion simulation starts here
       while((currEvidenceResp <= A) && (currEvidenceResp >= B)){
 
-        t++; //update diffusion step number
-
-        //calculate current sd of spotlight
-        sd_t = sda - (rd * t);
-        if(sd_t <= 0.001){ //clip min sd to 0.001
-          sd_t = 0.001;
-        }
-
-
-      //find area of spotlight over target and flanker
-      //:Rf_pnorm5(value, mean of dist., sd of dist., 1 = p<x, 0=log?)
-      a_target = ::Rf_pnorm5(0.5, 0.0, sd_t, 1, 0) - ::Rf_pnorm5(-0.5, 0.0, sd_t, 1, 0);
-      a_flanker = ::Rf_pnorm5(10.0, 0.0, sd_t, 1, 0) - ::Rf_pnorm5(0.5, 0.0, sd_t, 1, 0);
-  //      a_flanker = 2 * a_flanker;
-
-
-      //current evidence
-      mu_target = (p_target * a_target) * dt;
-      mu_flanker = ((2 * p_flanker) * a_flanker) * dt;
-
       //current drift rate
-      drift = mu_flanker + mu_target;
-        //drift = drift * dt;
+      drift = mu_flanker_vec[t] + mu_target_vec[t];
 
-        //get random noise
-        noise = ::Rf_rnorm(drift, sdRand);
+      //get random noise
+      noise = ::Rf_rnorm(drift, sdRand);
 
       //update the response selection random walk
       currEvidenceResp = currEvidenceResp + noise;
 
+      //update diffusion step number
+      t++;
+
       } // while loop ends here
 
    trialData(i, 0) = (t * dt) + tEr;
-
 
 
     if(currEvidenceResp >= A){
@@ -120,7 +122,5 @@ double dt, double var) {
       }
 
   } // trial loop ends here
-
      return trialData;
-
 }
