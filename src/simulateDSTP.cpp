@@ -2,7 +2,7 @@
 
 using namespace Rcpp;
 
-//' @export
+// @export
 // [[Rcpp::export]]
 
 NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
