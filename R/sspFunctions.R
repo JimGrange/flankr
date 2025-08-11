@@ -670,8 +670,6 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
 
 #------------------------------------------------------------------------------
 # Get the predicted proportions from the SSP model
-
-#'@export
 predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -680,13 +678,13 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getSSP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
@@ -707,7 +705,6 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-#'@export
 plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -716,14 +713,14 @@ plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getSSP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))

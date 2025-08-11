@@ -224,7 +224,6 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 #
 # Note that this function returns the proportion of error responses in relation
 # to ALL data (not just overall error rate).
-#' @export
 cafProportions <- function(data, quantiles = c(.25, .50, .75),
                            multipleSubjects = TRUE){
 
@@ -358,17 +357,11 @@ cafProportions <- function(data, quantiles = c(.25, .50, .75),
 
 
 
-
-
-
-
-
 #------------------------------------------------------------------------------
 ####THIS IS NOT CURRENTLY USED
 
 # Get model accuracy for each bin defined by human CAF input (each 25% of data
 # in human data, by default)
-#'@export
 getModelCAFs <- function(modelData, cafs){
 
   # Empty vector to store results in

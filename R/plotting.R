@@ -109,7 +109,8 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   parms <- modelFit$bestParameters
 
   # simulate the DSTP model with these parameters
-  modelData <- plotPredictionsDSTP(parms, nTrials,
+  modelData <- plotPredictionsDSTP(parms,
+                                   n = nTrials,
                                    propsForModel = humanProportions)
 
   # Find model proportion predictions for
@@ -290,7 +291,8 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   parms <- modelFit$bestParameters
 
   # simulate the DSTP model with these parameters
-  modelData <- plotPredictionsSSP(parms, nTrials,
+  modelData <- plotPredictionsSSP(parms,
+                                  n = nTrials,
                                   propsForModel = humanProportions)
 
   # Find model proportion predictions for

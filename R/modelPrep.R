@@ -7,7 +7,6 @@
 # A function to get human distributional bin proportions from data, given
 # desired CDF and CAF qauntile values. These values will be used by the model
 # during fitting.
-#' @export
 getHumanProps <- function(conditionData, cdfs, cafs){
 
 
@@ -80,8 +79,6 @@ getHumanProps <- function(conditionData, cdfs, cafs){
 # A function to get SINGLE human distributional bin proportions from data,
 # given desired CDF and CAF qauntile values. These values will be used by the
 # model during fitting.
-
-#' @export
 getHumanPropsSingle <- function(conditionData, cdfs, cafs){
 
 
@@ -161,8 +158,6 @@ getHumanPropsSingle <- function(conditionData, cdfs, cafs){
 # Get model's bin proportions for CDF of correct RT. This uses the human CDFs
 # as cut-offs. It then calculates the proportion found in each bin, and
 # a later function then compares this to the proportions in the human data.
-
-#'@export
 getCDFProps <- function(cdfs, modelData){
 
   # initialise vector to store proportions in
@@ -217,8 +212,6 @@ getCDFProps <- function(cdfs, modelData){
 # Get model's bin proportions for CAFs. This uses the CAF cutoff CDFs from the
 # human data, and finds the proportion of correct responses in each bin
 # predicted by the model.
-
-#'@export
 getCAFProps <- function(cdfs, modelData){
 
   # initialise vector to store proportions in

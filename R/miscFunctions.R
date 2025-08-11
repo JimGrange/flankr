@@ -1,6 +1,5 @@
 # ------------------------------------------------------------------------------
 # function so the user can get their data from a dialog box rather than code
-#' @export
 getData <- function(){
 
   data <- file.choose()
@@ -14,7 +13,6 @@ getData <- function(){
 
 # ------------------------------------------------------------------------------
 # get matrix of random starting parameters for DSTP model around fixed means
-#' @export
 getRandomParms <- function(startParms, varParms, maxParms, n){
 
   # initialise matrix

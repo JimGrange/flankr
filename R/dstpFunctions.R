@@ -58,11 +58,16 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
   trialData <- data.frame(trialData)
 
   # first generate congruent data by calling the C++ function
-  trialData[1:n, 1:2] <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
+  trialData[1:n, 1:2] <- getDSTP(parms,
+                                 trialType = 1,
+                                 nTrials = n,
+                                 dt, var)
   trialData[1:n, 3] <- "congruent"
 
   # now do incongruent data
-  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms, trialType = 2, nTrials = n,
+  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms,
+                                             trialType = 2,
+                                             nTrials = n,
                                              dt, var)
   trialData[(n + 1):(n * 2), 3] <- "incongruent"
 
@@ -697,8 +702,6 @@ fitMultipleDSTP_fixed <- function(data, conditionName = NULL,
 # Get the predicted proportions from the DSTP model.
 # This returns proportion per bin, not qunatiles
 # e.g., c(.1, .2, .2, .2, .2, 1) not c(.1, .3, .5, .7, .9)
-
-#'@export
 predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -707,13 +710,13 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incongruent RTs
   set.seed(42)
-  modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getDSTP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
@@ -733,7 +736,6 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-#'@export
 plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -742,14 +744,14 @@ plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01)
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getDSTP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getDSTP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getDSTP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
