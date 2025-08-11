@@ -1,5 +1,7 @@
-# flankr 1.1.0
-
+# flankr v1.1.0
 * Initial CRAN submission.
-* This is an update from version 1.0.0 which was published in Grange (2016). 
+* More efficient simulation---and therefore fitting--- of both the DSTP and 
+SSP models. 
 
+# flankr v1.0.0
+* Initial release (Github only)
