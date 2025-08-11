@@ -89,16 +89,15 @@ use their own plotting methods.
 # Assume that the model was just fit to the data contained in
 # \code{exampleData} (condition "present") and saved to the variable called
 # "fit", then we can obtain a plot of that fit by:
-
+\dontrun{
 plot <- plotFitDSTP(modelFit = fit, data = exampleData,
                     conditionName = "present")
 
 # We can also change the default CDF and CAF quantiles used, as well as the
 # number of trials used to simulate the fitted data.
-
 plot <- plotFitDSTP(modelFit = fit, data = exampleData,
                     conditioName = "present", cdfs = c(.2, .4, .6, .8),
                     cafs = c(.2, .4, .6, .8), nTrials = 500000)
-
+}
 
 }

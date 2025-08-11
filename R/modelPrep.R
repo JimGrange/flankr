@@ -7,7 +7,6 @@
 # A function to get human distributional bin proportions from data, given
 # desired CDF and CAF qauntile values. These values will be used by the model
 # during fitting.
-
 #' @export
 getHumanProps <- function(conditionData, cdfs, cafs){
 

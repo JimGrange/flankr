@@ -26,11 +26,14 @@
 #' generation state.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' # declare the parameters
 #' parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 #'
 #' # simulate the data
 #' modelData <- simulateSSP(parms, nTrials = 10000)
+#'}
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -127,11 +130,11 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
@@ -141,7 +144,7 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
 #'               cafs = cafs, nTrials = 100000)
-#'
+#'}
 #'
 #'@export
 fitSSP<- function(data, conditionName = NULL,
@@ -176,7 +179,7 @@ fitSSP<- function(data, conditionName = NULL,
   # perform the fit
   fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
                n = nTrials, maxParms = maxParms,
-               control = (parscale = parscale))
+               control = list(parscale = parscale))
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$par, 3)
@@ -266,11 +269,11 @@ fitSSP<- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
@@ -280,7 +283,7 @@ fitSSP<- function(data, conditionName = NULL,
 #'
 #' fit <- fitMultipleSSP(exampleData, conditionName = "present", cdfs = cdfs,
 #'                       cafs = cafs, nTrials = 100000)
-#'
+#'}
 #'
 #'@export
 fitMultipleSSP <- function(data, conditionName = NULL,
@@ -334,7 +337,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 
     fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
                  n = nTrials, maxParms = maxParms,
-                 control = (parscale = parscale))
+                 control = list(parscale = parscale))
 
     if(fit$value < bestFit){
       bestFit <- fit$value
@@ -423,20 +426,19 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
-#'
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitSSP_fixed(exampleData, conditionName = "present", parms = parms,
 #'                     fixed = fixed)
-#'
+#'}
 #'
 #'@export
 fitSSP_fixed <- function(data, conditionName = NULL,
@@ -566,20 +568,19 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
-#'
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitMultipleSSP_fixed(exampleData, conditionName = "present",
 #'                             parms = parms, fixed = fixed)
-#'
+#'}
 #'@export
 fitMultipleSSP_fixed <- function(data, conditionName = NULL,
                                  parms = c(0.050, 0.300, 0.400, 0.050, 1.500),

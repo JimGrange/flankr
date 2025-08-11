@@ -47,7 +47,7 @@ double dt, double var) {
   p_target = p;
   p_flanker = p;
 
-  //flip the sign if current trial is incongruent
+  // flip the sign if current trial is incongruent
   if(trialType == 2){
     p_flanker = -p_flanker;
   }

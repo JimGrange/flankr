@@ -27,10 +27,12 @@
 #'
 #' @examples
 #' # declare the parameters
+#' \dontrun{
 #' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 #'
 #' # simulate the data
 #' modelData <- simulateDSTP(parms, nTrials = 10000)
+#'}
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -130,15 +132,16 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
 #'
+#'
 #' fit <- fitDSTP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using new starting parameters.
-#'
 #' newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
 #' fit <- fitDSTP(exampleData, conditionName = "present", parms = newParms)
 #'
@@ -149,7 +152,7 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' fit <- fitDSTP(exampleData, conditionName = "present", cdfs = cdfs,
 #'                cafs = cafs, nTrials = 100000)
-#'
+#'}
 #'
 #'@export
 fitDSTP <- function(data, conditionName = NULL,
@@ -186,7 +189,7 @@ fitDSTP <- function(data, conditionName = NULL,
                humanProportions = humanProportions,
                n = nTrials,
                maxParms = maxParms,
-               control = (parscale = parscale))
+               control = list(parscale = parscale))
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$par, 3)
@@ -278,19 +281,18 @@ fitDSTP <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using new starting parameters, and new variance.
-#'
 #' newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
 #' fit <- fitMultipleDSTP(exampleData, conditionName = "present",
 #'        parms = newParms, var = 20)
-#'
+#'}
 #'
 #'@export
 fitMultipleDSTP <- function(data,
@@ -347,9 +349,11 @@ fitMultipleDSTP <- function(data,
     # get the current run's parameters
     currParms <- parameters[i, ]
 
-    fit <- optim(currParms, fn = fitFunctionDSTP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms,
-                 control = (parscale = parscale))
+    fit <- optim(currParms, fn = fitFunctionDSTP,
+                 humanProportions = humanProportions,
+                 n = nTrials,
+                 maxParms = maxParms,
+                 control = list(parscale = parscale))
 
     if(fit$value < bestFit){
       bestFit <- fit$value
@@ -444,19 +448,19 @@ fitMultipleDSTP <- function(data,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitDSTP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
-#'
 #' parms <- c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3, 0.24)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitDSTP_fixed(exampleData, conditionName = "present", parms = parms,
 #'                      fixed = fixed)
+#'}
 #'
 #'@export
 fitDSTP_fixed <- function(data, conditionName = NULL,
@@ -587,11 +591,11 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model whilst fixing the first parameter (A)
@@ -600,6 +604,7 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitMultipleDSTP_fixed(exampleData, conditionName = "present",
 #'                              parms = parms, fixed = fixed)
+#'}
 #'
 #'@export
 fitMultipleDSTP_fixed <- function(data, conditionName = NULL,

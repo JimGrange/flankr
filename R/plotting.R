@@ -61,19 +61,17 @@
 #'# Assume that the model was just fit to the data contained in
 #'# \code{exampleData} (condition "present") and saved to the variable called
 #'# "fit", then we can obtain a plot of that fit by:
-#'
+#' \dontrun{
 #' plot <- plotFitDSTP(modelFit = fit, data = exampleData,
 #'                     conditionName = "present")
 #'
 #'# We can also change the default CDF and CAF quantiles used, as well as the
 #'# number of trials used to simulate the fitted data.
-#'
 #' plot <- plotFitDSTP(modelFit = fit, data = exampleData,
 #'                     conditioName = "present", cdfs = c(.2, .4, .6, .8),
 #'                     cafs = c(.2, .4, .6, .8), nTrials = 500000)
+#'}
 #'
-#'
-
 #'@export
 plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
                         cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
@@ -248,6 +246,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 #'# \code{exampleData} (condition "present") and saved to the variable called
 #'# "fit", then we can obtain a plot of that fit by:
 #'
+#' \dontrun{
 #' plot <- plotFitSSP(modelFit = fit, data = exampleData,
 #'                    conditionName = "present")
 #'
@@ -257,9 +256,8 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 #' plot <- plotFitSSP(modelFit = fit, data = exampleData,
 #'                    conditioName = "present", cdfs = c(.2, .4, .6, .8),
 #'                    cafs = c(.2, .4, .6, .8), nTrials = 500000)
+#'}
 #'
-#'
-
 #'@export
 plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
                        cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),

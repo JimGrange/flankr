@@ -36,12 +36,13 @@
 #' ### example of multiple subjects and default quantile values
 #'
 #' # only select the congruent data from the example data set
+#' \dontrun{
 #' data <- subset(exampleData, exampleData$congruency == "congruent")
 #'
 #' # get the CDFs
 #' getCAF <- caf(data)
 #'
-#' ### example of single subject and different quantile values
+#' #-- example of single subject and different quantile values
 #'
 #' # only select subject 1 from the example data. Also, select only the
 #' # "absent" condition and incongruent trials. This is an example when working
@@ -55,7 +56,7 @@
 #'
 #' # get the CAFs
 #' getCAF <- caf(data, quantiles = newQuantiles, multipleSubjects = FALSE)
-#'
+#'}
 
 #' @export
 caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){

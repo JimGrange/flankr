@@ -82,18 +82,17 @@ data. Multiple starting points of parameters are used.
 }
 \examples{
 # Load the example data the comes with the \code{flankr} package
+\dontrun{
 data(exampleData)
 
 # Fit the model to the condition "present" in the example data set using
 # the default settings in the model.
-
 fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
 
 # Fit the model using new starting parameters, and new variance.
-
 newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
 fit <- fitMultipleDSTP(exampleData, conditionName = "present",
        parms = newParms, var = 20)
-
+}
 
 }

@@ -39,10 +39,13 @@ predictions for a set of parameter values when trying to find the best-
 fitting values.
 }
 \examples{
+
+\dontrun{
 # declare the parameters
 parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 
 # simulate the data
 modelData <- simulateSSP(parms, nTrials = 10000)
+}
 
 }
