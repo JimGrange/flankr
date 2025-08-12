@@ -40,8 +40,6 @@ double dt, double var) {
   //declare trial-specific parameters
   double p_target = 0.0;
   double p_flanker = 0.0;
-  double mu_target = 0.0;
-  double mu_flanker = 0.0;
 
   //get perceptual input for targets and flanker
   p_target = p;
