@@ -1,8 +1,6 @@
-###
-# Functions to run the DSTP model itself. This includes functions to simulate
-# data from the DSTP model, as well as to run the fitting routine.
 
-#------------------------------------------------------------------------------
+# simulate DSTP -----------------------------------------------------------
+
 #' Obtain simulated response times and accuracy from the DSTP model
 #'
 #' \code{simulateDSTP} generates synthetic data from the DSTP model in the
@@ -75,12 +73,10 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
   return(trialData);
 
 }  # end of function
-#------------------------------------------------------------------------------
 
 
 
-
-#------------------------------------------------------------------------------
+# fit DSTP ----------------------------------------------------------------
 #' Fit the DSTP model to human data
 #'
 #' \code{fitDSTP} fits the DSTP model to a single experimental condition of
@@ -217,12 +213,10 @@ fitDSTP <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-
-#------------------------------------------------------------------------------
+# fit DSTP (multiple) -----------------------------------------------------
 #' Fit the DSTP model to human data with mutiple starting parmaeters
 #'
 #' \code{fitMultipleDSTP} fits the DSTP model to a single experimental condition
@@ -385,11 +379,11 @@ fitMultipleDSTP <- function(data,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+# fit DSTP (fixed) --------------------------------------------------------
+
 #' Fit the DSTP model to human data with some fixed parameters
 #'
 #' \code{fitDSTP_fixed} fits the DSTP model to a single experimental condition
@@ -521,11 +515,12 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# fit DSPT (fixed, multiple) ----------------------------------------------
+
 #' Fit the DSTP model to human data with multiple starting parameters with some
 #' fixed parameters
 #'
@@ -694,11 +689,12 @@ fitMultipleDSTP_fixed <- function(data, conditionName = NULL,
   return(modelFit)
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# predicted proportions DSTP ----------------------------------------------
+
 # Get the predicted proportions from the DSTP model.
 # This returns proportion per bin, not qunatiles
 # e.g., c(.1, .2, .2, .2, .2, 1) not c(.1, .3, .5, .7, .9)
@@ -728,15 +724,18 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   return(modelProps)
 
 }
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# plot predictions --------------------------------------------------------
+
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+plotPredictionsDSTP <- function(parms, n,
+                                propsForModel, dt = 0.001,
+                                var = 0.01){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
@@ -763,4 +762,4 @@ plotPredictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01)
 
   return(modelProps)
 }
-#------------------------------------------------------------------------------
+
