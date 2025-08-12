@@ -1,8 +1,7 @@
-###
-# functions for finding response time conditional accuracy functions (CAFs)
 
 
-#------------------------------------------------------------------------------
+# get CAF -----------------------------------------------------------------
+
 #' Find conditional accuracy function (CAF) values for a single condition
 #'
 #' \code{caf} takes a data frame for a single experimental condition and
@@ -61,7 +60,7 @@
 #' @export
 caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 
-  # single participant---------------------------------------------------------
+  #--- single participant
   # perform simple CAF calculation if only one participant is being passed
   # to the function
   if(multipleSubjects == FALSE){
@@ -72,7 +71,7 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
     # get the RT values for quantile cut-offs
     cdfs <- quantile(data$rt, quantiles)
 
-    # calculate mean RT and proportion error for each bin----------------------
+    #--- calculate mean RT and proportion error for each bin
     for(i in 1:length(quantiles)){
 
       ## do the first one manually
@@ -127,7 +126,7 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
   } #end of single-subject sub-function
 
 
-  #multiple subjects-----------------------------------------------------------
+  #--- multiple subjects
   if(multipleSubjects == TRUE){
 
     # what are the unique subject numbers?
@@ -150,7 +149,7 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
       subCDFs <- quantile(subData$rt, quantiles)
 
 
-        # calculate mean RT and proportion error for each bin----------------------
+        #--- calculate mean RT and proportion error for each bin
         for(i in 1:length(quantiles)){
 
           ## do the first one manually
@@ -212,13 +211,13 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
   } # end of multiple subjects loop
 
 
-} # end of function
-#------------------------------------------------------------------------------
+}
 
 
 
 
-#------------------------------------------------------------------------------
+# CAF proportions ---------------------------------------------------------
+
 # Calculate the proportion of error responses in each CAF bin for a single
 # condition.
 #
@@ -227,7 +226,7 @@ caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){
 cafProportions <- function(data, quantiles = c(.25, .50, .75),
                            multipleSubjects = TRUE){
 
-  # single participant---------------------------------------------------------
+  #--- single participant
   # perform simple CAF calculation if only one participant is being passed
   # to the function
   if(multipleSubjects == FALSE){
@@ -278,7 +277,7 @@ cafProportions <- function(data, quantiles = c(.25, .50, .75),
   } #end of single-subject sub-function
 
 
-  #multiple subjects-----------------------------------------------------------
+  #--- multiple subjects
   if(multipleSubjects == TRUE){
 
     # what are the unique subject numbers?
@@ -301,7 +300,7 @@ cafProportions <- function(data, quantiles = c(.25, .50, .75),
       subCDFs <- quantile(subData$rt, quantiles)
 
 
-      # calculate mean RT and proportion error for each bin----------------------
+      #--- calculate mean RT and proportion error for each bin
       for(j in 1:(length(quantiles) + 1)){
 
         ## do the first one manually
@@ -351,13 +350,14 @@ cafProportions <- function(data, quantiles = c(.25, .50, .75),
   } # end of multiple subjects loop
 
 
-} # end of function
-#------------------------------------------------------------------------------
+}
 
 
 
 
-#------------------------------------------------------------------------------
+
+# get model CAFs ----------------------------------------------------------
+
 ####THIS IS NOT CURRENTLY USED
 
 # Get model accuracy for each bin defined by human CAF input (each 25% of data
@@ -366,8 +366,6 @@ getModelCAFs <- function(modelData, cafs){
 
   # Empty vector to store results in
   props <- numeric(length(cafs) + 1)
-
-
 
   # loop across each CAF
   for(i in 1:length(cafs)){
@@ -398,4 +396,3 @@ getModelCAFs <- function(modelData, cafs){
   return(props)
 
 }
-#------------------------------------------------------------------------------

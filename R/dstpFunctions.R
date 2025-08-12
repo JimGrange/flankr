@@ -330,7 +330,7 @@ fitMultipleDSTP <- function(data,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."
@@ -639,7 +639,7 @@ fitMultipleDSTP_fixed <- function(data, conditionName = NULL,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."

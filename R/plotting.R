@@ -1,7 +1,7 @@
-###
-# Plotting functions
 
-#------------------------------------------------------------------------------
+
+# plot fit (DSTP) ---------------------------------------------------------
+
 # Plot the fit of the DSTP model
 
 #'Plot the fit of the DSTP model to human data.
@@ -82,7 +82,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 
 
 
-  # get the desired condition's data-------------------------------------------
+  #--- get the desired condition's data
   if(is.null(conditionName)){
     conditionData <- data
   } else{
@@ -103,7 +103,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 
 
 
-  # get model proportions by running the model---------------------------------
+  #--- get model proportions by running the model
 
   # First, what were the best-fitting parameters?
   parms <- modelFit$bestParameters
@@ -122,7 +122,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   modelInconCAF <- modelData$modelIncongruentCAF
 
 
-  # Generate the return data to go back to the user ---------------------------
+  #--- Generate the return data to go back to the user
   # Pass the human proportions to an object with a shorter name to save typing
   x <- humanProportions
   returnData <- list(cdfs = cdfs,
@@ -139,7 +139,7 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
                      modelIncongruentCAFs = modelInconCAF)
 
 
-  # Plot the CDFs--------------------------------------------------------------
+  #--- Plot the CDFs
 
   # first, find the response time boundaries to ensure plots are in bounds
   minRT <- min(humanProportions$congruentCDFs, humanProportions$incongruentCDFs)
@@ -157,18 +157,22 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   lines(humanProportions$congruentCDFs, modelConCDF, type = "l", lty = 1)
 
 
-  # Plot the CAFs--------------------------------------------------------------
-  minRT <- min(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
-  maxRT <- max(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
+  #--- Plot the CAFs
+  minRT <- min(humanProportions$congruentCAFsRT,
+               humanProportions$incongruentCAFsRT)
+  maxRT <- max(humanProportions$congruentCAFsRT,
+               humanProportions$incongruentCAFsRT)
 
   # Incongruent data
-  plot(x = humanProportions$incongruentCAFsRT, y = humanProportions$incongruentCAFsError,
+  plot(x = humanProportions$incongruentCAFsRT,
+       y = humanProportions$incongruentCAFsError,
        xlab = "Response Time", ylab = "Accuracy", pch = 1, ylim = c(0.5, 1),
        xlim = c(minRT, maxRT))
   lines(humanProportions$incongruentCAFsRT, modelInconCAF, type = "l", lty = 2)
 
   # Congruent data
-  points(x = humanProportions$congruentCAFsRT, y = humanProportions$congruentCAFsError,
+  points(x = humanProportions$congruentCAFsRT,
+         y = humanProportions$congruentCAFsError,
          pch = 19)
   lines(humanProportions$congruentCAFsRT, modelConCAF, type = "l", lty = 1)
 
@@ -184,11 +188,11 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   return(returnData)
 
 }
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# plot fit (SSP) ----------------------------------------------------------
 #'Plot the fit of the SSP model to human data.
 #'
 #'\code{plotFitSSP} will plot the fit of the model to human distributional
@@ -269,7 +273,7 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 
 
 
-  # get the desired condition's data-------------------------------------------
+  #--- get the desired condition's data
   if(is.null(conditionName)){
     conditionData <- data
   } else{
@@ -285,7 +289,7 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
     humanProportions <- getHumanPropsSingle(conditionData, cdfs, cafs)
   }
 
-  # get model proportions by running the model---------------------------------
+  #--- get model proportions by running the model
 
   # First, what were the best-fitting parameters?
   parms <- modelFit$bestParameters
@@ -304,7 +308,7 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   modelInconCAF <- modelData$modelIncongruentCAF
 
 
-  # Generate the return data to go back to the user ---------------------------
+  #--- Generate the return data to go back to the user
   # Pass the human proportions to an object with a shorter name to save typing
   x <- humanProportions
   returnData <- list(cdfs = cdfs,
@@ -322,11 +326,13 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 
 
 
-  # Plot the CDFs--------------------------------------------------------------
+  #--- Plot the CDFs
 
   # first, find the response time boundaries to ensure plots are in bounds
-  minRT <- min(humanProportions$congruentCDFs, humanProportions$incongruentCDFs)
-  maxRT <- max(humanProportions$congruentCDFs, humanProportions$incongruentCDFs)
+  minRT <- min(humanProportions$congruentCDFs,
+               humanProportions$incongruentCDFs)
+  maxRT <- max(humanProportions$congruentCDFs,
+               humanProportions$incongruentCDFs)
 
   # Incongruent human first
   plot(x = humanProportions$incongruentCDFs, y = cdfs, xlab = "Response Time",
@@ -340,18 +346,22 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   lines(humanProportions$congruentCDFs, modelConCDF, type = "l", lty = 1)
 
 
-  # Plot the CAFs--------------------------------------------------------------
-  minRT <- min(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
-  maxRT <- max(humanProportions$congruentCAFsRT, humanProportions$incongruentCAFsRT)
+  #--- Plot the CAFs
+  minRT <- min(humanProportions$congruentCAFsRT,
+               humanProportions$incongruentCAFsRT)
+  maxRT <- max(humanProportions$congruentCAFsRT,
+               humanProportions$incongruentCAFsRT)
 
   # Incongruent data
-  plot(x = humanProportions$incongruentCAFsRT, y = humanProportions$incongruentCAFsError,
+  plot(x = humanProportions$incongruentCAFsRT,
+       y = humanProportions$incongruentCAFsError,
        xlab = "Response Time", ylab = "Accuracy", pch = 1, ylim = c(0.5, 1),
        xlim = c(minRT, maxRT))
   lines(humanProportions$incongruentCAFsRT, modelInconCAF, type = "l", lty = 2)
 
   # Congruent data
-  points(x = humanProportions$congruentCAFsRT, y = humanProportions$congruentCAFsError,
+  points(x = humanProportions$congruentCAFsRT,
+         y = humanProportions$congruentCAFsError,
          pch = 19)
   lines(humanProportions$congruentCAFsRT, modelConCAF, type = "l", lty = 1)
 
@@ -367,4 +377,4 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   return(returnData)
 
 }
-#------------------------------------------------------------------------------
+

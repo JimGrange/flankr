@@ -1,8 +1,7 @@
-###
-# Functions to run the SSP model itself. This includes functions to simulate
-# data from the SSP model, as well as to run the fitting routine.
 
-#------------------------------------------------------------------------------
+
+# simulate SSP ------------------------------------------------------------
+
 #' Obtain simulated response times and accuracy from the SSP model
 #'
 #' \code{simulateSSP} generates synthetic data from the DSTP model in the
@@ -70,10 +69,12 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
   return(trialData);
 
 }  # end of function
-#------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------
+
+# fit SSP -----------------------------------------------------------------
+
+
 #' Fit the SSP model to human data
 #'
 #' \code{fitSSP} fits the SSP model to a single experimental condition of
@@ -202,11 +203,11 @@ fitSSP<- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+# fit SSP (multiple) ------------------------------------------------------
+
 #' Fit the SSP model to human data with multiple starting parameters
 #'
 #' \code{fitSSPMultiple} fits the SSP model to a single experimental condition
@@ -317,7 +318,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."
@@ -359,11 +360,12 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# fit SSP (fixed) ---------------------------------------------------------
+
 #' Fit the SSP model to human data with some fixed parameters
 #'
 #' \code{fitSSP_fixed} fits the SSP model to a single experimental condition of
@@ -493,12 +495,12 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
 
-#------------------------------------------------------------------------------
+# fit SSP (multiple, fixed) -----------------------------------------------
+
 #' Fit the SSP model to human data with mutiple starting parmaeters with some
 #' fixed parameters
 #'
@@ -613,7 +615,7 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."
@@ -663,12 +665,13 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
   return(modelFit)
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
 
-#------------------------------------------------------------------------------
+
+# predicted proportions SSP -----------------------------------------------
+
 # Get the predicted proportions from the SSP model
 predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
@@ -697,11 +700,13 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   return(modelProps)
 
 }
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# plot predictions  -------------------------------------------------------
+
+
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
@@ -732,4 +737,4 @@ plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   return(modelProps)
 }
-#------------------------------------------------------------------------------
+

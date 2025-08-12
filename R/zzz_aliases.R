@@ -51,3 +51,17 @@ fit_ssp_fixed <- fitSSP_fixed
 #' @rdname fitMultipleSSP_fixed
 #' @export
 fit_multiple_ssp_fixed <- fitMultipleSSP_fixed
+
+
+
+
+# snake case plotting -----------------------------------------------------
+
+#' @rdname plotFitDSTP
+#' @export
+plot_fit_dstp <- plotFitDSTP
+
+#' @rdname plotFitSSP
+#' @export
+plot_fit_ssp <- plotFitSSP
+

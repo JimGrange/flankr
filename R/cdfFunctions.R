@@ -1,8 +1,8 @@
-###
-# functions relating to cumulative distribution functions (CDFs)
 
 
-#------------------------------------------------------------------------------
+# get CDFs ----------------------------------------------------------------
+
+
 #' Find cumulative distribution function (CDF) values for a single condition
 #'
 #' \code{cdf} takes a data frame for a single experimental condition and
@@ -134,11 +134,10 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
   return(averageCDF)
 
 }
-#------------------------------------------------------------------------------
 
 
+# CDF bin size ------------------------------------------------------------
 
-#------------------------------------------------------------------------------
 # Given a set of quantiles for CDFs, return the proportion of data within each
 # bin. For example, the CDFs c(.1, .3, .5, .7, .9) have proportions of
 # c(.1, .2, .2, .2, .2, .1). This is required because the model will try to
@@ -173,10 +172,11 @@ cdfBinsize <- function(cdfs){
   return(props)
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------
+
+# opposite of cdfBinsize --------------------------------------------------
+
 # The opposite of cdfBinsize. Given a set of proportions, work out the CDFs
 # For example, the proportions c(.1, .2, .2, .2, .2, .1) have CDFs of
 # c(.1, .3, .5, .7, .9).
@@ -190,11 +190,11 @@ binsizeCDFs <- function(proportions){
   }
   return(cdfs)
 }
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+# CDF proportions ---------------------------------------------------------
+
 # Calculate the proportion of correct responses in each cdf bin for a given
 # condition. Takes two parameters: data (the data), and correctProportions; the
 # latter is a vector of proportions for each bin if accuracy were 100%.
@@ -254,13 +254,12 @@ cdfProportions <- function(data, correctProportions, multipleSubjects = TRUE){
   return(allProportions)
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
 
+# get model CDFs ----------------------------------------------------------
 
-#------------------------------------------------------------------------------
 # Get model proportions from human CDFs (the RTs, not proportions).
 # Returns proportions
 getModelCDFs <- function(modelData, cdfs){
@@ -282,9 +281,4 @@ getModelCDFs <- function(modelData, cdfs){
   return(props)
 
 }
-#------------------------------------------------------------------------------
-
-
-
-
 
