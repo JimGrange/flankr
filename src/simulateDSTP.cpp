@@ -2,7 +2,7 @@
 
 using namespace Rcpp;
 
-//' @export
+// @export
 // [[Rcpp::export]]
 
 NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
@@ -15,39 +15,31 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 //  double var = 0.01;
   double sdRand = sqrt(dt * var);
 
-
   //get the free parameters from the numeric vector parms
-  double A; //correct response selection boundary
-    A = parms[0];
-   double B; //error response selection boundary
-     B = -parms[0];
-  double C; //target stimulus selection boundary
-    C = parms[1];
-   double D; //flanker stimulus selection boundary
-     D = -parms[1];
-  double muTa; //drift for target
-    muTa = parms[2] * dt;
-  double muFl; //drift for flanker
-    muFl = parms[3] * dt;
-  double muSS; //drift for stimulus selection
-     muSS = parms[4] * dt;
-  double muRS2; //drift for second stage of response selection
-    muRS2 = parms[5] * dt;
-  double tEr; //non-decision time
-    tEr = parms[6];
+  double A = parms[0];  // correct response selection boundary
+  double B = -parms[0]; // error response selection boundary
+  double C = parms[1];  // target stimulus selection boundary
+  double D = -parms[1]; // flanker stimulus selection boundary
+  double muTa = parms[2] * dt; // drift for target
+  double muFl = parms[3] * dt; // drift for flanker
+  double muSS = parms[4] * dt; // drift for stimulus selection
+  double muRS2 = parms[5] * dt; // drift for second stage of response selection
+  double tEr = parms[6];       // non-decision time
 
-    //declare random number variable for noise
-    NumericVector muNoise_cong;
-    NumericVector muNoise_incong;
-    NumericVector rsNoise;
-    NumericVector ssNoise;
-       muNoise_cong = rnorm(100000, (muTa + muFl), sdRand);
-       muNoise_incong = rnorm(100000, (muTa + -muFl), sdRand);
-       rsNoise = rnorm(100000, muRS2, sdRand);
-       ssNoise = rnorm(100000, muSS, sdRand);
+
+  //declare random number variables for noise
+  NumericVector muNoise;
+  if(trialType == 1){
+    muNoise = rnorm(10000, (muTa + muFl), sdRand);
+  } else {
+    muNoise = rnorm(10000, (muTa + -muFl), sdRand);
+  }
+
+  NumericVector rsNoise = rnorm(10000, muRS2, sdRand);
+  NumericVector ssNoise = rnorm(10000, muSS, sdRand);
 
   int randomIndex;
-      srand (1);
+  srand (1);
 
   //set empty matrix to store trial data
   int nRow = nTrials; //first set number of rows
@@ -55,18 +47,15 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 
   //initialise trial flags etc. for whether certain processes have finished
   //during diffusion
-  bool stimSelected; //has stimulus been selected?
-    stimSelected = false;
+  bool stimSelected = false; //has stimulus been selected?
+
   int whichStim; //to flag whether target (1) or flanker (2) has been selected
-  double currEvidenceResp; //keep track of evidence (response selection)
-    currEvidenceResp = 0.0;
-  double currEvidenceStim; //keep track of evidence (stimulus selection)
-    currEvidenceStim = 0.0;
-  double j; //to log number of diffusion steps
-    j = 0.0;
+  double currEvidenceResp = 0.0; //keep track of evidence (response selection)
+  double currEvidenceStim = 0.0; //keep track of evidence (stimulus selection)
+  double j = 0.0; //to log number of diffusion steps
 
 
-  //##
+
   //start trial loop here
 
   for (int i=0; i<=nTrials - 1; i++){
@@ -90,23 +79,15 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
 
     //##
     //diffusion simulation starts here
-
     while((currEvidenceResp <= A) && (currEvidenceResp >= B)){
 
-      randomIndex = rand() % muNoise_incong.size();
-
-      j = j + 1.0; //update diffusion step number
+      randomIndex = rand() % muNoise.size();
 
       //set the correct drift rate
       if (stimSelected == false){
-        if(trialType == 2){ //if trialType is incongruent
-          currEvidenceResp = currEvidenceResp + muNoise_incong[randomIndex];
-        }
-        if(trialType == 1){ //if trialType is congruent
-          currEvidenceResp = currEvidenceResp + muNoise_cong[randomIndex];
+        currEvidenceResp = currEvidenceResp + muNoise[randomIndex];
         }
 
-      }
 
       if((stimSelected == true) && (trialType == 2)){
         if(whichStim == 1){
@@ -121,20 +102,22 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
         currEvidenceResp = currEvidenceResp + rsNoise[randomIndex];
       }
 
-        //update the stimulus selection drift rate
-        currEvidenceStim = currEvidenceStim + ssNoise[randomIndex];
+      //update the stimulus selection drift rate
+      currEvidenceStim = currEvidenceStim + ssNoise[randomIndex];
 
-        //has stimulus selection finished??
-        if(currEvidenceStim >= C){
-          whichStim = 1;
-          stimSelected = true;
-        }
+      //has stimulus selection finished??
+      if(currEvidenceStim >= C){
+        whichStim = 1;
+        stimSelected = true;
+       }
 
-        if(currEvidenceStim <= D){
-          whichStim = 2;
-          stimSelected = true;
-        }
+       if(currEvidenceStim <= D){
+         whichStim = 2;
+         stimSelected = true;
+       }
 
+       //update diffusion step number
+       j++;
 
     } // while loop ends here
 
@@ -150,10 +133,5 @@ NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials,
     }
 
   } // trial loop ends here
-
   return trialData;
-
 }
-
-
-

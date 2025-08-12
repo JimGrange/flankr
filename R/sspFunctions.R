@@ -1,8 +1,7 @@
-###
-# Functions to run the SSP model itself. This includes functions to simulate
-# data from the SSP model, as well as to run the fitting routine.
 
-#------------------------------------------------------------------------------
+
+# simulate SSP ------------------------------------------------------------
+
 #' Obtain simulated response times and accuracy from the SSP model
 #'
 #' \code{simulateSSP} generates synthetic data from the DSTP model in the
@@ -26,11 +25,14 @@
 #' generation state.
 #'
 #' @examples
+#'
+#' \dontrun{
 #' # declare the parameters
 #' parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 #'
 #' # simulate the data
 #' modelData <- simulateSSP(parms, nTrials = 10000)
+#'}
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -67,10 +69,12 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
   return(trialData);
 
 }  # end of function
-#------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------
+
+# fit SSP -----------------------------------------------------------------
+
+
 #' Fit the SSP model to human data
 #'
 #' \code{fitSSP} fits the SSP model to a single experimental condition of
@@ -127,11 +131,11 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
@@ -141,7 +145,7 @@ simulateSSP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 #'
 #' fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
 #'               cafs = cafs, nTrials = 100000)
-#'
+#'}
 #'
 #'@export
 fitSSP<- function(data, conditionName = NULL,
@@ -152,8 +156,8 @@ fitSSP<- function(data, conditionName = NULL,
 
 
   # declare the scaling on the parameters
-  parscale <- c(1, 10, 10, 1, 100)
-  
+  parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
+
   # get the desired condition's data
   if(is.null(conditionName)){
     conditionData <- data
@@ -175,8 +179,8 @@ fitSSP<- function(data, conditionName = NULL,
 
   # perform the fit
   fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms, 
-               control = (parscale = parscale))
+               n = nTrials, maxParms = maxParms,
+               control = list(parscale = parscale))
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$par, 3)
@@ -199,11 +203,11 @@ fitSSP<- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+# fit SSP (multiple) ------------------------------------------------------
+
 #' Fit the SSP model to human data with multiple starting parameters
 #'
 #' \code{fitSSPMultiple} fits the SSP model to a single experimental condition
@@ -266,11 +270,11 @@ fitSSP<- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fit the model using different CDF and CAF values, and 100,000 trials per
@@ -280,7 +284,7 @@ fitSSP<- function(data, conditionName = NULL,
 #'
 #' fit <- fitMultipleSSP(exampleData, conditionName = "present", cdfs = cdfs,
 #'                       cafs = cafs, nTrials = 100000)
-#'
+#'}
 #'
 #'@export
 fitMultipleSSP <- function(data, conditionName = NULL,
@@ -291,7 +295,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
                            multipleSubjects = TRUE){
 
   # declare the scaling on the parameters
-  parscale <- c(1, 10, 10, 1, 100)
+  parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -314,7 +318,7 @@ fitMultipleSSP <- function(data, conditionName = NULL,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."
@@ -333,8 +337,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
     currParms <- parameters[i, ]
 
     fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms, 
-                 control = (parscale = parscale))
+                 n = nTrials, maxParms = maxParms,
+                 control = list(parscale = parscale))
 
     if(fit$value < bestFit){
       bestFit <- fit$value
@@ -356,11 +360,12 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# fit SSP (fixed) ---------------------------------------------------------
+
 #' Fit the SSP model to human data with some fixed parameters
 #'
 #' \code{fitSSP_fixed} fits the SSP model to a single experimental condition of
@@ -423,20 +428,19 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
-#'
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitSSP_fixed(exampleData, conditionName = "present", parms = parms,
 #'                     fixed = fixed)
-#'
+#'}
 #'
 #'@export
 fitSSP_fixed <- function(data, conditionName = NULL,
@@ -491,12 +495,12 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
 
-#------------------------------------------------------------------------------
+# fit SSP (multiple, fixed) -----------------------------------------------
+
 #' Fit the SSP model to human data with mutiple starting parmaeters with some
 #' fixed parameters
 #'
@@ -566,20 +570,19 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
+#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
 #' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
-#'
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
 #' fit <- fitMultipleSSP_fixed(exampleData, conditionName = "present",
 #'                             parms = parms, fixed = fixed)
-#'
+#'}
 #'@export
 fitMultipleSSP_fixed <- function(data, conditionName = NULL,
                                  parms = c(0.050, 0.300, 0.400, 0.050, 1.500),
@@ -612,7 +615,7 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
   varParms <- (parms/ 100) * var
   parameters <- getRandomParms(parms, varParms, maxParms, nParms)
 
-  #-------------
+  #---
   # Start the optimisation
 
   modelStart <- "Model Fit Running. Please Wait..."
@@ -662,15 +665,14 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
   return(modelFit)
 
 } # end of function
-#------------------------------------------------------------------------------
 
 
 
 
-#------------------------------------------------------------------------------
+
+# predicted proportions SSP -----------------------------------------------
+
 # Get the predicted proportions from the SSP model
-
-#'@export
 predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -679,17 +681,15 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
-  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getSSP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
-  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,
@@ -700,15 +700,16 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   return(modelProps)
 
 }
-#------------------------------------------------------------------------------
 
 
 
-#------------------------------------------------------------------------------
+
+# plot predictions  -------------------------------------------------------
+
+
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-#'@export
 plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # parms = parameters for the model run
@@ -717,14 +718,14 @@ plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getSSP(parms, trialType = 1, n = n, dt, var)
+  modelCon <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getSSP(parms, trialType = 2, n = n, dt, var)
+  modelIncon <- getSSP(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
@@ -736,4 +737,4 @@ plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   return(modelProps)
 }
-#------------------------------------------------------------------------------
+

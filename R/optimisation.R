@@ -3,7 +3,6 @@
 
 #------------------------------------------------------------------------------
 # Fit function for the DSTP model
-#'@export
 fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
 
@@ -54,7 +53,6 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
 #------------------------------------------------------------------------------
 # Fit function for the SSP model
-#'@export
 fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
 
 
@@ -108,7 +106,6 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
 # Code modified from the "optifix" function originally written by Barry
 # Rowlingson:
 # (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
-#'@export
 optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
 
   # which parameters are fixed/free?
@@ -146,7 +143,6 @@ optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
 # Code modified from the "optifix" function originally written by Barry
 # Rowlingson:
 # (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
-#'@export
 optimFix_SSP <- function(parms, fixed, humanProportions, n, maxParms){
 
   # which parameters are fixed/free?
@@ -181,9 +177,7 @@ optimFix_SSP <- function(parms, fixed, humanProportions, n, maxParms){
 
 #------------------------------------------------------------------------------
 # BIC for binned data
-#'@export
 bBIC <- function(humanProportions, model, parms, nTrials){
-
 
   n = nTrials
 
@@ -245,7 +239,6 @@ bBIC <- function(humanProportions, model, parms, nTrials){
 
 #------------------------------------------------------------------------------
 # BIC for binned data with fixed model parameters
-#'@export
 bBIC_fixed <- function(humanProportions, model, parms, fixed, nTrials){
 
 
