@@ -1,3 +1,6 @@
+# flankr v1.1.0.9000 (development version)
+
+---
 # flankr v1.1.0
 * More efficient simulation---and therefore fitting---of both the DSTP and 
 SSP models. (But more to be done on this!)
@@ -5,5 +8,6 @@ SSP models. (But more to be done on this!)
 (But more to be done on this!)
 * Added function name aliases to allow for snake_case.
 
+---
 # flankr v1.0.0
 * Initial release (Github only)
