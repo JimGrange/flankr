@@ -2,13 +2,13 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-NumericMatrix getDSTP_new(NumericVector parms, int trialType, int nTrials,
-                      double dt, double var) {
+NumericMatrix getDSTP_new(NumericVector parms,
+                          int trialType,
+                          int nTrials,
+                          double dt,
+                          double var) {
 
-  // Fixed parameters
   double sdRand = sqrt(dt * var);
-
-  // Free parameters
   double A = parms[0], B = -parms[0];
   double C = parms[1], D = -parms[1];
   double muTa = parms[2] * dt;
@@ -17,43 +17,58 @@ NumericMatrix getDSTP_new(NumericVector parms, int trialType, int nTrials,
   double muRS2 = parms[5] * dt;
   double tEr = parms[6];
 
-  // Pre-generate noise
-  int noiseLen = 10000;
-  NumericVector muNoise(noiseLen);
-  if (trialType == 1) {
-    muNoise = rnorm(noiseLen, muTa + muFl, sdRand);
-  } else {
-    muNoise = rnorm(noiseLen, muTa - muFl, sdRand);
-  }
+  // pre-compute drift for first stage based on trial type
+  double muResp = (trialType == 1) ? (muTa + muFl) : (muTa - muFl);
 
+  // pre-generate all noise vectors
+  int noiseLen = 10000;
+  NumericVector muNoise = rnorm(noiseLen, muResp, sdRand);
   NumericVector rsNoise = rnorm(noiseLen, muRS2, sdRand);
   NumericVector ssNoise = rnorm(noiseLen, muSS, sdRand);
 
+  // use raw pointers for fast access
+  double* muNoisePtr = REAL(muNoise);
+  double* rsNoisePtr = REAL(rsNoise);
+  double* ssNoisePtr = REAL(ssNoise);
+
   NumericMatrix trialData(nTrials, 2);
 
-  srand(1);  // set RNG seed once
+  // initialise random number generator
+  srand(1);
 
+  // loop over trials
   for (int i = 0; i < nTrials; ++i) {
 
-    bool stimSelected = false;
-    int whichStim = 0;
+    // reset everything
     double currEvidenceResp = 0.0;
     double currEvidenceStim = 0.0;
+    int whichStim = 0;
+    bool stimSelected = false;
     int j = 0;
 
+    // diffusion process starts here
     while (currEvidenceResp <= A && currEvidenceResp >= B) {
+
+      // select random noise
       int idx = rand() % noiseLen;
 
+      // update the response drift rates based on
+      // stimulus selection status
       if (!stimSelected) {
-        currEvidenceResp += muNoise[idx];
-      } else if (trialType == 2 && whichStim == 2) {
-        currEvidenceResp -= rsNoise[idx];
+        currEvidenceResp += muNoisePtr[idx];
       } else {
-        currEvidenceResp += rsNoise[idx];
+        double delta = rsNoisePtr[idx];
+        // apply multiplier for when flanker is selected on incongruent trials
+        if (trialType == 2 && whichStim == 2) {
+          delta = -delta;
+        }
+        currEvidenceResp += delta;
       }
 
-      currEvidenceStim += ssNoise[idx];
+      // update the stimulus selection drift rate
+      currEvidenceStim += ssNoisePtr[idx];
 
+      // check whether stimulus selection has occurred
       if (!stimSelected) {
         if (currEvidenceStim >= C) {
           whichStim = 1;
@@ -67,6 +82,7 @@ NumericMatrix getDSTP_new(NumericVector parms, int trialType, int nTrials,
       ++j;
     }
 
+    // collate trial level data
     trialData(i, 0) = (j * dt) + tEr;
     trialData(i, 1) = (currEvidenceResp >= A) ? 1.0 : 0.0;
   }

@@ -1,4 +1,5 @@
 # flankr v1.1.0.9000 (development version)
+* 50% further efficiency in DSTP simulation speed 
 
 ---
 # flankr v1.1.0

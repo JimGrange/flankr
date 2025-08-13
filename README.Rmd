@@ -23,9 +23,5 @@ Grange, J.A. (2016). flankr: An R package for implementing computational models 
 * Preprint Link: [https://core.ac.uk/download/pdf/43762624.pdf](https://core.ac.uk/download/pdf/43762624.pdf)
 
 
-## Updates for version 1.1.0
-* More efficient simulation---and therefore fitting---of both the DSTP and 
-SSP models. (But more to be done on this!)
-* Refactored some code & examples in preparation for CRAN submission. 
-(But more to be done on this!)
-* Added function name aliases to allow for snake_case.
+## Updates for version 1.1.0.9000
+* 50% further efficiency in DSTP simulation speed

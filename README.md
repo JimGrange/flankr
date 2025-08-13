@@ -15,10 +15,6 @@ models of attentional selectivity. *Behavior Research Methods, 48,*
   <https://link.springer.com/article/10.3758/s13428-015-0615-y>
 - Preprint Link: <https://core.ac.uk/download/pdf/43762624.pdf>
 
-## Updates for version 1.1.0
+## Updates for version 1.1.0.9000
 
-- More efficient simulation—and therefore fitting—of both the DSTP and
-  SSP models. (But more to be done on this!)
-- Refactored some code & examples in preparation for CRAN submission.
-  (But more to be done on this!)
-- Added function name aliases to allow for snake_case.
+- 50% further efficiency in DSTP simulation speed
