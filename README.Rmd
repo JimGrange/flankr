@@ -25,3 +25,4 @@ Grange, J.A. (2016). flankr: An R package for implementing computational models 
 
 ## Updates for version 1.1.0.9000
 * 50% further efficiency in DSTP simulation speed
+* 24% further efficiency in SSP simulation speed

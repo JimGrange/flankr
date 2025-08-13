@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <Rmath.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -7,6 +8,9 @@ NumericMatrix getDSTP_new(NumericVector parms,
                           int nTrials,
                           double dt,
                           double var) {
+
+  // initialise R's RNG (respects set.seed in R)
+  Rcpp::RNGScope scope;
 
   double sdRand = sqrt(dt * var);
   double A = parms[0], B = -parms[0];
@@ -21,7 +25,7 @@ NumericMatrix getDSTP_new(NumericVector parms,
   double muResp = (trialType == 1) ? (muTa + muFl) : (muTa - muFl);
 
   // pre-generate all noise vectors
-  int noiseLen = 10000;
+  int noiseLen = 10000; // keep original length for behaviour parity
   NumericVector muNoise = rnorm(noiseLen, muResp, sdRand);
   NumericVector rsNoise = rnorm(noiseLen, muRS2, sdRand);
   NumericVector ssNoise = rnorm(noiseLen, muSS, sdRand);
@@ -34,7 +38,7 @@ NumericMatrix getDSTP_new(NumericVector parms,
   NumericMatrix trialData(nTrials, 2);
 
   // initialise random number generator
-  srand(1);
+  // now using R's RNG (no srand/rand; CRAN-friendly and reproducible with set.seed)
 
   // loop over trials
   for (int i = 0; i < nTrials; ++i) {
@@ -50,7 +54,8 @@ NumericMatrix getDSTP_new(NumericVector parms,
     while (currEvidenceResp <= A && currEvidenceResp >= B) {
 
       // select random noise
-      int idx = rand() % noiseLen;
+      // uniform index in [0, noiseLen)
+      int idx = static_cast<int>(R::unif_rand() * noiseLen);
 
       // update the response drift rates based on
       // stimulus selection status

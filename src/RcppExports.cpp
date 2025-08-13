@@ -10,21 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// getDSTP
-NumericMatrix getDSTP(NumericVector parms, int trialType, int nTrials, double dt, double var);
-RcppExport SEXP _flankr_getDSTP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP);
-    Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP);
-    Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP);
-    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
-    Rcpp::traits::input_parameter< double >::type var(varSEXP);
-    rcpp_result_gen = Rcpp::wrap(getDSTP(parms, trialType, nTrials, dt, var));
-    return rcpp_result_gen;
-END_RCPP
-}
 // getDSTP_new
 NumericMatrix getDSTP_new(NumericVector parms, int trialType, int nTrials, double dt, double var);
 RcppExport SEXP _flankr_getDSTP_new(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
@@ -40,9 +25,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getSSP
-NumericMatrix getSSP(NumericVector parms, int trialType, int nTrials, double dt, double var);
-RcppExport SEXP _flankr_getSSP(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
+// getSSP_new
+NumericMatrix getSSP_new(NumericVector parms, int trialType, int nTrials, double dt, double var);
+RcppExport SEXP _flankr_getSSP_new(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -51,15 +36,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP);
     Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
     Rcpp::traits::input_parameter< double >::type var(varSEXP);
-    rcpp_result_gen = Rcpp::wrap(getSSP(parms, trialType, nTrials, dt, var));
+    rcpp_result_gen = Rcpp::wrap(getSSP_new(parms, trialType, nTrials, dt, var));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_flankr_getDSTP", (DL_FUNC) &_flankr_getDSTP, 5},
     {"_flankr_getDSTP_new", (DL_FUNC) &_flankr_getDSTP_new, 5},
-    {"_flankr_getSSP", (DL_FUNC) &_flankr_getSSP, 5},
+    {"_flankr_getSSP_new", (DL_FUNC) &_flankr_getSSP_new, 5},
     {NULL, NULL, 0}
 };
 

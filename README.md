@@ -18,3 +18,4 @@ models of attentional selectivity. *Behavior Research Methods, 48,*
 ## Updates for version 1.1.0.9000
 
 - 50% further efficiency in DSTP simulation speed
+- 24% further efficiency in SSP simulation speed
