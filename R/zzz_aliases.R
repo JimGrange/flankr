@@ -1,4 +1,3 @@
-
 # snake case DSTP ---------------------------------------------------------
 #' @rdname simulateDSTP
 #' @export
@@ -45,6 +44,7 @@ fit_multiple_ssp <- fitMultipleSSP
 fit_multiple_ssp <- fitMultipleSSP
 
 #' @rdname fitSSP_fixed
+
 #' @export
 fit_ssp_fixed <- fitSSP_fixed
 

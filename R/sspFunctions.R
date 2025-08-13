@@ -737,14 +737,14 @@ plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getSSP(parms, trialType = 1, nTrials = n, dt, var)
+  modelCon <- getSSP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getSSP(parms, trialType = 2, nTrials = n, dt, var)
+  modelIncon <- getSSP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
