@@ -38,15 +38,15 @@
 #' @useDynLib flankr
 #' @importFrom Rcpp sourceCpp
 #' @export
-simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
+simulateDSTP <- function(parms,  nTrials, var = 0.01,
+                         dt = 1/1000, seed = 42){
 
   # transfer nTrials to shorter name
   n <- nTrials
 
   # Set random number seed, so same predictions occur every time.
-  if(!is.null(seed)){
-    set.seed(seed, kind = NULL, normal.kind = NULL)
-  }
+  set.seed(seed, kind = NULL, normal.kind = NULL)
+
 
 
   # initialise empty matrix for simulation data with two columns
@@ -74,6 +74,46 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
 
 }  # end of function
 
+
+
+#' @useDynLib flankr
+#' @importFrom Rcpp sourceCpp
+#' @export
+simulateDSTP_new <- function(parms,  nTrials, var = 0.01,
+                             dt = 1/1000, seed = 42){
+
+  # transfer nTrials to shorter name
+  n <- nTrials
+
+  # Set random number seed, so same predictions occur every time.
+  set.seed(seed, kind = NULL, normal.kind = NULL)
+
+
+
+  # initialise empty matrix for simulation data with two columns
+  # (RT & accuracy) and with rows = number of trials
+  trialData <- matrix(0, nrow = n * 2, ncol = 3)
+  colnames(trialData) <- c("rt", "accuracy", "congruency")
+  trialData <- data.frame(trialData)
+
+  # first generate congruent data by calling the C++ function
+  trialData[1:n, 1:2] <- getDSTP_new(parms,
+                                 trialType = 1,
+                                 nTrials = n,
+                                 dt, var)
+  trialData[1:n, 3] <- "congruent"
+
+  # now do incongruent data
+  trialData[(n + 1):(n * 2), 1:2] <- getDSTP_new(parms,
+                                             trialType = 2,
+                                             nTrials = n,
+                                             dt, var)
+  trialData[(n + 1):(n * 2), 3] <- "incongruent"
+
+
+  return(trialData);
+
+}  # end of function
 
 
 # fit DSTP ----------------------------------------------------------------
