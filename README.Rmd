@@ -15,7 +15,11 @@ knitr::opts_chunk$set(
 
 # flankr v1.2.0 <a><img src='images/logo.png' align="right" height="250"/></a>
 
-$\texttt{flankr}$ is an R package implementing computational models of Eriksen flanker task performance. 
+$\texttt{flankr}$ is an R package implementing computational models of Eriksen flanker task performance. The package allows simulation of the models as well as fitting the models to participant data. Additional utility functions allow plotting of the best-fitting model parameters against observed data, as well as providing Bayesian Information Criterion values for model competition. 
+
+Current models implemented in $\texttt{flankr}$ are:
+- The Shrinking Spotlight Model (SSP) of White et al. (2011)
+- The Dual-Stage Two-Phase Model (DSTP) of Hübner et al. (2010) 
 
 ## Installation
 The development version can be installed from [GitHub](https://github.com/) with:
@@ -36,3 +40,10 @@ Grange, J.A. (2016). flankr: An R package for implementing computational models 
 * 50% further efficiency in DSTP simulation speed
 * 24% further efficiency in SSP simulation speed
 * Note that the way random seeds are handled in both $\texttt{simulateDSTP}$ and $\texttt{simulateSSP}$ is slightly different to that in version 1.0.0 (initial release). Therefore, there may be very slight differences between simulation data (and therefore potentially very slight differences in best-fitting parameter values) between versions.
+
+
+## References
+Hübner, R., Steinhauser, M., & Lehle, C. (2010). A dual-stage two-phase model of selective attention. *Psychological Review, 117(3)*, 759–784. https://doi.org/10.1037/a0019471
+
+White, C. N., Ratcliff, R., & Starns, J. S. (2011). Diffusion models of the flanker task: Discrete versus gradual attentional selection. *Cognitive Psychology, 63(4)*, 210–238. https://doi.org/10.1016/j.cogpsych.2011.08.001
+
