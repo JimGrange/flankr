@@ -39,14 +39,18 @@ models of attentional selectivity. *Behavior Research Methods, 48,*
 
 ## Updates for version 1.2.0
 
-- 50% further efficiency in DSTP simulation speed
-- 24% further efficiency in SSP simulation speed
-- Note that the way random seeds are handled in both
+- 50% further efficiency in DSTP simulation speed from version 1.1.0.
+  (Users who have only ever installed the initial release 1.0.0 will
+  notice *significantly larger* improvements.)
+- 24% further efficiency in SSP simulation speed. (Users who have only
+  ever installed the initial release 1.0.0 will notice *significantly
+  larger* improvements.)
+- **Please note** that the way random seeds are now handled in both
   $\texttt{simulateDSTP}$ and $\texttt{simulateSSP}$ is slightly
-  different to that in version 1.0.0 (initial release). Therefore, there
-  may be very slight differences between simulation data (and therefore
-  potentially very slight differences in best-fitting parameter values)
-  between versions.
+  different to that in version 1.0.0 (initial release) and version
+  1.1.0. Therefore, there may be very slight differences between
+  simulation data (and therefore potentially very slight differences in
+  best-fitting parameter values) between versions.
 
 ## References
 
