@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 getDSTP_new <- function(parms, trialType, nTrials, dt, var) {
-    .Call('_flankr_getDSTP_new', PACKAGE = 'flankr', parms, trialType, nTrials, dt, var)
+    .Call(`_flankr_getDSTP_new`, parms, trialType, nTrials, dt, var)
 }
 
 getSSP_new <- function(parms, trialType, nTrials, dt, var) {
-    .Call('_flankr_getSSP_new', PACKAGE = 'flankr', parms, trialType, nTrials, dt, var)
+    .Call(`_flankr_getSSP_new`, parms, trialType, nTrials, dt, var)
 }
 
