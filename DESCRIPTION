@@ -1,18 +1,15 @@
 Package: flankr
 Title: Implementing Computational Models of Attentional Selectivity
-Version: 1.1.0
+Version: 1.2.0
 Authors@R:
     c(
       person("Jim", "Grange", role = c("aut", "cre"),
              email = "grange.jim@gmail.com",
              comment = c(ORCID = "0000-0002-8352-8390"))
     )
-Description: Functions to simulate and fit the dual stage two phase (DSTP) and
-    shrinking spotlight (SSP) models of attentional selectivity. Fitting uses
-    base R's 'optim()' to minimise the Wilks likelihood-ratio chi-square between
-    model predictions and human data (example data included). Binned BIC values
-    are provided for model comparison.
-Depends: R (>= 3.5.0)
+Description: Functions to simulate from  and fit the dual-stage two-phase 
+    (DSTP) and shrinking spotlight (SSP) models of attentional selectivity. 
+Depends: R (>= 4.0)
 Imports:
     Rcpp
 LinkingTo:
@@ -23,5 +20,5 @@ License: GPL-3
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 7.3.2
-URL: https://www.jimgrange.github.io
+URL: https://github.com/JimGrange/flankr
 BugReports: https://github.com/JimGrange/flankr/issues

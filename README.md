@@ -1,11 +1,34 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# flankr
+# flankr v1.2.0 <a><img src='images/logo.png' align="right" height="250"/></a>
 
-An R package implementing computational models of Eriksen flanker task
-performance. Full details of how to use the package is available in the
-following paper:
+$\texttt{flankr}$ is an R package implementing computational models of
+Eriksen flanker task performance. The package allows simulation of the
+models as well as fitting the models to participant data. Additional
+utility functions allow plotting of the best-fitting model parameters
+against observed data, as well as providing Bayesian Information
+Criterion values for model competition.
+
+Current models implemented in $\texttt{flankr}$ are:
+
+- The Shrinking Spotlight Model (SSP) of White et al. (2011)
+- The Dual-Stage Two-Phase Model (DSTP) of Hübner et al. (2010)
+
+## Installation
+
+The development version can be installed from
+[GitHub](https://github.com/) with:
+
+``` r
+require(devtools)
+devtools::install_github("JimGrange/flankr")
+```
+
+## User guide
+
+Full details of how to use the package is available in the following
+paper:
 
 Grange, J.A. (2016). flankr: An R package for implementing computational
 models of attentional selectivity. *Behavior Research Methods, 48,*
@@ -13,12 +36,28 @@ models of attentional selectivity. *Behavior Research Methods, 48,*
 
 - PDF Link:
   <https://link.springer.com/article/10.3758/s13428-015-0615-y>
-- Preprint Link: <https://core.ac.uk/download/pdf/43762624.pdf>
 
-## Updates for version 1.1.0
+## Updates for version 1.2.0
 
-- More efficient simulation—and therefore fitting—of both the DSTP and
-  SSP models. (But more to be done on this!)
-- Refactored some code & examples in preparation for CRAN submission.
-  (But more to be done on this!)
-- Added function name aliases to allow for snake_case.
+- 50% further efficiency in DSTP simulation speed from version 1.1.0.
+  (Users who have only ever installed the initial release 1.0.0 will
+  notice *significantly larger* improvements.)
+- 24% further efficiency in SSP simulation speed. (Users who have only
+  ever installed the initial release 1.0.0 will notice *significantly
+  larger* improvements.)
+- **Please note** that the way random seeds are now handled in both
+  $\texttt{simulateDSTP}$ and $\texttt{simulateSSP}$ is slightly
+  different to that in version 1.0.0 (initial release) and version
+  1.1.0. Therefore, there may be very slight differences between
+  simulation data (and therefore potentially very slight differences in
+  best-fitting parameter values) between versions.
+
+## References
+
+- Hübner, R., Steinhauser, M., & Lehle, C. (2010). A dual-stage
+  two-phase model of selective attention. *Psychological Review,
+  117(3)*, 759–784. <https://doi.org/10.1037/a0019471>
+- White, C. N., Ratcliff, R., & Starns, J. S. (2011). Diffusion models
+  of the flanker task: Discrete versus gradual attentional selection.
+  *Cognitive Psychology, 63(4)*, 210–238.
+  <https://doi.org/10.1016/j.cogpsych.2011.08.001>

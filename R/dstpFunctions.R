@@ -38,15 +38,15 @@
 #' @useDynLib flankr
 #' @importFrom Rcpp sourceCpp
 #' @export
-simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
+simulateDSTP <- function(parms,  nTrials, var = 0.01,
+                         dt = 1/1000, seed = 42){
 
   # transfer nTrials to shorter name
   n <- nTrials
 
   # Set random number seed, so same predictions occur every time.
-  if(!is.null(seed)){
-    set.seed(seed, kind = NULL, normal.kind = NULL)
-  }
+  set.seed(seed, kind = NULL, normal.kind = NULL)
+
 
 
   # initialise empty matrix for simulation data with two columns
@@ -56,17 +56,17 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01, dt = 1/1000, seed = NULL){
   trialData <- data.frame(trialData)
 
   # first generate congruent data by calling the C++ function
-  trialData[1:n, 1:2] <- getDSTP(parms,
-                                 trialType = 1,
-                                 nTrials = n,
-                                 dt, var)
+  trialData[1:n, 1:2] <- getDSTP_new(parms,
+                                     trialType = 1,
+                                     nTrials = n,
+                                     dt, var)
   trialData[1:n, 3] <- "congruent"
 
   # now do incongruent data
-  trialData[(n + 1):(n * 2), 1:2] <- getDSTP(parms,
-                                             trialType = 2,
-                                             nTrials = n,
-                                             dt, var)
+  trialData[(n + 1):(n * 2), 1:2] <- getDSTP_new(parms,
+                                                 trialType = 2,
+                                                 nTrials = n,
+                                                 dt, var)
   trialData[(n + 1):(n * 2), 3] <- "incongruent"
 
 
@@ -348,7 +348,8 @@ fitMultipleDSTP <- function(data,
     # get the current run's parameters
     currParms <- parameters[i, ]
 
-    fit <- optim(currParms, fn = fitFunctionDSTP,
+    fit <- optim(currParms,
+                 fn = fitFunctionDSTP,
                  humanProportions = humanProportions,
                  n = nTrials,
                  maxParms = maxParms,
@@ -706,13 +707,13 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
+  modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incongruent RTs
   set.seed(42)
-  modelIncon <- getDSTP(parms, trialType = 2, nTrials = n, dt, var)
+  modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
@@ -743,14 +744,14 @@ plotPredictionsDSTP <- function(parms, n,
 
   # Run model to get congruent RTs
   set.seed(42)
-  modelCon <- getDSTP(parms, trialType = 1, nTrials = n, dt, var)
+  modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   set.seed(42)
-  modelIncon <- getDSTP(parms, trialType = 2, nTrials = n, dt, var)
+  modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
