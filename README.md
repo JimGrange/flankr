@@ -10,9 +10,10 @@ utility functions allow plotting of the best-fitting model parameters
 against observed data, as well as providing Bayesian Information
 Criterion values for model competition.
 
-Current models implemented in $\texttt{flankr}$ are: - The Shrinking
-Spotlight Model (SSP) of White et al. (2011) - The Dual-Stage Two-Phase
-Model (DSTP) of Hübner et al. (2010)
+Current models implemented in $\texttt{flankr}$ are:
+
+- The Shrinking Spotlight Model (SSP) of White et al. (2011)
+- The Dual-Stage Two-Phase Model (DSTP) of Hübner et al. (2010)
 
 ## Installation
 
@@ -21,22 +22,7 @@ The development version can be installed from
 
 ``` r
 require(devtools)
-#> Loading required package: devtools
-#> Loading required package: usethis
 devtools::install_github("JimGrange/flankr")
-#> Using GitHub PAT from the git credential store.
-#> Downloading GitHub repo JimGrange/flankr@HEAD
-#> 
-#> ── R CMD build ─────────────────────────────────────────────────────────────────
-#> * checking for file ‘/private/var/folders/t3/59rg8brd3rzc4ph50b6vbcwh0000gp/T/Rtmp9BISlS/remotes95c952cc77b4/JimGrange-flankr-0fe15fa/DESCRIPTION’ ... OK
-#> * preparing ‘flankr’:
-#> * checking DESCRIPTION meta-information ... OK
-#> * cleaning src
-#> * checking for LF line-endings in source and make files and shell scripts
-#> * checking for empty or unneeded directories
-#> * building ‘flankr_1.1.0.tar.gz’
-#> Installing package into '/private/var/folders/t3/59rg8brd3rzc4ph50b6vbcwh0000gp/T/RtmpwsUSUw/temp_libpath1330a4bf794d'
-#> (as 'lib' is unspecified)
 ```
 
 ## User guide
