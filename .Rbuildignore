@@ -5,3 +5,4 @@
 ^src-legacy(/|$)
 ^images$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
