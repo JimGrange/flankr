@@ -32,6 +32,11 @@ NumericMatrix getSSP_new(NumericVector parms,
     double sd_t = sda - (rd * t);
     if (sd_t <= 0.001) sd_t = 0.001;
 
+    // efficiency trick: instead of passing sd_t as the SD to pnorm5, we
+    // can convert to z-scores (x/sd_t) and use SD = 1.0. This avoids
+    // repeated division internally to pnorm5 and is mathematically identical
+    //
+    // in previous versions the call was: pnorm(0.5, 0, sd_t, 1, 0)
     const double inv_sd = 1.0 / sd_t;
 
     const double a_target =

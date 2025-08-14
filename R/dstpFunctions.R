@@ -348,7 +348,8 @@ fitMultipleDSTP <- function(data,
     # get the current run's parameters
     currParms <- parameters[i, ]
 
-    fit <- optim(currParms, fn = fitFunctionDSTP,
+    fit <- optim(currParms,
+                 fn = fitFunctionDSTP,
                  humanProportions = humanProportions,
                  n = nTrials,
                  maxParms = maxParms,
