@@ -50,11 +50,10 @@ models of attentional selectivity. *Behavior Research Methods, 48,*
 
 ## References
 
-Hübner, R., Steinhauser, M., & Lehle, C. (2010). A dual-stage two-phase
-model of selective attention. *Psychological Review, 117(3)*, 759–784.
-<https://doi.org/10.1037/a0019471>
-
-White, C. N., Ratcliff, R., & Starns, J. S. (2011). Diffusion models of
-the flanker task: Discrete versus gradual attentional selection.
-*Cognitive Psychology, 63(4)*, 210–238.
-<https://doi.org/10.1016/j.cogpsych.2011.08.001>
+- Hübner, R., Steinhauser, M., & Lehle, C. (2010). A dual-stage
+  two-phase model of selective attention. *Psychological Review,
+  117(3)*, 759–784. <https://doi.org/10.1037/a0019471>
+- White, C. N., Ratcliff, R., & Starns, J. S. (2011). Diffusion models
+  of the flanker task: Discrete versus gradual attentional selection.
+  *Cognitive Psychology, 63(4)*, 210–238.
+  <https://doi.org/10.1016/j.cogpsych.2011.08.001>
