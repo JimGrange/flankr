@@ -4,3 +4,4 @@
 ^legacy(/|$)
 ^src-legacy(/|$)
 ^images$
+^cran-comments\.md$
