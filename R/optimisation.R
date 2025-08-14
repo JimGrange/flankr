@@ -7,7 +7,8 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
 
   # Get the model's predictions
-  modelPrediction <- predictionsDSTP(parms, n,
+  modelPrediction <- predictionsDSTP(parms,
+                                     n,
                                      propsForModel = humanProportions)
 
 
@@ -46,6 +47,8 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
   } else {
     return(fitStatistic)
   }
+
+
 }
 #------------------------------------------------------------------------------
 

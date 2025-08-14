@@ -143,34 +143,12 @@ cdf <- function(data, quantiles = c(.1, .3, .5, .7, .9),
 # c(.1, .2, .2, .2, .2, .1). This is required because the model will try to
 # predict response times which match the proportions in the human data.
 cdfBinsize <- function(cdfs){
-
-  # get empty vector of the right length
-  props <- numeric(length = (length(cdfs) + 1))
-
-  # loop over all cdf values
-  for(i in 1:length(cdfs)){
-
-    # do the first one manually
-    if(i == 1){
-      props[i] <- cdfs[i] - 0
-    }
-
-
-    # do the intermediate bins automatically
-    if(i > 1 & i <= length(cdfs)){
-      props[i] <- cdfs[i] - cdfs[i - 1]
-    }
-
-    # do the final one manually
-    if(i == length(cdfs)){
-      props[i + 1] <- 1 - cdfs[i]
-    }
-
-  } # end of bin loop
-
-  # return the proportions
-  return(props)
-
+  n <- length(cdfs)
+  props <- numeric(n + 1)
+  props[1] <- cdfs[1]
+  props[2:n] <- cdfs[2:n] - cdfs[1:(n-1)]
+  props[n + 1] <- 1 - cdfs[n]
+  props
 } # end of function
 
 
@@ -181,14 +159,7 @@ cdfBinsize <- function(cdfs){
 # For example, the proportions c(.1, .2, .2, .2, .2, .1) have CDFs of
 # c(.1, .3, .5, .7, .9).
 binsizeCDFs <- function(proportions){
-
-  # initialise empty vector for cdfs
-  cdfs <- numeric(length(proportions) - 1)
-
-  for(i in 1:length(cdfs)){
-    cdfs[i] <- sum(proportions[1:i])
-  }
-  return(cdfs)
+  cumsum(proportions[-length(proportions)])
 }
 
 
