@@ -37,9 +37,6 @@ NumericMatrix getDSTP_new(NumericVector parms,
 
   NumericMatrix trialData(nTrials, 2);
 
-  // initialise random number generator
-  // now using R's RNG (no srand/rand; CRAN-friendly and reproducible with set.seed)
-
   // loop over trials
   for (int i = 0; i < nTrials; ++i) {
 

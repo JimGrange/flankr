@@ -10,6 +10,20 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// getDMC
+NumericMatrix getDMC(NumericVector parms, int trialType, int nTrials, double dt);
+RcppExport SEXP _flankr_getDMC(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type parms(parmsSEXP);
+    Rcpp::traits::input_parameter< int >::type trialType(trialTypeSEXP);
+    Rcpp::traits::input_parameter< int >::type nTrials(nTrialsSEXP);
+    Rcpp::traits::input_parameter< double >::type dt(dtSEXP);
+    rcpp_result_gen = Rcpp::wrap(getDMC(parms, trialType, nTrials, dt));
+    return rcpp_result_gen;
+END_RCPP
+}
 // getDSTP_new
 NumericMatrix getDSTP_new(NumericVector parms, int trialType, int nTrials, double dt, double var);
 RcppExport SEXP _flankr_getDSTP_new(SEXP parmsSEXP, SEXP trialTypeSEXP, SEXP nTrialsSEXP, SEXP dtSEXP, SEXP varSEXP) {
@@ -42,6 +56,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_flankr_getDMC", (DL_FUNC) &_flankr_getDMC, 4},
     {"_flankr_getDSTP_new", (DL_FUNC) &_flankr_getDSTP_new, 5},
     {"_flankr_getSSP_new", (DL_FUNC) &_flankr_getSSP_new, 5},
     {NULL, NULL, 0}
