@@ -186,8 +186,8 @@ fitSSP<- function(data, conditionName = NULL,
     humanProportions <- getHumanPropsSingle(conditionData, cdfs, cafs)
   }
 
-  modelStart <- "Model Fit Running. Please Wait..."
-  print(modelStart)
+  message("Model Fit Running. Please Wait...")
+
 
   # perform the fit
   fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
@@ -208,8 +208,8 @@ fitSSP<- function(data, conditionName = NULL,
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
                    bBIC = bBIC)
 
-  modelFinished <- "Model Fit Finished."
-  print(modelFinished)
+  message("Model Fit Finished.")
+
 
   return(modelFit)
 
@@ -333,8 +333,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
   #---
   # Start the optimisation
 
-  modelStart <- "Model Fit Running. Please Wait..."
-  print(modelStart)
+  message("Model Fit Running. Please Wait...")
+
 
 
   # initialise best-fitting parameters & best fit so far
@@ -365,8 +365,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
                    bBIC = bestBIC)
 
 
-  modelFinished <- "Model Fit Finished."
-  print(modelFinished)
+  message("Model Fit Finished.")
+
 
   return(modelFit)
 
@@ -478,8 +478,8 @@ fitSSP_fixed <- function(data, conditionName = NULL,
     humanProportions <- getHumanPropsSingle(conditionData, cdfs, cafs)
   }
 
-  modelStart <- "Model Fit Running. Please Wait..."
-  print(modelStart)
+  message("Model Fit Running. Please Wait...")
+
 
 
   # perform the fit using the wrapper function
@@ -500,8 +500,8 @@ fitSSP_fixed <- function(data, conditionName = NULL,
   modelFit <- list(bestParameters = bestParameters, g2 = g2,
                    bBIC = bBIC)
 
-  modelFinished <- "Model Fit Finished."
-  print(modelFinished)
+  message("Model Fit Finished.")
+
 
   return(modelFit)
 
@@ -630,8 +630,8 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
   #---
   # Start the optimisation
 
-  modelStart <- "Model Fit Running. Please Wait..."
-  print(modelStart)
+  message("Model Fit Running. Please Wait...")
+
 
 
   # initialise best-fitting parameters & best fit so far
@@ -671,8 +671,8 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
                    bBIC = bestBIC)
 
 
-  modelFinished <- "Model Fit Finished."
-  print(modelFinished)
+  message("Model Fit Finished.")
+
 
   return(modelFit)
 
