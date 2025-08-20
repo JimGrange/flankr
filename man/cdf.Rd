@@ -33,6 +33,10 @@ data from multiple subjects. If set to TRUE, the function returns the
 average CDF values across all subjects. If set to FALSE, the function
 assumes all data being passed is just from one subject.}
 }
+\value{
+Returns a vector of response times for each quantile of CDF
+requested.
+}
 \description{
 \code{cdf} takes a data frame for a single experimental condition and
 returns a vector of requested CDF values.

@@ -36,6 +36,8 @@
 #' average CDF values across all subjects. If set to FALSE, the function
 #' assumes all data being passed is just from one subject.
 #'
+#' @return Returns a vector of response times for each quantile of CDF
+#' requested.
 #'
 #' @examples
 #' ### example of multiple subjects and default quantile values

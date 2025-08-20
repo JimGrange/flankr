@@ -7,7 +7,7 @@ Authors@R:
              email = "grange.jim@gmail.com",
              comment = c(ORCID = "0000-0002-8352-8390"))
     )
-Description: Functions to simulate from  and fit the dual-stage two-phase 
+Description: A set of methods to simulate from and fit the dual-stage two-phase 
     (DSTP) and shrinking spotlight (SSP) models of attentional selectivity. 
 Depends: R (>= 4.0)
 Imports:

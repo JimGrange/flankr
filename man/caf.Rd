@@ -23,9 +23,13 @@ data from multiple subjects. If set to TRUE, the function returns the
 average CAF values across all subjects. If set to FALSE, the function
 assumes all data being passed is just from one subject.}
 }
+\value{
+Returns a matrix with response time (row 1) and accuracy (row 2) for
+each quantile of CAF requested.
+}
 \description{
 \code{caf} takes a data frame for a single experimental condition and
-returns a vector of requested conditional accuracty function (CAF) values.
+returns a vector of requested conditional accuracy function (CAF) values.
 }
 \details{
 The function only deals with one experimental condition. There is another
