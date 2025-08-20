@@ -77,6 +77,10 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
                         cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                         multipleSubjects = TRUE){
 
+  # protect user's original plotting environment
+  old_par <- par(no.readonly = TRUE)
+  on.exit(par(old_par))
+
   # Change the plotting window
   par(mfrow = c(1, 2))
 
@@ -267,6 +271,10 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
                        cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                        multipleSubjects = TRUE){
+
+  # protect user's original plotting environment
+  old_par <- par(no.readonly = TRUE)
+  on.exit(par(old_par))
 
   # Change the plotting window
   par(mfrow = c(1, 2))
