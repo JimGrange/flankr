@@ -701,20 +701,24 @@ fitMultipleDSTP_fixed <- function(data, conditionName = NULL,
 # Get the predicted proportions from the DSTP model.
 # This returns proportion per bin, not qunatiles
 # e.g., c(.1, .2, .2, .2, .2, 1) not c(.1, .3, .5, .7, .9)
-predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+predictionsDSTP <- function(parms, n, propsForModel,
+                            dt = 0.001, var = 0.01, seed = NULL){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
   # propsForModel = CDF & CAF distributional information
 
+  # Set random number seed, so same predictions occur every time.
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+
   # Run model to get congruent RTs
-  set.seed(42)
   modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incongruent RTs
-  set.seed(42)
   modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
@@ -740,21 +744,25 @@ plotPredictionsDSTP <- function(parms,
                                 n,
                                 propsForModel,
                                 dt = 0.001,
-                                var = 0.01){
+                                var = 0.01,
+                                seed = NULL){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
   # propsForModel = CDF & CAF distributional information
 
+  # Set random number seed, so same predictions occur every time.
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+
   # Run model to get congruent RTs
-  set.seed(42)
   modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
-  set.seed(42)
   modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
