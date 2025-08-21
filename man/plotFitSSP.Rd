@@ -12,7 +12,8 @@ plotFitSSP(
   nTrials = 50000,
   cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9),
   cafs = c(0.25, 0.5, 0.75),
-  multipleSubjects = TRUE
+  multipleSubjects = TRUE,
+  seed = NULL
 )
 
 plot_fit_ssp(
@@ -22,7 +23,8 @@ plot_fit_ssp(
   nTrials = 50000,
   cdfs = c(0.1, 0.3, 0.5, 0.7, 0.9),
   cafs = c(0.25, 0.5, 0.75),
-  multipleSubjects = TRUE
+  multipleSubjects = TRUE,
+  seed = NULL
 )
 }
 \arguments{
@@ -43,6 +45,9 @@ predictions. This should be higher than that used to fit the model.}
 \item{multipleSubjects}{A boolean stating whether the fit is to multiple
 subjects (multipleSubjects = TRUE) or to a single subject
 (multipleSubjects = FALSE).}
+
+\item{seed}{The value for the \code{set.seed} function to set random
+generation state.}
 }
 \value{
 \code{cdfs} The CDF values requested by the user.

@@ -39,13 +39,15 @@
 #' @importFrom Rcpp sourceCpp
 #' @export
 simulateDSTP <- function(parms,  nTrials, var = 0.01,
-                         dt = 1/1000, seed = 42){
+                         dt = 1/1000, seed = NULL){
 
   # transfer nTrials to shorter name
   n <- nTrials
 
   # Set random number seed, so same predictions occur every time.
-  set.seed(seed, kind = NULL, normal.kind = NULL)
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
 
 
 
@@ -734,8 +736,10 @@ predictionsDSTP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-plotPredictionsDSTP <- function(parms, n,
-                                propsForModel, dt = 0.001,
+plotPredictionsDSTP <- function(parms,
+                                n,
+                                propsForModel,
+                                dt = 0.001,
                                 var = 0.01){
 
   # parms = parameters for the model run

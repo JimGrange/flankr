@@ -44,13 +44,15 @@ simulateSSP <- function(parms,
                         nTrials,
                         var = 0.01,
                         dt = 1/1000,
-                        seed = 42){
+                        seed = NULL){
 
   # transfer nTrials to shorter name
   n <- nTrials
 
   # Set random number seed, so same predictions occur every time.
-  set.seed(seed, kind = NULL, normal.kind = NULL)
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
 
 
   # initialise empty matrix for simulation data with two columns
@@ -685,14 +687,23 @@ fitMultipleSSP_fixed <- function(data, conditionName = NULL,
 # predicted proportions SSP -----------------------------------------------
 
 # Get the predicted proportions from the SSP model
-predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+predictionsSSP<- function(parms,
+                          n,
+                          propsForModel,
+                          dt = 0.001,
+                          var = 0.01,
+                          seed = seed){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
   # propsForModel = CDF & CAF distributional information
 
+  # Set random number seed, so same predictions occur every time.
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+
   # Run model to get congruent RTs
-  set.seed(42)
   modelCon <- getSSP_new(parms,
                          trialType = 1,
                          nTrials = n,
@@ -702,7 +713,6 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incontruent RTs
-  set.seed(42)
   modelIncon <- getSSP_new(parms,
                            trialType = 2,
                            nTrials = n,
@@ -729,21 +739,25 @@ predictionsSSP<- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
 # Get the predicted Quantiles from the DSTP model.
 # This returns quantiles, not proportion per bin
 # e.g.,  c(.1, .3, .5, .7, .9) not c(.1, .2, .2, .2, .2, 1)
-plotPredictionsSSP <- function(parms, n, propsForModel, dt = 0.001, var = 0.01){
+plotPredictionsSSP <- function(parms, n, propsForModel,
+                               dt = 0.001, var = 0.01, seed = NULL){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
   # propsForModel = CDF & CAF distributional information
 
+  # Set random number seed, so same predictions occur every time.
+  if(!is.null(seed)){
+    set.seed(seed)
+  }
+
   # Run model to get congruent RTs
-  set.seed(42)
   modelCon <- getSSP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
   set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
-  set.seed(42)
   modelIncon <- getSSP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)

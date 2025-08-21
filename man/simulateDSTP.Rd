@@ -5,9 +5,9 @@
 \alias{simulate_dstp}
 \title{Obtain simulated response times and accuracy from the DSTP model}
 \usage{
-simulateDSTP(parms, nTrials, var = 0.01, dt = 1/1000, seed = 42)
+simulateDSTP(parms, nTrials, var = 0.01, dt = 1/1000, seed = NULL)
 
-simulate_dstp(parms, nTrials, var = 0.01, dt = 1/1000, seed = 42)
+simulate_dstp(parms, nTrials, var = 0.01, dt = 1/1000, seed = NULL)
 }
 \arguments{
 \item{parms}{The set of parameters to use to simulate the data. Must be

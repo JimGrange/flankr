@@ -224,6 +224,8 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 #' @param multipleSubjects A boolean stating whether the fit is to multiple
 #' subjects (multipleSubjects = TRUE) or to a single subject
 #' (multipleSubjects = FALSE).
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
 #'
 #' @return \code{cdfs} The CDF values requested by the user.
 #' @return \code{cafs} The CAF values requested by the user.
@@ -268,9 +270,14 @@ plotFitDSTP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 #'}
 #'
 #'@export
-plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
-                       cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
-                       multipleSubjects = TRUE){
+plotFitSSP <- function(modelFit,
+                       data,
+                       conditionName = NULL,
+                       nTrials = 50000,
+                       cdfs = c(.1, .3, .5, .7, .9),
+                       cafs = c(.25, .50, .75),
+                       multipleSubjects = TRUE,
+                       seed = NULL){
 
   # protect user's original plotting environment
   old_par <- par(no.readonly = TRUE)
@@ -278,7 +285,6 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
 
   # Change the plotting window
   par(mfrow = c(1, 2))
-
 
 
   #--- get the desired condition's data
@@ -305,7 +311,8 @@ plotFitSSP <- function(modelFit, data, conditionName = NULL, nTrials = 50000,
   # simulate the DSTP model with these parameters
   modelData <- plotPredictionsSSP(parms,
                                   n = nTrials,
-                                  propsForModel = humanProportions)
+                                  propsForModel = humanProportions,
+                                  seed = seed)
 
   # Find model proportion predictions for
   # congruent and incongruent trials (CDF & CAFs)
