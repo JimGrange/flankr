@@ -53,7 +53,6 @@ returned to the user.
 ### example of multiple subjects and default quantile values
 
 # only select the congruent data from the example data set
-\dontrun{
 data <- subset(exampleData, exampleData$congruency == "congruent")
 
 # get the CDFs
@@ -73,6 +72,5 @@ newQuantiles <- c(.1, .2, .3, .4, .5, .6, .7, .8,  .9)
 
 # get the CDFs
 getCDF <- cdf(data, quantiles = newQuantiles, multipleSubjects = FALSE)
-}
 
 }

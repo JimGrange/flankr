@@ -105,19 +105,16 @@ data. Multiple starting points of parameters are used.
 }
 \examples{
 # Load the example data the comes with the \code{flankr} package
-\dontrun{
 data(exampleData)
 
-# Fit the model to the condition "present" in the example data set using
-# the default settings in the model.
-fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
-
 # Fit the model whilst fixing the first parameter (A)
-
+# (Note this is a toy example with very low trial numbers to speed up the
+# example. For proper use, increase nTrials.)
 parms <- c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3, 0.24)
 fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+\donttest{
 fit <- fitMultipleDSTP_fixed(exampleData, conditionName = "present",
-                             parms = parms, fixed = fixed)
+                             parms = parms, fixed = fixed, nTrials = 100)
 }
 
 }

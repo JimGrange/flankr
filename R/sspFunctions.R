@@ -26,13 +26,13 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' # declare the parameters
 #' parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 #'
 #' # simulate the data
-#' modelData <- simulateSSP(parms, nTrials = 10000)
-#'}
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' modelData <- simulateSSP(parms, nTrials = 100)
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -148,21 +148,13 @@ simulateSSP <- function(parms,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#' fit <- fitSSP(data = exampleData, conditionName = "present")
-#'
-#' # Fit the model using different CDF and CAF values, and 100,000 trials per
-#' # fit cycle
-#' cdfs <- c(.2, .4, .6, .8)
-#' cafs <- c(.2, .4, .6, .8)
-#'
-#' fit <- fitSSP(exampleData, conditionName = "present", cdfs = cdfs,
-#'               cafs = cafs, nTrials = 100000)
-#'}
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' fit <- fitSSP(data = exampleData, conditionName = "present", nTrials = 100)
 #'
 #'@export
 fitSSP<- function(data, conditionName = NULL,
@@ -289,20 +281,15 @@ fitSSP<- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
-#'
-#' # Fit the model using different CDF and CAF values, and 100,000 trials per
-#' # fit cycle
-#' cdfs <- c(.2, .4, .6, .8)
-#' cafs <- c(.2, .4, .6, .8)
-#'
-#' fit <- fitMultipleSSP(exampleData, conditionName = "present", cdfs = cdfs,
-#'                       cafs = cafs, nTrials = 100000)
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
+#' fit <- fitMultipleSSP(data = exampleData, conditionName = "present",
+#'                       nTrials = 100)
 #'}
 #'
 #'@export
@@ -449,18 +436,17 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
-#'
-#' # Fit the model to the condition "present" in the example data set using
-#' # the default settings in the model.
-#' fit <- fitSSP(data = exampleData, conditionName = "present")
-#'
 #' # Fix the first parameter (A) during the fit.
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
+#'
+#' # fit the model
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
 #' fit <- fitSSP_fixed(exampleData, conditionName = "present", parms = parms,
-#'                     fixed = fixed)
+#'                     fixed = fixed, nTrials = 100)
 #'}
 #'
 #'@export
@@ -590,19 +576,17 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 #' for binned data, hence bBIC (binned BIC).
 #'
 #' @examples
-#' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
-#'
-#' # Fit the model to the condition "present" in the example data set using
-#' # the default settings in the model.
-#' fit <- fitMultipleSSP(data = exampleData, conditionName = "present")
-#'
 #' # Fix the first parameter (A) during the fit.
 #' parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
+#'
+#' # run the model
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
 #' fit <- fitMultipleSSP_fixed(exampleData, conditionName = "present",
-#'                             parms = parms, fixed = fixed)
+#'                             parms = parms, fixed = fixed, nTrials = 100)
 #'}
 #'@export
 fitMultipleSSP_fixed <- function(data, conditionName = NULL,

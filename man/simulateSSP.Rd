@@ -43,12 +43,12 @@ fitting values.
 }
 \examples{
 
-\dontrun{
 # declare the parameters
 parms <- c(0.050, 0.300, 0.400, 0.040, 1.500)
 
 # simulate the data
-modelData <- simulateSSP(parms, nTrials = 10000)
-}
+# (Note this is a toy example with very low trial numbers to speed up the
+# example. For proper use, increase nTrials.)
+modelData <- simulateSSP(parms, nTrials = 100)
 
 }

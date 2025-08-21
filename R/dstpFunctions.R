@@ -25,12 +25,11 @@
 #'
 #' @examples
 #' # declare the parameters
-#' \dontrun{
 #' parms <- c(0.070, 0.086, 0.045, 0.065, 0.368, 1.575, 0.225)
 #'
-#' # simulate the data
-#' modelData <- simulateDSTP(parms, nTrials = 10000)
-#'}
+#' # simulate the data. (Note this is a toy example with very low trial numbers
+#' # to speed up the example. For proper use, increase nTrials.)
+#' modelData <- simulateDSTP(parms, nTrials = 100)
 #'
 #' @return Returns a data frame with three columns: rt (response time) in
 #' seconds, accuracy of the model's response (1 for correct, 0 for error), and
@@ -48,8 +47,6 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01,
   if(!is.null(seed)){
     set.seed(seed)
   }
-
-
 
   # initialise empty matrix for simulation data with two columns
   # (RT & accuracy) and with rows = number of trials
@@ -138,26 +135,14 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#'
-#'
-#' fit <- fitDSTP(data = exampleData, conditionName = "present")
-#'
-#' # Fit the model using new starting parameters.
-#' newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
-#' fit <- fitDSTP(exampleData, conditionName = "present", parms = newParms)
-#'
-#' # Fit the model using different CDF and CAF values, and 100,000 trials per
-#' # fit cycle
-#' cdfs <- c(.2, .4, .6, .8)
-#' cafs <- c(.2, .4, .6, .8)
-#'
-#' fit <- fitDSTP(exampleData, conditionName = "present", cdfs = cdfs,
-#'                cafs = cafs, nTrials = 100000)
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
+#' fit <- fitDSTP(data = exampleData, conditionName = "present", nTrials = 100)
 #'}
 #'
 #'@export
@@ -289,17 +274,14 @@ fitDSTP <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
 #'
 #' # Fit the model to the condition "present" in the example data set using
 #' # the default settings in the model.
-#' fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
-#'
-#' # Fit the model using new starting parameters, and new variance.
-#' newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
-#' fit <- fitMultipleDSTP(exampleData, conditionName = "present",
-#'        parms = newParms, var = 20)
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
+#' fit <- fitMultipleDSTP(data = exampleData, conditionName = "present", nTrials = 100)
 #'}
 #'
 #'@export
@@ -345,8 +327,6 @@ fitMultipleDSTP <- function(data,
 
   message("Model Fit Running. Please Wait...")
 
-
-
   # initialise best-fitting parameters & best fit so far
   bestFit <- .Machine$integer.max
   bestParms <- numeric(length(parms))
@@ -375,8 +355,6 @@ fitMultipleDSTP <- function(data,
     }
 
   }
-
-
 
   modelFit <- list(bestParameters = bestParms, g2 = bestFit,
                    bBIC = bestBIC)
@@ -457,18 +435,18 @@ fitMultipleDSTP <- function(data,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
-#'
-#' # Fit the model to the condition "present" in the example data set using
-#' # the default settings in the model.
-#' fit <- fitDSTP(data = exampleData, conditionName = "present")
 #'
 #' # Fix the first parameter (A) during the fit.
 #' parms <- c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3, 0.24)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+#'
+#' # fit the model.
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
+#' \donttest{
 #' fit <- fitDSTP_fixed(exampleData, conditionName = "present", parms = parms,
-#'                      fixed = fixed)
+#'                      fixed = fixed, nTrials = 100)
 #'}
 #'
 #'@export
@@ -600,19 +578,16 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 #'
 #' @examples
 #' # Load the example data the comes with the \code{flankr} package
-#' \dontrun{
 #' data(exampleData)
 #'
-#' # Fit the model to the condition "present" in the example data set using
-#' # the default settings in the model.
-#' fit <- fitMultipleDSTP(data = exampleData, conditionName = "present")
-#'
 #' # Fit the model whilst fixing the first parameter (A)
-#'
+#' # (Note this is a toy example with very low trial numbers to speed up the
+#' # example. For proper use, increase nTrials.)
 #' parms <- c(0.145, 0.08, 0.1, 0.07, 0.325, 1.3, 0.24)
 #' fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+#' \donttest{
 #' fit <- fitMultipleDSTP_fixed(exampleData, conditionName = "present",
-#'                              parms = parms, fixed = fixed)
+#'                              parms = parms, fixed = fixed, nTrials = 100)
 #'}
 #'
 #'@export

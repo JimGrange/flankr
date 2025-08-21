@@ -90,26 +90,14 @@ data.
 }
 \examples{
 # Load the example data the comes with the \code{flankr} package
-\dontrun{
 data(exampleData)
 
 # Fit the model to the condition "present" in the example data set using
 # the default settings in the model.
-
-
-fit <- fitDSTP(data = exampleData, conditionName = "present")
-
-# Fit the model using new starting parameters.
-newParms <- c(0.08, 0.11, 0.127, 0.020, 0.365, 1.140, 0.280)
-fit <- fitDSTP(exampleData, conditionName = "present", parms = newParms)
-
-# Fit the model using different CDF and CAF values, and 100,000 trials per
-# fit cycle
-cdfs <- c(.2, .4, .6, .8)
-cafs <- c(.2, .4, .6, .8)
-
-fit <- fitDSTP(exampleData, conditionName = "present", cdfs = cdfs,
-               cafs = cafs, nTrials = 100000)
+# (Note this is a toy example with very low trial numbers to speed up the
+# example. For proper use, increase nTrials.)
+\donttest{
+fit <- fitDSTP(data = exampleData, conditionName = "present", nTrials = 100)
 }
 
 }

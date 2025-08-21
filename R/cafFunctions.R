@@ -37,7 +37,6 @@
 #' ### example of multiple subjects and default quantile values
 #'
 #' # only select the congruent data from the example data set
-#' \dontrun{
 #' data <- subset(exampleData, exampleData$congruency == "congruent")
 #'
 #' # get the CDFs
@@ -57,7 +56,6 @@
 #'
 #' # get the CAFs
 #' getCAF <- caf(data, quantiles = newQuantiles, multipleSubjects = FALSE)
-#'}
 
 #' @export
 caf <- function(data, quantiles = c(.25, .50, .75), multipleSubjects = TRUE){

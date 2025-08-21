@@ -98,18 +98,17 @@ data.
 }
 \examples{
 # Load the example data the comes with the \code{flankr} package
-\dontrun{
 data(exampleData)
-
-# Fit the model to the condition "present" in the example data set using
-# the default settings in the model.
-fit <- fitSSP(data = exampleData, conditionName = "present")
-
 # Fix the first parameter (A) during the fit.
 parms = c(0.050, 0.300, 0.400, 0.050, 1.500)
 fixed <- c(TRUE, FALSE, FALSE, FALSE, FALSE)
+
+# fit the model
+# (Note this is a toy example with very low trial numbers to speed up the
+# example. For proper use, increase nTrials.)
+\donttest{
 fit <- fitSSP_fixed(exampleData, conditionName = "present", parms = parms,
-                    fixed = fixed)
+                    fixed = fixed, nTrials = 100)
 }
 
 }
