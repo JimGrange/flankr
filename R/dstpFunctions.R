@@ -123,6 +123,9 @@ simulateDSTP <- function(parms,  nTrials, var = 0.01,
 #' subjects (multipleSubjects = TRUE) or to a single subject
 #' (multipleSubjects = FALSE).
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -162,7 +165,8 @@ fitDSTP <- function(data, conditionName = NULL,
                     parms = c(0.145, 0.08, 0.10, 0.07, 0.325, 1.30, 0.240),
                     cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                     maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
-                    multipleSubjects = TRUE){
+                    multipleSubjects = TRUE,
+                    seed = NULL){
 
 
   # declare the scaling on the parameters
@@ -190,7 +194,7 @@ fitDSTP <- function(data, conditionName = NULL,
   # perform the fit
   fit <- optim(parms, fn = fitFunctionDSTP,
                humanProportions = humanProportions,
-               n = nTrials,
+               n = nTrials, seed = seed,
                maxParms = maxParms,
                control = list(parscale = parscale))
 
@@ -270,6 +274,9 @@ fitDSTP <- function(data, conditionName = NULL,
 #' subjects (multipleSubjects = TRUE) or to a single subject
 #' (multipleSubjects = FALSE).
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -305,7 +312,8 @@ fitMultipleDSTP <- function(data,
                             cafs = c(.25, .50, .75),
                             maxParms = c(1, 1, 1, 1, 1, 2, 1),
                             nTrials = 50000,
-                            multipleSubjects = TRUE){
+                            multipleSubjects = TRUE,
+                            seed = NULL){
 
 
   # declare the scaling on the parameters
@@ -355,6 +363,7 @@ fitMultipleDSTP <- function(data,
                  humanProportions = humanProportions,
                  n = nTrials,
                  maxParms = maxParms,
+                 seed = seed,
                  control = list(parscale = parscale))
 
     if(fit$value < bestFit){
@@ -372,14 +381,9 @@ fitMultipleDSTP <- function(data,
   modelFit <- list(bestParameters = bestParms, g2 = bestFit,
                    bBIC = bestBIC)
 
-
   message("Model Fit Finished.")
 
-
-
-
   return(modelFit)
-
 
 } # end of function
 
@@ -438,6 +442,9 @@ fitMultipleDSTP <- function(data,
 #' order: \code{A}, \code{C}, \code{driftTarget}, \code{driftFlanker},
 #' \code{diftStimSelection}, \code{driftRS2}, \code{ter}.
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -471,7 +478,8 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
                           maxParms = c(1, 1, 1, 1, 1, 2, 1), nTrials = 50000,
                           multipleSubjects = TRUE,
                           fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
-                                    FALSE)){
+                                    FALSE),
+                          seed = NULL){
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -491,11 +499,9 @@ fitDSTP_fixed <- function(data, conditionName = NULL,
 
   message("Model Fit Running. Please Wait...")
 
-
-
   # perform the fit using the wrapper function
   fit <- optimFix_DSTP(parms, fixed, humanProportions = humanProportions,
-                       n = nTrials, maxParms = maxParms)
+                       n = nTrials, maxParms = maxParms, seed = seed)
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$fullPars, 3)
@@ -714,12 +720,21 @@ predictionsDSTP <- function(parms, n, propsForModel,
   }
 
   # Run model to get congruent RTs
-  modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
+  modelCon <- getDSTP_new(parms,
+                          trialType = 1,
+                          nTrials = n,
+                          dt,
+                          var)
+
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
   # Run model to get incongruent RTs
-  modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
+  modelIncon <- getDSTP_new(parms,
+                            trialType = 2,
+                            nTrials = n,
+                            dt,
+                            var)
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
@@ -760,13 +775,11 @@ plotPredictionsDSTP <- function(parms,
   modelCon <- getDSTP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
-  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   modelIncon <- getDSTP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
-  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,

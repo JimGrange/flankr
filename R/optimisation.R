@@ -3,12 +3,15 @@
 
 #------------------------------------------------------------------------------
 # Fit function for the DSTP model
-fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
+fitFunctionDSTP <- function(humanProportions, parms, n, maxParms,
+                            seed = NULL){
 
 
   # Get the model's predictions
-  modelPrediction <- predictionsDSTP(parms, n,
-                                     propsForModel = humanProportions)
+  modelPrediction <- predictionsDSTP(parms,
+                                     n,
+                                     propsForModel = humanProportions,
+                                     seed = seed)
 
 
   # Put all human data into one vector, for ease of comparison with model's
@@ -53,12 +56,14 @@ fitFunctionDSTP <- function(humanProportions, parms, n, maxParms){
 
 #------------------------------------------------------------------------------
 # Fit function for the SSP model
-fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
+fitFunctionSSP <- function(humanProportions, parms, n,
+                           maxParms, seed = NULL){
 
 
   # Get the model's predictions
   modelPrediction <- predictionsSSP(parms, n,
-                                    propsForModel = humanProportions)
+                                    propsForModel = humanProportions,
+                                    seed = seed)
 
 
   # Put all human data into one vector, for ease of comparison with model's
@@ -106,26 +111,29 @@ fitFunctionSSP <- function(humanProportions, parms, n, maxParms){
 # Code modified from the "optifix" function originally written by Barry
 # Rowlingson:
 # (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
-optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
+optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms,
+                          seed = NULL){
 
   # which parameters are fixed/free?
   whichFixed <- parms[fixed]
   whichFree <- parms[!fixed]
 
   # define function to run the fit after parameters have been fixed
-  fixedFit <- function(.parms, fixed, humanProportions, parms, n, maxParms){
+  fixedFit <- function(.parms, fixed, humanProportions, parms, n, maxParms,
+                       seed = NULL){
 
     currParms <- rep(NA, sum(!fixed))
     currParms[!fixed] <- .parms
     currParms[fixed] <- whichFixed
 
     fitFunctionDSTP(humanProportions = humanProportions, parms = currParms,
-                    n = n, maxParms = maxParms)
+                    n = n, maxParms = maxParms, seed = seed)
 
   }
 
   fit <- optim(whichFree, fixed = fixed, fn = fixedFit, method = "Nelder-Mead",
-               humanProportions = humanProportions, n = n, maxParms = maxParms)
+               humanProportions = humanProportions, n = n, maxParms = maxParms,
+               seed = seed)
 
   # now populate the output
   fit$fullPars <- rep(NA, sum(!fixed))
@@ -143,26 +151,29 @@ optimFix_DSTP <- function(parms, fixed, humanProportions, n, maxParms){
 # Code modified from the "optifix" function originally written by Barry
 # Rowlingson:
 # (http://geospaced.blogspot.co.uk/2011/10/optifix-optim-with-fixed-values.html)
-optimFix_SSP <- function(parms, fixed, humanProportions, n, maxParms){
+optimFix_SSP <- function(parms, fixed, humanProportions, n, maxParms,
+                         seed = NULL){
 
   # which parameters are fixed/free?
   whichFixed <- parms[fixed]
   whichFree <- parms[!fixed]
 
   # define function to run the fit after parameters have been fixed
-  fixedFit <- function(.parms, fixed, humanProportions, parms, n, maxParms){
+  fixedFit <- function(.parms, fixed, humanProportions, parms, n, maxParms,
+                       seed = seed){
 
     currParms <- rep(NA, sum(!fixed))
     currParms[!fixed] <- .parms
     currParms[fixed] <- whichFixed
 
     fitFunctionSSP(humanProportions = humanProportions, parms = currParms,
-                   n = n, maxParms = maxParms)
+                   n = n, maxParms = maxParms, seed = NULL)
 
   }
 
   fit <- optim(whichFree, fixed = fixed, fn = fixedFit, method = "Nelder-Mead",
-               humanProportions = humanProportions, n = n, maxParms = maxParms)
+               humanProportions = humanProportions, n = n, maxParms = maxParms,
+               seed = seed)
 
   # now populate the output
   fit$fullPars <- rep(NA, sum(!fixed))

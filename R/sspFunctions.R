@@ -133,6 +133,9 @@ simulateSSP <- function(parms,
 #' subjects (multipleSubjects = TRUE) or to a single subject
 #' (multipleSubjects = FALSE).
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -166,8 +169,8 @@ fitSSP<- function(data, conditionName = NULL,
                   parms = c(0.050, 0.300, 0.400, 0.050, 1.500),
                   cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                   maxParms = c(1, 1, 1, 1, 3), nTrials = 50000,
-                  multipleSubjects = TRUE){
-
+                  multipleSubjects = TRUE,
+                  seed = NULL){
 
   # declare the scaling on the parameters
   parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
@@ -192,8 +195,9 @@ fitSSP<- function(data, conditionName = NULL,
 
 
   # perform the fit
-  fit <- optim(parms, fn = fitFunctionSSP, humanProportions = humanProportions,
-               n = nTrials, maxParms = maxParms,
+  fit <- optim(parms, fn = fitFunctionSSP,
+               humanProportions = humanProportions,
+               n = nTrials, maxParms = maxParms, seed = seed,
                control = list(parscale = parscale))
 
   # what are the best-fitting parameters?
@@ -212,9 +216,7 @@ fitSSP<- function(data, conditionName = NULL,
 
   message("Model Fit Finished.")
 
-
   return(modelFit)
-
 
 } # end of function
 
@@ -272,6 +274,9 @@ fitSSP<- function(data, conditionName = NULL,
 #' subjects (multipleSubjects = TRUE) or to a single subject
 #' (multipleSubjects = FALSE).
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -306,7 +311,8 @@ fitMultipleSSP <- function(data, conditionName = NULL,
                            var = 10, nParms = 20, cdfs = c(.1, .3, .5, .7, .9),
                            cafs = c(.25, .50, .75),
                            maxParms = c(1, 1, 1, 1, 2), nTrials = 50000,
-                           multipleSubjects = TRUE){
+                           multipleSubjects = TRUE,
+                           seed = NULL){
 
   # declare the scaling on the parameters
   parscale <- c(0.1, 1.0, 1.0, 1.0, 10)
@@ -337,8 +343,6 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 
   message("Model Fit Running. Please Wait...")
 
-
-
   # initialise best-fitting parameters & best fit so far
   bestFit <- .Machine$integer.max
   bestParms <- numeric(length(parms))
@@ -350,8 +354,11 @@ fitMultipleSSP <- function(data, conditionName = NULL,
     # get the current run's parameters
     currParms <- parameters[i, ]
 
-    fit <- optim(currParms, fn = fitFunctionSSP, humanProportions = humanProportions,
-                 n = nTrials, maxParms = maxParms,
+    fit <- optim(currParms, fn = fitFunctionSSP,
+                 humanProportions = humanProportions,
+                 n = nTrials,
+                 maxParms = maxParms,
+                 seed = seed,
                  control = list(parscale = parscale))
 
     if(fit$value < bestFit){
@@ -366,12 +373,9 @@ fitMultipleSSP <- function(data, conditionName = NULL,
   modelFit <- list(bestParameters = bestParms, g2 = bestFit,
                    bBIC = bestBIC)
 
-
   message("Model Fit Finished.")
 
-
   return(modelFit)
-
 
 } # end of function
 
@@ -430,6 +434,9 @@ fitMultipleSSP <- function(data, conditionName = NULL,
 #' fixed (TRUE) or free (FALSE) during the fitting routine. Must be in the
 #' order: \code{A}, \code{ter}, \code{p}, \code{rd}, \code{sda}.
 #'
+#' @param seed The value for the \code{set.seed} function to set random
+#' generation state.
+#'
 #' @return \code{bestParameters} A vector of the best-fitting parameters found
 #' by the current fit run.
 #'
@@ -462,7 +469,8 @@ fitSSP_fixed <- function(data, conditionName = NULL,
                          cdfs = c(.1, .3, .5, .7, .9), cafs = c(.25, .50, .75),
                          maxParms = c(1, 1, 1, 1, 2), nTrials = 50000,
                          multipleSubjects = TRUE,
-                         fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE)){
+                         fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE),
+                         seed = NULL){
 
   # get the desired condition's data
   if(is.null(conditionName)){
@@ -482,11 +490,10 @@ fitSSP_fixed <- function(data, conditionName = NULL,
 
   message("Model Fit Running. Please Wait...")
 
-
-
   # perform the fit using the wrapper function
   fit <- optimFix_SSP(parms, fixed, humanProportions = humanProportions,
-                      n = nTrials, maxParms = maxParms)
+                      n = nTrials, maxParms = maxParms,
+                      seed = seed)
 
   # what are the best-fitting parameters?
   bestParameters <- round(fit$fullPars, 3)
@@ -692,7 +699,7 @@ predictionsSSP<- function(parms,
                           propsForModel,
                           dt = 0.001,
                           var = 0.01,
-                          seed = seed){
+                          seed = NULL){
 
   # parms = parameters for the model run
   # n = number of trials per congruency condition
@@ -709,6 +716,7 @@ predictionsSSP<- function(parms,
                          nTrials = n,
                          dt,
                          var)
+
   modelConCDF <- getCDFProps(propsForModel$congruentCDFs, modelCon)
   modelConCAF <- getCAFProps(propsForModel$congruentCAFsCutoff, modelCon)
 
@@ -716,7 +724,9 @@ predictionsSSP<- function(parms,
   modelIncon <- getSSP_new(parms,
                            trialType = 2,
                            nTrials = n,
-                           dt, var)
+                           dt,
+                           var)
+
   modelInconCDF <- getCDFProps(propsForModel$incongruentCDFs, modelIncon)
   modelInconCAF <- getCAFProps(propsForModel$incongruentCAFsCutoff, modelIncon)
 
@@ -755,13 +765,11 @@ plotPredictionsSSP <- function(parms, n, propsForModel,
   modelCon <- getSSP_new(parms, trialType = 1, nTrials = n, dt, var)
   modelConCDF <- getModelCDFs(modelCon, propsForModel$congruentCDFs)
   modelConCAF <- getModelCAFs(modelCon, propsForModel$congruentCAFsCutoff)
-  set.seed(as.numeric(Sys.time()))
 
   # Run model to get incontruent RTs
   modelIncon <- getSSP_new(parms, trialType = 2, nTrials = n, dt, var)
   modelInconCDF <- getModelCDFs(modelIncon, propsForModel$incongruentCDFs)
   modelInconCAF <- getModelCAFs(modelIncon, propsForModel$incongruentCAFsCutoff)
-  set.seed(as.numeric(Sys.time()))
 
   modelProps <- list(modelCongruentCDF = modelConCDF,
                      modelCongruentCAF = modelConCAF,

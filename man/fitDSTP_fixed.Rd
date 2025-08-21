@@ -14,7 +14,8 @@ fitDSTP_fixed(
   maxParms = c(1, 1, 1, 1, 1, 2, 1),
   nTrials = 50000,
   multipleSubjects = TRUE,
-  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+  seed = NULL
 )
 
 fit_dstp_fixed(
@@ -26,7 +27,8 @@ fit_dstp_fixed(
   maxParms = c(1, 1, 1, 1, 1, 2, 1),
   nTrials = 50000,
   multipleSubjects = TRUE,
-  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+  fixed = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+  seed = NULL
 )
 }
 \arguments{
@@ -65,6 +67,9 @@ subjects (multipleSubjects = TRUE) or to a single subject
 fixed (TRUE) or free (FALSE) during the fitting routine. Must be in the
 order: \code{A}, \code{C}, \code{driftTarget}, \code{driftFlanker},
 \code{diftStimSelection}, \code{driftRS2}, \code{ter}.}
+
+\item{seed}{The value for the \code{set.seed} function to set random
+generation state.}
 }
 \value{
 \code{bestParameters} A vector of the best-fitting parameters found

@@ -15,7 +15,8 @@ fitMultipleDSTP(
   cafs = c(0.25, 0.5, 0.75),
   maxParms = c(1, 1, 1, 1, 1, 2, 1),
   nTrials = 50000,
-  multipleSubjects = TRUE
+  multipleSubjects = TRUE,
+  seed = NULL
 )
 
 fit_multiple_dstp(
@@ -28,7 +29,8 @@ fit_multiple_dstp(
   cafs = c(0.25, 0.5, 0.75),
   maxParms = c(1, 1, 1, 1, 1, 2, 1),
   nTrials = 50000,
-  multipleSubjects = TRUE
+  multipleSubjects = TRUE,
+  seed = NULL
 )
 
 fit_multiple_dstp(
@@ -41,7 +43,8 @@ fit_multiple_dstp(
   cafs = c(0.25, 0.5, 0.75),
   maxParms = c(1, 1, 1, 1, 1, 2, 1),
   nTrials = 50000,
-  multipleSubjects = TRUE
+  multipleSubjects = TRUE,
+  seed = NULL
 )
 }
 \arguments{
@@ -81,6 +84,9 @@ of the fitting cycle for each congruency type.}
 \item{multipleSubjects}{A boolean stating whether the fit is to multiple
 subjects (multipleSubjects = TRUE) or to a single subject
 (multipleSubjects = FALSE).}
+
+\item{seed}{The value for the \code{set.seed} function to set random
+generation state.}
 }
 \value{
 \code{bestParameters} A vector of the best-fitting parameters found
