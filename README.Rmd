@@ -15,6 +15,9 @@ knitr::opts_chunk$set(
 
 # flankr v1.2.0 <a><img src='images/logo.png' align="right" height="250"/></a>
 
+[![](http://www.r-pkg.org/badges/version/flankr)](https://CRAN.R-project.org/package=flankr)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/flankr)](https://CRAN.R-project.org/package=lankr)
+
 $\texttt{flankr}$ is an R package implementing computational models of Eriksen flanker task performance. The package allows simulation of the models as well as fitting the models to participant data. Additional utility functions allow plotting of the best-fitting model parameters against observed data, as well as providing Bayesian Information Criterion values for model competition. 
 
 Current models implemented in $\texttt{flankr}$ are:
