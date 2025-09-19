@@ -20,7 +20,14 @@ Current models implemented in $\texttt{flankr}$ are:
 
 ## Installation
 
-The development version can be installed from
+You can install the released version of flankr (v1.2.0) from
+[CRAN](https://CRAN.R-project.org/package=flankr) with:
+
+``` r
+install.packages("flankr")
+```
+
+The development version (v1.2.0.9999) can be installed from
 [GitHub](https://github.com/) with:
 
 ``` r
